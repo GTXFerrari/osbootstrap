@@ -22,20 +22,11 @@ Write-Output "Installing Applications"
 $apps = @(
     @{name = "M2Team.NanaZip"}
     @{name = "Git.Git" },
-    @{name = "GitHub.GitHubDesktop" },
-    @{name = "Axosoft.GitKraken" },
     @{name = "Neovim.Neovim" },
-    @{name = "Alacritty.Alacritty" },
     @{name = "Microsoft.VisualStudioCode" },
-    @{name = "Microsoft.VisualStudio.2022.Community" },
-    @{name = "Microsoft.VisualStudio.2022.BuildTools" },
-    @{name = "Kitware.CMake" },
     @{name = "VMware.WorkstationPro" },
     @{name = "Python.Python.3.12" },
-    @{name = "LLVM.LLVM" },
-    @{name = "Docker.DockerDesktop" },
     @{name = "Oracle.JDK.17" },
-    @{name = "OpenJS.NodeJS" },
     @{name = "WinSCP.WinSCP" },
     @{name = "JanDeDobbeleer.OhMyPosh" },
     @{name = "RussellBanks.HashHash" },
@@ -71,7 +62,6 @@ $apps = @(
     @{name = "7zip.7zip" },
     @{name = "evernote.evernote" },
     @{name = "Rufus.Rufus" },
-    @{name = "gsass1.NTop" },
     @{name = "WiresharkFoundation.Wireshark" },
     @{name = "FinalWire.AIDA64.Engineer" }
 );
@@ -99,7 +89,6 @@ choco install madvr -y
 choco install bind-toolsonly -y
 choco install zentimings -y
 choco install msiafterburner -y
-choco install ripgrep -y
 
 # Install fonts using choco
 choco install cascadia-code-nerd-font -y 
