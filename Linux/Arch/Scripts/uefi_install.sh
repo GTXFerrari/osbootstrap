@@ -29,7 +29,7 @@ systemctl enable NetworkManager.service
 systemctl enable avahi-daemon.service
 systemctl enable iwd.service
 ###{System Applications}###
-pacman -S base-devel pacman-contrib dialog mtools xdg-user-dirs xdg-utils cifs-utils gvfs udisks2 gvfs-smb bind cups cups-pdf hplip rsync openssh ssh-audit zsh zsh-completions firefox neofetch htop cmatrix figlet cowsay alacritty btop onefetch  wireshark-qt font-manager adwaita-qt5 adwaita-qt6 papirus-icon-theme polkit ranger atool ueberzug highlight zsh-autosuggestions nfs-utils exfat-utils
+pacman -S base-devel pacman-contrib dialog mtools xdg-user-dirs xdg-utils cifs-utils gvfs udisks2 gvfs-smb bind cups cups-pdf hplip rsync openssh ssh-audit zsh zsh-completions firefox neofetch htop cmatrix figlet cowsay alacritty btop onefetch  wireshark-qt font-manager adwaita-qt5 adwaita-qt6 papirus-icon-theme polkit ranger atool ueberzug highlight zsh-autosuggestions nfs-utils exfat-utils cronie
 systemctl enable cups.socket		# Printing
 systemctl enable reflector.timer	# Pacman Mirror Sorting (Edit /etc/reflector/reflector.conf with desired settings)
 systemctl enable sshd.service		# SSH
