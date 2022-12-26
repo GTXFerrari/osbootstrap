@@ -5,12 +5,8 @@ DIR="/home/jake/Git"
 DWM="/home/jake/Git/dwm"
 DMENU="/home/jake/Git/dmenu"
 ST="/home/jake/Git/st"
-DWM_BAR="/home/jake/Git/dwm-bar"
+DWMBLOCKS="/home/jake/Git/dwmblocks"
 GIT="git clone https://github.com/gtxferrari"
-CHEZ="chezmoi init --apply https://github.com/gtxferrari/dotfiles"
-
-# Install dots
-$CHEZ
 
 # Create Git directory if it does not exist
 if [ -d "$DIR" ]; then
@@ -80,16 +76,16 @@ if [ ! -d "$ST" ]; then
     echo "Finished compiling & installing st"
 fi
 
-# Check to see if dwm-bar exist, if not clone repo
-if [ -d "$DWM_BAR" ]; then
-    echo "dwm-bar already exist"
+# Check to see if dwmblocks exist, if not clone repo
+if [ -d "$DWMBLOCKS" ]; then
+    echo "dwmblocks already exist"
 fi
 
-if [ ! -d "$DWM_BAR" ]; then
-    echo "dwm-bar does not exist, Cloning repo"
+if [ ! -d "$DWMBLOCKS" ]; then
+    echo "dwmblocks does not exist, Cloning repo"
     cd $DIR
-    $GIT/dwm-bar
-    echo "Finished cloning dwm-bar"
+    $GIT/dwmblocks
+    echo "Finished cloning dwmblocks"
 fi
 
 sudo pacman -S xorg-server xorg-xinit nitrogen picom qt5ct lxappearance gnome-themes-extra dunst gnome-keyring libsecret seahorse ttf-joypixels xorg-xsetroot polkit polkit-gnome
