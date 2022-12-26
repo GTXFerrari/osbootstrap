@@ -33,7 +33,6 @@ $apps = @(
     @{name = "Microsoft.Sysinternals.ProcessExplorer" },
     @{name = "Microsoft.PowerToys" },
     @{name = "BleachBit.BleachBit" },
-    @{name = "Malwarebytes.Malwarebytes" },
     @{name = "CPUID.CPU-Z" },
     @{name = "TechPowerUp.GPU-Z" },
     @{name = "SumatraPDF.SumatraPDF" },
@@ -53,14 +52,11 @@ $apps = @(
     @{name = "Microsoft.VCRedist.2015+.x64" },
     @{name = "Discord.Discord" },
     @{name = "PeterPawlowski.foobar2000" },
-    @{name = "CiderCollective.Cider.Nightly" },
     @{name = "clsid2.mpc-hc" },
     @{name = "jurplel.qView" },
     @{name = "Lexikos.AutoHotkey" },
     @{name = "Nextcloud.NextcloudDesktop" },
-    @{name = "calibre.calibre" },
     @{name = "7zip.7zip" },
-    @{name = "evernote.evernote" },
     @{name = "Rufus.Rufus" },
     @{name = "WiresharkFoundation.Wireshark" },
     @{name = "FinalWire.AIDA64.Engineer" }
@@ -144,5 +140,3 @@ Move-Item -Path $PF\cemu_* -Destination $PF\Cemu
 Move-Item -Path $PF\duckstation-* -Destination $PF\Duckstation
 Move-Item -Path $PF\pcsx2* -Destination $PF\PCSX2 
 Move-Item -Path $PF\rpcs3* -Destination $PF\RPCS3
-Move-Item -Path $PF\ryujinx* -Destination $PF\Ryujinx     
-Move-Item -Path $PF\ZenTimings* -Destination $PF\ZenTimings
