@@ -21,6 +21,8 @@ pacman -S --noconfirm archlinux-keyring
 pacman -S grub efibootmgr os-prober
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
+#pacman -S grub-btrfs # BTRFS snapshots in grub menu
+######NOTE##### If dual-booting with windows uncomment #GRUB_DISABLE_OS_PROBER=FALSE and update grub config
 ##(Network Manager)## 
 pacman -S networkmanager nm-connection-editor network-manager-applet iwd avahi    # Note - nm applet not needed for KDE
 systemctl enable NetworkManager.service
