@@ -85,6 +85,7 @@ choco install madvr -y
 choco install bind-toolsonly -y
 choco install zentimings -y
 choco install msiafterburner -y
+choco install lazygit -y 
 
 # Install fonts using choco
 choco install cascadia-code-nerd-font -y 
