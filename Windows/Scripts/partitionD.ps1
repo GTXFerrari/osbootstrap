@@ -11,8 +11,9 @@ Write-Host "Code is running as administrator — go on executing the script..." 
 
 # Ensure D drive letter is not taken
 Set-Partition -DriveLetter D -NewDriveLetter H
-# Create new drive partition from extra space on OS disk
 Get-Partition -DriveLetter C | Select DiskNumber
+Start-Sleep 3
+# Create new drive partition from extra space on OS disk
 Write-Warning "Drive D is about to be created from disk 0, is the information correct?" -WarningAction Inquire
 New-Partition -DiskNumber 0 -UseMaximumSize -DriveLetter D | Format-Volume -FileSystem NTFS -NewFileSystemLabel "Games"
 
