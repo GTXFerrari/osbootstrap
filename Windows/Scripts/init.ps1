@@ -24,7 +24,7 @@ choco install nvidia-display-driver -y
 choco install amd-ryzen-chipset -y
 
 # Enable Memory Core Isolation (Security)
-reg import .\Reg-Files\Enable_Mem_CoreISO.reg
+# reg import .\Reg-Files\Enable_Mem_CoreISO.reg
 
 # Enable Dark Mode
 #reg import .\Reg-Files\Enable_Dark_Mode.reg
