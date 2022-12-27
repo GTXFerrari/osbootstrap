@@ -16,4 +16,3 @@ Start-Sleep 3
 # Create new drive partition from extra space on OS disk
 Write-Warning "Drive D is about to be created from disk 0, is the information correct?" -WarningAction Inquire
 New-Partition -DiskNumber 0 -UseMaximumSize -DriveLetter D | Format-Volume -FileSystem NTFS -NewFileSystemLabel "Games"
-
