@@ -11,7 +11,7 @@ Write-Host "Code is running as administrator — go on executing the script..." 
 
 # Ensure D drive letter is not taken
 Set-Partition -DriveLetter D -NewDriveLetter H
-Get-Partition -DriveLetter C | Select DiskNumber
+Get-Partition -DriveLetter C | Select-Object DiskNumber
 Start-Sleep 3
 # Create new drive partition from extra space on OS disk
 Write-Warning "Drive D is about to be created from disk 0, is the information correct?" -WarningAction Inquire
