@@ -8,10 +8,10 @@ sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 reflector -c 'United States' -a 6 -p https --sort rate --save /etc/pacman.d/mirrorlist
 pacman -Syy
 echo "LANG=en_US.UTF-8" >> /etc/locale.conf
-echo "arch" >> /etc/hostname
+echo "Arch" >> /etc/hostname
 echo "127.0.0.1 localhost" >> /etc/hosts
 echo "::1   localhost" >> /etc/hosts
-echo "127.0.1.1 arch.localdomain arch" >> /etc/hosts
+echo "127.0.1.1 Arch.localdomain Arch" >> /etc/hosts
 echo root:{ENTERPASSWORD} | chpasswd
 useradd -m jake
 echo jake:{ENTERPASSWORD} | chpasswd
