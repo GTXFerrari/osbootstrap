@@ -14,4 +14,6 @@ Write-Host "Code is running as administrator — go on executing the script..." 
 }
 
 # Enable Bitlocker
-Enable-BitLocker -MountPoint "C" -EncryptionMethod XtsAes256 -Pin $Pin -TpmAndPinProtector 
+#Enable-BitLocker -MountPoint "C" -EncryptionMethod XtsAes256 -Pin $Pin -TpmAndPinProtector -Confirm # Requires a custom group policy to enable PIN
+Enable-BitLocker -MountPoint "C" -EncryptionMethod XtsAes256 - -RecoveryKeyPath "Y:\App Backups & 2FA\Bitlocker\Jakes-PC Bitlocker Recovery Codes\C_Main Drive\" -RecoveryKeyProtector -Confirm
+Restart-Computer -Confirm
