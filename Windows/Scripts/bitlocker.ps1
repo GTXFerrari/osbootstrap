@@ -1,7 +1,7 @@
 # Variables
 $Pin = ConvertTo-SecureString "ENTERPIN" -AsPlainText -Force
 
-Write-Warning "This script will enable bitlocker on the C: drive (Requires Admin) The passwords should be set prior to the script running. Would you like to proceed?" -WarningAction Inquire
+Write-Warning "This script will enable bitlocker on the C: drive (Requires Admin) The passwords should be set prior to the script running. TPM+PIN also requires a custom group policy. Would you like to proceed?" -WarningAction Inquire
 # Check if running as ADMIN
 Write-Host "Checking for elevated permissions..."
 if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`
@@ -14,6 +14,5 @@ Write-Host "Code is running as administrator — go on executing the script..." 
 }
 
 # Enable Bitlocker
-#Enable-BitLocker -MountPoint "C" -EncryptionMethod XtsAes256 -Pin $Pin -TpmAndPinProtector -Confirm # Requires a custom group policy to enable PIN
-Enable-BitLocker -MountPoint "C" -EncryptionMethod XtsAes256 - -RecoveryKeyPath "Y:\App Backups & 2FA\Bitlocker\Jakes-PC Bitlocker Recovery Codes\C_Main Drive\" -RecoveryKeyProtector -Confirm
+Enable-BitLocker -MountPoint "C" -EncryptionMethod XtsAes256 -Pin $Pin -TpmAndPinProtector -Confirm # Requires a custom group policy to enable PIN
 Restart-Computer -Confirm
