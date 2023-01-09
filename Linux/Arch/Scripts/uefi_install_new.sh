@@ -126,5 +126,4 @@ laptop() {
     usermod -aG video $username
 }
 
-echo "jake ALL=(ALL) ALL" >> /etc/sudoers.d/jake
 printf "\e[1;32mDone! Type exit, umount -R /mnt and reboot.\e[0m"
