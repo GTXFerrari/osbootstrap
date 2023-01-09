@@ -8,28 +8,28 @@ sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 reflector -c 'United States' -a 6 -p https --sort rate --save /etc/pacman.d/mirrorlist
 pacman -Syy
 echo "LANG=en_US.UTF-8" >> /etc/locale.conf
-echo "Arch" >> /etc/hostname
+echo "ArchLinux" >> /etc/hostname
 echo "127.0.0.1 localhost" >> /etc/hosts
 echo "::1   localhost" >> /etc/hosts
-echo "127.0.1.1 Arch.localdomain Arch" >> /etc/hosts
+echo "127.0.1.1 ArchLinux.localdomain ArchLinux" >> /etc/hosts
 echo root:{ENTERPASSWORD} | chpasswd
 useradd -m jake
 echo jake:{ENTERPASSWORD} | chpasswd
 pacman -S --noconfirm archlinux-keyring
 #+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+System_Applications+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+#
 ##(Grub)##
-pacman -S grub efibootmgr os-prober
+pacman -S --noconfirm grub efibootmgr os-prober
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
 #pacman -S grub-btrfs # BTRFS snapshots in grub menu
 ######NOTE##### If dual-booting with windows uncomment #GRUB_DISABLE_OS_PROBER=FALSE and update grub config
 ##(Network Manager)## 
-pacman -S networkmanager nm-connection-editor network-manager-applet iwd avahi    # Note - nm applet not needed for KDE
+pacman -S --noconfirm networkmanager nm-connection-editor network-manager-applet iwd avahi    # Note - nm applet not needed for KDE
 systemctl enable NetworkManager.service
 systemctl enable avahi-daemon.service
 systemctl enable iwd.service
 ###{System Applications}###
-pacman -S base-devel pacman-contrib dialog mtools xdg-user-dirs xdg-utils cifs-utils gvfs udisks2 gvfs-smb bind cups cups-pdf hplip rsync openssh ssh-audit zsh zsh-completions firefox neofetch htop cmatrix figlet cowsay alacritty btop onefetch  wireshark-qt font-manager adwaita-qt5 adwaita-qt6 papirus-icon-theme polkit ranger atool ueberzug highlight zsh-autosuggestions nfs-utils exfat-utils cronie ttf-sourcecodepro-nerd lazygit
+pacman -S base-devel pacman-contrib dialog mtools xdg-user-dirs xdg-utils cifs-utils nfs-utils udisks2 bind cups cups-pdf hplip rsync openssh ssh-audit zsh zsh-completions zsh-autosuggestions firefox neofetch htop alacritty btop wireshark-qt polkit ranger atool ueberzug highlight exfat-utils cronie ttf-sourcecodepro-nerd lazygit
 systemctl enable cups.socket		# Printing
 systemctl enable reflector.timer	# Pacman Mirror Sorting (Edit /etc/reflector/reflector.conf with desired settings)
 systemctl enable sshd.service		# SSH
@@ -70,7 +70,7 @@ pacman -S wine-staging wine-gecko wine-mono pipewire-pulse lib32-libpulse lib32-
 #systemctl enable docker.service
 
 ##{VMWare Guest}##
-#pacman -S open-vm-tools xf86-input-vmmouse xf86-video-vmware mesa
+#pacman -S open-vm-tools xf86-input-vmmouse xf86-video-vmware mesa gtkmm gtk2
 #systemctl enable vmtoolsd.service
 #systemctl enable vmware-vmblock-fuse.service
 #+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+Laptop Power+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+#
