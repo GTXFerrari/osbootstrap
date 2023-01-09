@@ -1,4 +1,4 @@
-#!/usr/env bash
+#!/usr/bin/env bash
 
 echo "Setting timezone"
 ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
