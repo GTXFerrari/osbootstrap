@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 echo "Setting timezone"
 ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
 echo "Syncing system clock"
@@ -14,7 +13,7 @@ reflector -c 'United States' -a 6 -p https --sort rate --save /etc/pacman.d/mirr
 pacman -Sy
 echo "Updating keyring"
 pacman -S --noconfirm archlinux-keyring
-
+# Functions
 set_hostname() {
   echo -n "Enter a value for hostname: "
   read -r hostname
@@ -24,21 +23,17 @@ set_hostname() {
   echo "::1       localhost" >>/etc/hosts
   echo "127.0.1.1 $hostname.localdomain.$hostname" >>/etc/hosts
 }
-
-
 function set_root_password() {
   echo -n "Enter a value for the root password: "
   read -r password
 
   echo root:$password | chpasswd
 }
-
 install_core_packages() {
   pacman -S --needed networkmanager nm-connection-editor network-manager-applet iwd avahi base-devel pacman-contrib dialog mtools xdg-user-dirs xdg-utils cifs-utils nfs-utils udisks2 bind cups cups-pdf hplip rsync openssh ssh-audit zsh zsh-completions zsh-autosuggestions firefox neofetch htop alacritty btop wireshark-qt polkit ranger atool ueberzug highlight exfat-utils cronie ttf-sourcecodepro-nerd lazygit mpd mpc mpv ncmpcpp
   systemctl enable NetworkManager.service avahi-daemon.service iwd.service cups.socket reflector.timer sshd.service fstrim.timer cronie.service bluetooth.service 
 usermod -aG wireshark jake
 }
-
 create_user() {
   echo -n "Enter a username: "
   read -r username
@@ -48,8 +43,6 @@ create_user() {
   echo $username:$password | chpasswd
   echo "$username ALL=(ALL) ALL" >> /etc/sudoers.d/$username
 }
-
-
 install_grub() {
   echo -n "Do you want to use GRUB as your bootloader? (y/n)"
   read -r grub
@@ -66,28 +59,22 @@ install_grub() {
     pacman -S --needed --noconfirm grub-btrfs
   fi
 }
-
 install_audio() {
   pacman -S --needed pipewire pipewire-docs pipewire-alsa lib32-pipewire easyeffects alsa-utils alsa-plugins pipewire-pulse wireplumber wireplumber-docs pipewire-jack lib32-pipewire-jack pulsemixer bluez bluez-utils lsp-plugins sof-firmware
 }
-
-install_graphic() {
+install_graphics() {
   echo "Are you using an NVIDIA graphics card (y/n)"
   read -r nvidia
-
   if [[ "$nvidia" == "y" ]]; then
     pacman -S --needed nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader
   fi
 }
-
 install_gaming() {
   pacman -S --needed steam lutris discord retroarch retroarch-assets-xmb retroarch-assets-ozone libretro-core-info
 }
-
 install_wine() {
   pacman -S --needed wine-staging wine-gecko wine-mono pipewire-pulse lib32-libpulse lib32-alsa-oss lib32-gnutls lib32-gst-plugins-base lib32-gst-plugins-good samba winetricks zenity
 }
-
 install_virtualization() {
   echo "Are you using QEMU? (y/n)"
   read -r qemu
@@ -114,7 +101,6 @@ install_virtualization() {
     systemctl enable vmtoolsd.service vmware-vmblock-fuse
   fi
 }
-
 laptop() {
   echo "Is this machine a laptop? (y/n)"
   read -r laptop 
@@ -123,7 +109,17 @@ laptop() {
     pacman -S acpid tlp acpilight
     systemctl enably tlp.service acpid.service
     usermod -aG video $username
-    fi
+  fi  
 }
-
-printf "\e[1;32mDone! Type exit, umount -R /mnt and reboot.\e[0m"
+set_hostname
+set_root_password
+install_core_packages
+install_grub
+create_user
+install_audio
+install_graphics
+install_gaming
+install_wine
+install_virtualization
+laptop
+#printf "\e[1;32mDone! Type exit, umount -R /mnt and reboot.\e[0m"
