@@ -37,7 +37,7 @@ usermod -aG wireshark jake
 create_user() {
   echo -n "Enter a username: "
   read -r username
-  useradd -m -s /bin/zsh $username
+  useradd -m $username
   echo -n "Enter a password: "
   read -r password
   echo $username:$password | chpasswd
@@ -61,6 +61,7 @@ install_grub() {
 }
 install_audio() {
   pacman -S --needed pipewire pipewire-docs pipewire-alsa lib32-pipewire easyeffects alsa-utils alsa-plugins pipewire-pulse wireplumber wireplumber-docs pipewire-jack lib32-pipewire-jack pulsemixer bluez bluez-utils lsp-plugins sof-firmware
+  systemctl enable bluetooth.service
 }
 install_graphics() {
   echo "Are you using an NVIDIA graphics card (y/n)"
