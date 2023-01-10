@@ -12,7 +12,7 @@ echo "Updating mirrorlist"
 reflector -c 'United States' -a 6 -p https --sort rate --save /etc/pacman.d/mirrorlist
 pacman -Sy
 echo "Updating keyring"
-pacman -S --noconfirm archlinux-keyring
+pacman -S --noconfirm archlinux-keyring sudo
 # Functions
 set_hostname() {
   echo -n "Enter a value for hostname: "
