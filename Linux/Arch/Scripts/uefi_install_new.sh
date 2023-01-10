@@ -113,9 +113,9 @@ laptop() {
 }
 set_hostname
 set_root_password
+create_user
 install_core_packages
 install_grub
-create_user
 install_audio
 install_graphics
 install_gaming
