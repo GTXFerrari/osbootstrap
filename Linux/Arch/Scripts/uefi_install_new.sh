@@ -4,7 +4,6 @@ echo "Setting timezone"
 ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
 echo "Syncing system clock"
 hwclock --systohc
-echo "Generating locale"
 sed -i '171s/.//' /etc/locale.gen
 locale-gen
 echo "LANG=en_US.UTF-8" >> /etc/locale.conf
@@ -124,6 +123,7 @@ laptop() {
     pacman -S acpid tlp acpilight
     systemctl enably tlp.service acpid.service
     usermod -aG video $username
+    fi
 }
 
 printf "\e[1;32mDone! Type exit, umount -R /mnt and reboot.\e[0m"
