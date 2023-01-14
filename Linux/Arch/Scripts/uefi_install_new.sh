@@ -31,7 +31,7 @@ function set_root_password() {
 }
 install_core_packages() {
   pacman -S --needed networkmanager nm-connection-editor network-manager-applet iwd avahi base-devel pacman-contrib dialog mtools xdg-user-dirs xdg-utils cifs-utils nfs-utils udisks2 bind cups cups-pdf hplip rsync openssh ssh-audit zsh zsh-completions zsh-autosuggestions firefox neofetch htop alacritty btop wireshark-qt polkit ranger atool ueberzug highlight exfat-utils cronie ttf-sourcecodepro-nerd lazygit mpd mpc mpv ncmpcpp
-  systemctl enable NetworkManager.service avahi-daemon.service iwd.service cups.socket reflector.timer sshd.service fstrim.timer cronie.service bluetooth.service 
+  systemctl enable NetworkManager.service avahi-daemon.service iwd.service cups.socket reflector.timer sshd.service fstrim.timer cronie.service
 usermod -aG wireshark jake
 }
 create_user() {
