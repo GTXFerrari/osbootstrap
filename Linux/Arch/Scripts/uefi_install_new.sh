@@ -17,17 +17,18 @@ pacman -S --noconfirm archlinux-keyring sudo
 set_hostname() {
   echo -n "Enter a value for hostname: "
   read -r hostname
-
   echo "$hostname" >>/etc/hostname
-  echo "127.0.0.1 localhost" >>/etc/hosts
-  echo "::1       localhost" >>/etc/hosts
-  echo "127.0.1.1 $hostname.localdomain.$hostname" >>/etc/hosts
+{
+  echo      "127.0.0.1 localhost"
+  "::1       localhost"
+  "127.0.1.1 $hostname.localdomain.$hostname"
+} >> /etc/hosts
 }
 function set_root_password() {
   echo -n "Enter a value for the root password: "
   read -r password
 
-  echo root:$password | chpasswd
+  echo root:"$password" | chpasswd
 }
 install_core_packages() {
   pacman -S --needed networkmanager nm-connection-editor network-manager-applet iwd avahi base-devel pacman-contrib dialog mtools xdg-user-dirs xdg-utils cifs-utils nfs-utils udisks2 bind cups cups-pdf hplip rsync openssh ssh-audit zsh zsh-completions zsh-autosuggestions firefox neofetch htop alacritty btop wireshark-qt polkit ranger atool ueberzug highlight exfat-utils cronie ttf-sourcecodepro-nerd lazygit mpd mpc mpv ncmpcpp
@@ -37,11 +38,11 @@ usermod -aG wireshark jake
 create_user() {
   echo -n "Enter a username: "
   read -r username
-  useradd -m $username
+  useradd -m "$username"
   echo -n "Enter a password: "
   read -r password
-  echo $username:$password | chpasswd
-  echo "$username ALL=(ALL) ALL" >> /etc/sudoers.d/$username
+  echo "$username":"$password" | chpasswd
+  echo "$username ALL=(ALL) ALL" >> /etc/sudoers.d/"$username"
 }
 install_grub() {
   echo -n "Do you want to use GRUB as your bootloader? (y/n)"
@@ -109,7 +110,7 @@ laptop() {
   if [[ $laptop == "y" ]]; then
     pacman -S acpid tlp acpilight
     systemctl enably tlp.service acpid.service
-    usermod -aG video $username
+    usermod -aG video "$username"
   fi  
 }
 set_hostname
