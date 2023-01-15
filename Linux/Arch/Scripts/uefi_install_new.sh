@@ -77,7 +77,7 @@ install_graphics() {
   if [[ "$amd" == "y" ]]; then
     pacman -S --needed mesa lib32-mesa xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau
   fi 
-  echo -n "Are you using an intel graphics card"
+  echo -n "Are you using an Intel graphics card (y/n)"
   read -r intel
   if [[ "$intel" == "y" ]]; then
   pacman -S --needed mesa lib32-mesa vulkan-intel
