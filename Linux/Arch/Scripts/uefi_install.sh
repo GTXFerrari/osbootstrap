@@ -177,8 +177,6 @@ window_manager() {
 
 PS3='Please enter your choice: '
 options=("Dwm" "Bspwm" "Awesome" "i3" "Xmonad" "None")
-dm="lightdm lightdm-gtk-greeter lightdm-webkit2-greeter"
-base="nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels"
 dir="/home/jake/Git"
 dwm="/home/jake/Git/dwm"
 dmenu="/home/jake/Git/dmenu"
@@ -199,7 +197,7 @@ do
             fi
             if [ ! -d "$dwm" ]; then
                 echo "dwm does not exist, cloning repo & compiling"
-                cd "$dir" && "$git"/dwm && cd "$dir"/dwm && make && sudo make clean install
+                cd "$dir" && $git/dwm && cd "$dir"/dwm && make && sudo make clean install
                 echo "Finished compiling & installing dwm"
             else
                 echo "dwm already exists, reinstalling"
@@ -208,7 +206,7 @@ do
             fi
             if [ ! -d "$dmenu" ]; then
                 echo "dmenu does note exist, cloning repo & compiling"
-                cd "$dir" && "$git"/dmenu && cd "$dir"/dmenu && make && sudo make clean install
+                cd "$dir" && $git/dmenu && cd "$dir"/dmenu && make && sudo make clean install
                 echo "Finished compiling & installing dmenu"
             else
                 echo "dmenu already exists, reinstalling"
@@ -217,7 +215,7 @@ do
             fi
             if [ ! -d "$st" ]; then
                 echo "st does not exist, cloning repo & compiling"
-                cd "$dir" && "$git"/st && cd "$dir"/st && make && sudo make clean install
+                cd "$dir" && $git/st && cd "$dir"/st && make && sudo make clean install
                 echo "Finished compiling & installing st"
             else
                 echo "st already exists, reinstalling"
@@ -226,7 +224,7 @@ do
             fi
             if [ ! -d "$dwmblocks" ]; then
                 echo "dwmblocks does not exist, cloning repo & compiling"
-                cd "$dir" && "$git"/dwmblocks && cd "$dir"/dwmblocks && make && sudo make clean install
+                cd "$dir" && $git/dwmblocks && cd "$dir"/dwmblocks && make && sudo make clean install
                 echo "Finished installing & compiling dwmblocks"
             else 
                 echo "dwmblocks already exists, reinstalling"
