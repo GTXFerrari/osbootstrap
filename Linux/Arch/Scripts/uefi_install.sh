@@ -171,7 +171,7 @@ do
 fi
 }
 window_manager() {
-  echo -n "Would you like to install a window manager (y/n) "
+  echo -n "Would you like to install a tiling window manager (y/n) "
   read -r window_manager 
   if [[ $window_manager == "y" ]]; then
 
