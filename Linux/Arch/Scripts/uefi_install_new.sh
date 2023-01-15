@@ -20,8 +20,8 @@ set_hostname() {
   echo "$hostname" >>/etc/hostname
 {
   echo      "127.0.0.1 localhost"
-  "::1       localhost"
-  "127.0.1.1 $hostname.localdomain.$hostname"
+            "::1       localhost"
+            "127.0.1.1 $hostname.localdomain.$hostname"
 } >> /etc/hosts
 }
 function set_root_password() {
@@ -65,7 +65,7 @@ install_audio() {
   systemctl enable bluetooth.service
 }
 install_graphics() {
-  echo "Are you using an NVIDIA graphics card (y/n)"
+  echo -n "Are you using an NVIDIA graphics card (y/n)"
   read -r nvidia
   if [[ "$nvidia" == "y" ]]; then
     pacman -S --needed nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader
@@ -78,7 +78,7 @@ install_wine() {
   pacman -S --needed wine-staging wine-gecko wine-mono pipewire-pulse lib32-libpulse lib32-alsa-oss lib32-gnutls lib32-gst-plugins-base lib32-gst-plugins-good samba winetricks zenity
 }
 install_virtualization() {
-  echo "Are you using QEMU? (y/n)"
+  echo -n "Are you using QEMU? (y/n)"
   read -r qemu
 
   if [[ "$qemu" == "y" ]]; then
@@ -87,7 +87,7 @@ install_virtualization() {
   usermod -aG libvirt jake
   fi
 
-  echo "Are you using docker? (y/n)"
+  echo -n "Are you using docker? (y/n)"
   read -r docker
 
   if [[ "$docker" == "y" ]]; then
@@ -95,7 +95,7 @@ install_virtualization() {
     systemctl enable docker.Service
   fi
 
-  echo "Is this machine a vmware guest? (y/n)"
+  echo -n "Is this machine a vmware guest? (y/n)"
   read -r vmware
 
   if [[ "$vmware" == "y" ]]; then
@@ -104,7 +104,7 @@ install_virtualization() {
   fi
 }
 laptop() {
-  echo "Is this machine a laptop? (y/n)"
+  echo -n "Is this machine a laptop? (y/n)"
   read -r laptop 
 
   if [[ $laptop == "y" ]]; then
@@ -113,6 +113,144 @@ laptop() {
     usermod -aG video "$username"
   fi  
 }
+desktop_environment() {
+  echo -n "Would you like to install a desktop environment (y/n)"
+  read -r desktop_environment 
+  if [[ $desktop_environment == "y" ]]; then
+PS3='Please enter your choice: '
+options=("KDE" "Gnome" "Cinnamon" "Xfce" "Budgie" "None")
+select opt in "${options[@]}"
+do
+    case $opt in
+        "KDE")
+            pacman -S --needed xorg plasma kde-applications plasma-nm packagekit-qt5 sddm
+            systemctl enable sddm
+            pacman -Rs network-manager-applet
+            break
+            ;;
+        "Gnome")
+            pacman -S --needed xorg gnome gnome-extra gnome-tweaks gnome-themes-extra gdm
+            systemctl enable gdm.service
+            break
+            ;;
+        "Cinnamon")
+            pacman -S --needed xorg cinnamon xed xreader metacity gnome-shell gnome-keyring libsecret seahorse system-config-printer blueberry gnome-screenshot gdm
+            systemctl enable gdm.service
+            break
+            ;;
+        "Xfce")
+            pacman -S --needed xorg xfce4 xfce4-goodies lightdm lightdm-gtk-greeter lightdm-webkit2-greeter
+            systemctl enable lightdm.service
+            break
+            ;;
+        "Budgie")
+            pacman -S --needed xorg budgie-desktop budgie-desktop-view budgie-extras  lightdm lightdm-gtk-greeter lightdm-webkit2-greeter
+            systemctl enable lightdm.service
+            break
+            ;;
+        "None")
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+  done
+fi
+}
+window_manager() {
+  echo -n "Would you like to install a window manager (y/n)"
+  read -r window_manager 
+  if [[ $window_manager == "y" ]]; then
+
+PS3='Please enter your choice: '
+options=("Dwm" "Bspwm" "Awesome" "i3" "Xmonad" "None")
+dm="lightdm lightdm-gtk-greeter lightdm-webkit2-greeter"
+x11="xorg-server xorg-xinit xorg-xsetroot"
+base="nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels"
+dir="/home/jake/Git"
+dwm="/home/jake/Git/dwm"
+dmenu="/home/jake/Git/dmenu"
+st="/home/jake/Git/st"
+dwmblocks="/home/jake/Git/dwmblocks"
+git="git clone https://github.com/gtxferrari"
+select opt in "${options[@]}"
+do
+    case $opt in 
+        "Dwm")
+            pacman -S --needed "$x11" "$base" "$dm" sxhkd 
+            if [ ! -d "$dir" ]; then
+                echo "Git directory does not exist, creating directory"
+                mkdir -p "$dir" && cd "$dir" || return
+            else
+                echo "Git directory already exists" 
+                cd "$dir" || return
+            fi
+            if [ ! -d "$dwm" ]; then
+                echo "dwm does not exist, cloning repo & compiling"
+                cd "$dir" && "$git"/dwm && cd "$dir"/dwm make && sudo make clean install
+                echo "Finished compiling & installing dwm"
+            else
+                echo "dwm already exists, reinstalling"
+                cd "$dwm" && make && sudo make clean install
+                echo "Finished reinstalling dwm"
+            fi
+            if [ ! -d "$dmenu" ]; then
+                echo "dmenu does note exist, cloning repo & compiling"
+                cd "$dir" && "$git"/dmenu && cd "$dir"/dmenu && make && sudo make clean install
+                echo "Finished compiling & installing dmenu"
+            else
+                echo "dmenu already exists, reinstalling"
+                cd "$dir"/dmenu && make && sudo make clean install
+                echo "Finished reinstalling dmenu"
+            fi
+            if [ ! -d "$st" ]; then
+                echo "st does not exist, cloning repo & compiling"
+                cd "$dir" && "$git"/st && cd "$dir"/st && make && sudo make clean install
+                echo "Finished compiling & installing st"
+            else
+                echo "st already exists, reinstalling"
+                cd "$dir"/st && make && sudo make clean install
+                echo "Finished reinstalling st"
+            fi
+            if [ ! -d "$dwmblocks" ]; then
+                echo "dwmblocks does not exist, cloning repo & compiling"
+                cd "$dir" && "$git"/dwmblocks && cd "$dir"/dwmblocks && make && sudo make clean install
+                echo "Finished installing & compiling dwmblocks"
+            else 
+                echo "dwmblocks already exists, reinstalling"
+                cd "$dir"/dwmblocks && make && sudo make clean install
+                echo "Finished reinstalling dwmblocks"
+            fi
+            break
+            ;;
+        "Bspwm")
+            pacman -S --needed  "$x11" "$base" "$dm" sxhkd bspwm rofi
+            systemctl enable lightdm.service
+            break
+            ;;
+        "Awesome")
+            pacman -S --needed "$x11" "$base" "$dm" sxhkd awesome 
+            systemctl enable lightdm.service
+            break
+            ;;
+        "i3")
+            pacman -S --needed "$x11" "$dm" sxhkd i3 dmenu 
+            systemctl enable lightdm.service
+            break
+            ;;
+        "Xmonad")
+            pacman -S --needed "$x11" "$dm" sxhkd xmonad xmonad-contrib dmenu
+            systemctl enable lightdm.service
+            break
+            ;;
+        "None")
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+ done
+fi
+}
+# Call functions
 set_hostname
 set_root_password
 create_user
@@ -124,4 +262,5 @@ install_gaming
 install_wine
 install_virtualization
 laptop
-#printf "\e[1;32mDone! Type exit, umount -R /mnt and reboot.\e[0m"
+desktop_environment
+window_manager
