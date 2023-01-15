@@ -47,7 +47,7 @@ create_user() {
   echo "$username ALL=(ALL) ALL" >> /etc/sudoers.d/"$username"
 }
 install_grub() {
-  echo -n "Do you want to use GRUB as your bootloader? (y/n)"
+  echo -n "Do you want to use GRUB as your bootloader? (y/n) "
   read -r grub
 
   if [[ $grub == "y" ]]; then
@@ -56,7 +56,7 @@ install_grub() {
     grub-mkconfig -o /boot/grub/grub.cfg
   fi
 
-  echo -n "Are you using btrfs? (y/n)"
+  echo -n "Are you using btrfs? (y/n) "
   read -r grub_btrfs
   if [[ $grub_btrfs == "y" ]]; then
     pacman -S --needed --noconfirm grub-btrfs
@@ -67,51 +67,51 @@ install_audio() {
   systemctl enable bluetooth.service
 }
 install_graphics() {
-  echo -n "Are you using an NVIDIA graphics card (y/n)"
+  echo -n "Are you using an NVIDIA graphics card (y/n) "
   read -r nvidia
   if [[ "$nvidia" == "y" ]]; then
     pacman -S --needed nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader
   fi
-  echo -n "Are you using an AMD graphics card (y/n)"
+  echo -n "Are you using an AMD graphics card (y/n) "
   read -r amd
   if [[ "$amd" == "y" ]]; then
     pacman -S --needed mesa lib32-mesa xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau
   fi 
-  echo -n "Are you using an Intel graphics card (y/n)"
+  echo -n "Are you using an Intel graphics card (y/n) "
   read -r intel
   if [[ "$intel" == "y" ]]; then
   pacman -S --needed mesa lib32-mesa vulkan-intel
   fi
 }
 install_gaming() {
-  echo -n "Will this machine be used for gaming? (y/n)"
+  echo -n "Will this machine be used for gaming? (y/n) "
   read -r game
   if [[ "$game" == "y" ]]; then
   pacman -S --needed steam lutris discord retroarch retroarch-assets-xmb retroarch-assets-ozone libretro-core-info
   fi
 }
 install_wine() {
-  echo -n "Do you want to install Wine? (y/n)"
+  echo -n "Do you want to install Wine? (y/n) "
   read -r wine
   if [[ "$wine" == "y" ]]; then
   pacman -S --needed wine-staging wine-gecko wine-mono pipewire-pulse lib32-libpulse lib32-alsa-oss lib32-gnutls lib32-gst-plugins-base lib32-gst-plugins-good samba winetricks zenity
   fi
 }
 install_virtualization() {
-  echo -n "Are you using QEMU? (y/n)"
+  echo -n "Are you using QEMU? (y/n) "
   read -r qemu
   if [[ "$qemu" == "y" ]]; then
   pacman -S  --needed virt-manager qemu-full qemu-emulators-full dmidecode edk2-ovmf iptables-nft dnsmasq openbsd-netcat bridge-utils vde2 libvirt swtpm qemu-audio-alsa qemu-audio-dbus qemu-audio-jack qemu-audio-oss qemu-audio-pa qemu-audio-sdl qemu-audio-spice qemu-block-curl qemu-block-dmg qemu-block-gluster qemu-block-iscsi qemu-block-nfs qemu-block-ssh qemu-chardev-baum qemu-chardev-spice qemu-docs qemu-hw-display-qxl qemu-hw-display-virtio-gpu qemu-hw-display-virtio-gpu-gl qemu-hw-display-virtio-gpu-pci qemu-hw-display-virtio-gpu-pci-gl qemu-hw-display-virtio-vga qemu-hw-display-virtio-vga-gl qemu-hw-s390x-virtio-gpu-ccw qemu-hw-usb-host qemu-hw-usb-redirect qemu-hw-usb-redirect qemu-hw-usb-smartcard qemu-img qemu-pr-helper qemu-system-aarch64 qemu-system-alpha qemu-system-arm qemu-system-avr qemu-system-cris qemu-system-hppa qemu-system-m68k qemu-system-microblaze qemu-system-mips qemu-system-nios2 qemu-system-or1k qemu-system-ppc qemu-system-riscv qemu-system-rx qemu-system-s390x qemu-system-sh4 qemu-system-sparc qemu-system-tricore qemu-system-x86 qemu-system-xtensa qemu-tests qemu-tools qemu-ui-curses qemu-ui-dbus qemu-ui-egl-headless qemu-ui-gtk qemu-ui-opengl qemu-ui-sdl qemu-ui-spice-app qemu-ui-spice-core qemu-user qemu-vhost-user-gpu qemu-virtiofsd
   systemctl enable libvirtd.service
   usermod -aG libvirt jake
   fi
-  echo -n "Are you using docker? (y/n)"
+  echo -n "Are you using docker? (y/n) "
   read -r docker
   if [[ "$docker" == "y" ]]; then
     pacman -S --needed docker docker-compose
     systemctl enable docker.Service
   fi
-  echo -n "Is this machine a vmware guest? (y/n)"
+  echo -n "Is this machine a vmware guest? (y/n) "
   read -r vmware
   if [[ "$vmware" == "y" ]]; then
     pacman -S --needed open-vm-tools xf86-input-vmmouse xf86-video-vmware mesa gtkmm gtk2
@@ -119,7 +119,7 @@ install_virtualization() {
   fi
 }
 laptop() {
-  echo -n "Is this machine a laptop? (y/n)"
+  echo -n "Is this machine a laptop? (y/n) "
   read -r laptop 
   if [[ $laptop == "y" ]]; then
     pacman -S acpid tlp acpilight
@@ -128,7 +128,7 @@ laptop() {
   fi  
 }
 desktop_environment() {
-  echo -n "Would you like to install a desktop environment (y/n)"
+  echo -n "Would you like to install a desktop environment (y/n) "
   read -r desktop_environment 
   if [[ $desktop_environment == "y" ]]; then
 PS3='Please enter your choice: '
@@ -171,7 +171,7 @@ do
 fi
 }
 window_manager() {
-  echo -n "Would you like to install a window manager (y/n)"
+  echo -n "Would you like to install a window manager (y/n) "
   read -r window_manager 
   if [[ $window_manager == "y" ]]; then
 
