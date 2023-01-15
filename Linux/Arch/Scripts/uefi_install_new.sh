@@ -85,15 +85,15 @@ install_graphics() {
 }
 install_gaming() {
   echo "Will this machine be used for gaming? (y/n)"
-  read -r Game
-  if [[ "$Game" == "y" ]]; then
+  read -r game
+  if [[ "$game" == "y" ]]; then
   pacman -S --needed steam lutris discord retroarch retroarch-assets-xmb retroarch-assets-ozone libretro-core-info
   fi
 }
 install_wine() {
   echo "Do you want to install Wine? (y/n)"
-  read -r Wine
-  if [[ "$Wine" == "y" ]]; then
+  read -r wine
+  if [[ "$wine" == "y" ]]; then
   pacman -S --needed wine-staging wine-gecko wine-mono pipewire-pulse lib32-libpulse lib32-alsa-oss lib32-gnutls lib32-gst-plugins-base lib32-gst-plugins-good samba winetricks zenity
   fi
 }
