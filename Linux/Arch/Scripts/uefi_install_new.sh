@@ -1,19 +1,22 @@
 #!/usr/bin/env bash
-echo "Setting timezone"
-ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
-echo "Syncing system clock"
-hwclock --systohc
-sed -i '171s/.//' /etc/locale.gen
-locale-gen
-echo "LANG=en_US.UTF-8" >> /etc/locale.conf
-echo "Enabling multilib"
-sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
-echo "Updating mirrorlist"
-reflector -c 'United States' -a 6 -p https --sort rate --save /etc/pacman.d/mirrorlist
-pacman -Sy
-echo "Updating keyring"
-pacman -S --noconfirm archlinux-keyring sudo
+
 # Functions
+init() {
+  echo "Setting timezone"
+  ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
+  echo "Syncing system clock"
+  hwclock --systohc
+  sed -i '171s/.//' /etc/locale.gen
+  locale-gen
+  echo "LANG=en_US.UTF-8" >> /etc/locale.conf
+  echo "Enabling multilib"
+  sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
+  echo "Updating mirrorlist"
+  reflector -c 'United States' -a 6 -p https --sort rate --save /etc/pacman.d/mirrorlist
+  pacman -Sy
+  echo "Updating keyring"
+  pacman -S --noconfirm archlinux-keyring sudo
+}
 set_hostname() {
   echo -n "Enter a value for hostname: "
   read -r hostname
@@ -69,34 +72,47 @@ install_graphics() {
   if [[ "$nvidia" == "y" ]]; then
     pacman -S --needed nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader
   fi
+  echo -n "Are you using an AMD graphics card (y/n)"
+  read -r amd
+  if [[ "$amd" == "y" ]]; then
+    pacman -S --needed mesa lib32-mesa xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau
+  fi 
+  echo -n "Are you using an intel graphics card"
+  read -r intel
+  if [[ "$intel" == "y" ]]; then
+  pacman -S --needed mesa lib32-mesa vulkan-intel
+  fi
 }
 install_gaming() {
+  echo "Will this machine be used for gaming? (y/n)"
+  read -r Game
+  if [[ "$Game" == "y" ]]; then
   pacman -S --needed steam lutris discord retroarch retroarch-assets-xmb retroarch-assets-ozone libretro-core-info
+  fi
 }
 install_wine() {
+  echo "Do you want to install Wine? (y/n)"
+  read -r Wine
+  if [[ "$Wine" == "y" ]]; then
   pacman -S --needed wine-staging wine-gecko wine-mono pipewire-pulse lib32-libpulse lib32-alsa-oss lib32-gnutls lib32-gst-plugins-base lib32-gst-plugins-good samba winetricks zenity
+  fi
 }
 install_virtualization() {
   echo -n "Are you using QEMU? (y/n)"
   read -r qemu
-
   if [[ "$qemu" == "y" ]]; then
   pacman -S  --needed virt-manager qemu-full qemu-emulators-full dmidecode edk2-ovmf iptables-nft dnsmasq openbsd-netcat bridge-utils vde2 libvirt swtpm qemu-audio-alsa qemu-audio-dbus qemu-audio-jack qemu-audio-oss qemu-audio-pa qemu-audio-sdl qemu-audio-spice qemu-block-curl qemu-block-dmg qemu-block-gluster qemu-block-iscsi qemu-block-nfs qemu-block-ssh qemu-chardev-baum qemu-chardev-spice qemu-docs qemu-hw-display-qxl qemu-hw-display-virtio-gpu qemu-hw-display-virtio-gpu-gl qemu-hw-display-virtio-gpu-pci qemu-hw-display-virtio-gpu-pci-gl qemu-hw-display-virtio-vga qemu-hw-display-virtio-vga-gl qemu-hw-s390x-virtio-gpu-ccw qemu-hw-usb-host qemu-hw-usb-redirect qemu-hw-usb-redirect qemu-hw-usb-smartcard qemu-img qemu-pr-helper qemu-system-aarch64 qemu-system-alpha qemu-system-arm qemu-system-avr qemu-system-cris qemu-system-hppa qemu-system-m68k qemu-system-microblaze qemu-system-mips qemu-system-nios2 qemu-system-or1k qemu-system-ppc qemu-system-riscv qemu-system-rx qemu-system-s390x qemu-system-sh4 qemu-system-sparc qemu-system-tricore qemu-system-x86 qemu-system-xtensa qemu-tests qemu-tools qemu-ui-curses qemu-ui-dbus qemu-ui-egl-headless qemu-ui-gtk qemu-ui-opengl qemu-ui-sdl qemu-ui-spice-app qemu-ui-spice-core qemu-user qemu-vhost-user-gpu qemu-virtiofsd
   systemctl enable libvirtd.service
   usermod -aG libvirt jake
   fi
-
   echo -n "Are you using docker? (y/n)"
   read -r docker
-
   if [[ "$docker" == "y" ]]; then
     pacman -S --needed docker docker-compose
     systemctl enable docker.Service
   fi
-
   echo -n "Is this machine a vmware guest? (y/n)"
   read -r vmware
-
   if [[ "$vmware" == "y" ]]; then
     pacman -S --needed open-vm-tools xf86-input-vmmouse xf86-video-vmware mesa gtkmm gtk2
     systemctl enable vmtoolsd.service vmware-vmblock-fuse
@@ -105,7 +121,6 @@ install_virtualization() {
 laptop() {
   echo -n "Is this machine a laptop? (y/n)"
   read -r laptop 
-
   if [[ $laptop == "y" ]]; then
     pacman -S acpid tlp acpilight
     systemctl enably tlp.service acpid.service
@@ -249,7 +264,9 @@ do
  done
 fi
 }
+
 # Call functions
+init
 set_hostname
 set_root_password
 create_user
