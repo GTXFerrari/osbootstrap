@@ -114,7 +114,7 @@ install_virtualization() {
   echo -n "Is this machine a vmware guest? (y/n) "
   read -r vmware
   if [[ "$vmware" == "y" ]]; then
-    pacman -S --needed open-vm-tools xf86-input-vmmouse xf86-video-vmware mesa gtkmm gtk2
+    pacman -S --needed --noconfirm open-vm-tools xf86-input-vmmouse xf86-video-vmware mesa gtkmm gtk2
     systemctl enable vmtoolsd.service vmware-vmblock-fuse
   fi
 }
@@ -122,7 +122,7 @@ laptop() {
   echo -n "Is this machine a laptop? (y/n) "
   read -r laptop 
   if [[ $laptop == "y" ]]; then
-    pacman -S acpid tlp acpilight
+    pacman -S --needed --noconfirm acpid tlp acpilight
     systemctl enably tlp.service acpid.service
     usermod -aG video "$username"
   fi  
