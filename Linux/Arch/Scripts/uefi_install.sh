@@ -84,14 +84,14 @@ install_graphics() {
   fi
 }
 install_gaming() {
-  echo "Will this machine be used for gaming? (y/n)"
+  echo -n "Will this machine be used for gaming? (y/n)"
   read -r game
   if [[ "$game" == "y" ]]; then
   pacman -S --needed steam lutris discord retroarch retroarch-assets-xmb retroarch-assets-ozone libretro-core-info
   fi
 }
 install_wine() {
-  echo "Do you want to install Wine? (y/n)"
+  echo -n "Do you want to install Wine? (y/n)"
   read -r wine
   if [[ "$wine" == "y" ]]; then
   pacman -S --needed wine-staging wine-gecko wine-mono pipewire-pulse lib32-libpulse lib32-alsa-oss lib32-gnutls lib32-gst-plugins-base lib32-gst-plugins-good samba winetricks zenity
@@ -178,7 +178,6 @@ window_manager() {
 PS3='Please enter your choice: '
 options=("Dwm" "Bspwm" "Awesome" "i3" "Xmonad" "None")
 dm="lightdm lightdm-gtk-greeter lightdm-webkit2-greeter"
-x11="xorg-server xorg-xinit xorg-xsetroot"
 base="nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels"
 dir="/home/jake/Git"
 dwm="/home/jake/Git/dwm"
@@ -190,7 +189,7 @@ select opt in "${options[@]}"
 do
     case $opt in 
         "Dwm")
-            pacman -S --needed "$x11" "$base" "$dm" sxhkd 
+            pacman -S --needed xorg-server xorg-xinit xorg-xsetroot nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd
             if [ ! -d "$dir" ]; then
                 echo "Git directory does not exist, creating directory"
                 mkdir -p "$dir" && cd "$dir" || return
@@ -200,7 +199,7 @@ do
             fi
             if [ ! -d "$dwm" ]; then
                 echo "dwm does not exist, cloning repo & compiling"
-                cd "$dir" && "$git"/dwm && cd "$dir"/dwm make && sudo make clean install
+                cd "$dir" && "$git"/dwm && cd "$dir"/dwm && make && sudo make clean install
                 echo "Finished compiling & installing dwm"
             else
                 echo "dwm already exists, reinstalling"
@@ -237,24 +236,24 @@ do
             break
             ;;
         "Bspwm")
-            pacman -S --needed  "$x11" "$base" "$dm" sxhkd bspwm rofi
-            systemctl enable lightdm.service
+             pacman -S --needed xorg-server xorg-xinit xorg-xsetroot bspwm rofi nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd
+           systemctl enable lightdm.service
             break
             ;;
         "Awesome")
-            pacman -S --needed "$x11" "$base" "$dm" sxhkd awesome 
-            systemctl enable lightdm.service
+              pacman -S --needed xorg-server xorg-xinit xorg-xsetroot awesome nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd
+              systemctl enable lightdm.service
             break
             ;;
         "i3")
-            pacman -S --needed "$x11" "$dm" sxhkd i3 dmenu 
-            systemctl enable lightdm.service
+             pacman -S --needed xorg-server xorg-xinit xorg-xsetroot i3 dmenu nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd
+             systemctl enable lightdm.service
             break
             ;;
         "Xmonad")
-            pacman -S --needed "$x11" "$dm" sxhkd xmonad xmonad-contrib dmenu
+            pacman -S --needed xorg-server xorg-xinit xorg-xsetroot xmonad xmonad-contrib dmenu nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd
             systemctl enable lightdm.service
-            break
+           break
             ;;
         "None")
             break
