@@ -6,7 +6,7 @@ TRUENAS="/home/jake/TrueNAS"
 NAS="//10.0.40.5"
 OPT="_netdev,nofail,credentials=/etc/samba/credentials/share 0 0"
 echo "Downloading prerequisite packages"
-sudo pacman -S --neeeded --noconfirm cifs-utils
+sudo pacman -S --needed --noconfirm cifs-utils
 # Create a TrueNAS directory with share mountpoints
 if [ ! -d "$TRUENAS" ]; then
     echo "TrueNAS directory does not exist, creating"
