@@ -26,10 +26,10 @@ fi
 if [ ! -d "$SHARE" ]; then 
     echo "Share file does not exist, creating file"
     sudo touch "$SHARE"
-    "username=$USER" | sudo tee -a "$SHARE" > /dev/null 
+    echo "username=$USER" | sudo tee -a "$SHARE" > /dev/null 
     echo -n Password:
     read -r Password
-    "password=$Password" | sudo tee -a "$SHARE" > /dev/null 
+    echo "password=$Password" | sudo tee -a "$SHARE" > /dev/null 
  else
     echo "Share file already exists"
 fi    
@@ -48,6 +48,6 @@ fi
     echo "$NAS"/Media      "$TRUENAS"/Media        cifs        "$OPT"
     echo " "
     echo "$NAS"/MP         "$TRUENAS"/MP           cifs        "$OPT"
-} >> /etc/fstab
+} | sudo tee -a /etc/fstab > /dev/null
 echo "Mounting Shares"
 systemctl daemon-reload && sudo mount -a
