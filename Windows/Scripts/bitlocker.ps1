@@ -1,5 +1,6 @@
 # Variables
-$Pin = ConvertTo-SecureString "ENTERPIN" -AsPlainText -Force
+$UsrPin = Read-Host -Prompt 'Input your bitlocker pin'
+$Pin = ConvertTo-SecureString $UsrPin -AsPlainText -Force
 
 Write-Warning "This script will enable bitlocker on the C: drive (Requires Admin) The passwords should be set prior to the script running. TPM+PIN also requires a custom group policy. Would you like to proceed?" -WarningAction Inquire
 # Check if running as ADMIN
@@ -14,5 +15,8 @@ Write-Host "Code is running as administrator — go on executing the script..." 
 }
 
 # Enable Bitlocker
-Enable-BitLocker -MountPoint "C" -EncryptionMethod XtsAes256 -Pin $Pin -TpmAndPinProtector -Confirm # Requires a custom group policy to enable PIN
+Enable-BitLocker -MountPoint "C" -EncryptionMethod XtsAes256 -Pin $Pin -TpmAndPinProtector  # Requires a custom group policy to enable PIN
 Restart-Computer -Confirm
+
+# Enable additional recovery keys
+#Add-BitLockerKeyProtector -MountPoint "C" -RecoveryPasswordProtector   # Store the generated recoverypassword in a safe location
