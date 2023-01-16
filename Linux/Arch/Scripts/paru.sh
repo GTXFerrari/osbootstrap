@@ -2,7 +2,7 @@
 # Variables
 DIR="/home/jake/Git"
 PARU="/home/jake/Git/paru"
-echo "This script should be ran as a standard user after rebooting from the install ISO, would you like to continue? (y/n) "
+echo -n "This script should be ran as a standard user after rebooting from the install ISO, would you like to continue? (y/n) "
 read -r usr 
 if [[ "$usr" == "n" ]]; then
     exit
@@ -20,8 +20,7 @@ if [ ! -d "$PARU" ]; then
     echo "Paru does not exist, cloning repo & building"
     cd "$DIR" && git clone https://aur.archlinux.org/paru && cd "$PARU" && makepkg -si
     else
-    echo "Paru directory already exists, rebuilding"
-    cd "$PARU" && makepkg -si
+    echo "Paru directory already exists"
 fi
 #Install packages with paru
 echo "Installing packages from the AUR"
