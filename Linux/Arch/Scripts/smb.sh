@@ -4,7 +4,7 @@ DIR="/etc/samba/credentials"
 SHARE="/etc/samba/credentials/share"
 TRUENAS="/home/jake/TrueNAS"
 NAS="//10.0.40.5"
-OPT="_netdev,nofail,credentials=/etc/samba/credentials/share 0 0"
+OPT="file_mode=0777,dir_mode=0777,_netdev,nofail,credentials=/etc/samba/credentials/share 0 0"
 echo "Downloading prerequisite packages"
 sudo pacman -S --needed --noconfirm cifs-utils
 # Create a TrueNAS directory with share mountpoints
