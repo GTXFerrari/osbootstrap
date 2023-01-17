@@ -31,8 +31,14 @@ read -r btrfs
 if [[ "$btrfs" == "y" ]]; then
     paru -S --needed timeshift timeshift-autosnap
 fi
+# zramd
+echo -n "Would you like to use zramd for your swap? (y/n) "
+read -r zram
+if [[ "$zram" == "y" ]]; then
+    paru -S --needed zramd
+fi
 # Enable systemd services
-sudo systemctl enable --now piavpn.service vmware-networks.service vmware-usbarbitrator.service
+sudo systemctl enable --now piavpn.service vmware-networks.service vmware-usbarbitrator.service zramd.service
 sudo systemctl start vmware-networks-configuration.service
 # Add user to plugdev group for razergenie
 sudo gpasswd -a "$USER" plugdev
