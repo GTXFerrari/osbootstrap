@@ -1,8 +1,10 @@
 # Variables
 $UsrPin = Read-Host -Prompt 'Input your bitlocker pin'
+$UsrPass = Read-Host -Prompt 'Input your bitlocker password'
 $Pin = ConvertTo-SecureString $UsrPin -AsPlainText -Force
+$Pass = ConvertTo-SecureString $UsrPass -AsPlainText -Force
 
-Write-Warning "This script will enable bitlocker on the C: drive (Requires Admin) The passwords should be set prior to the script running. TPM+PIN also requires a custom group policy. Would you like to proceed?" -WarningAction Inquire
+Write-Warning "This script will enable bitlocker on the OS Drive & a data drive with the mount point D:. TPM+PIN also requires a custom group policy. Would you like to proceed?" -WarningAction Inquire 
 # Check if running as ADMIN
 Write-Host "Checking for elevated permissions..."
 if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`
@@ -16,7 +18,9 @@ Write-Host "Code is running as administrator — go on executing the script..." 
 
 # Enable Bitlocker
 Enable-BitLocker -MountPoint "C" -EncryptionMethod XtsAes256 -Pin $Pin -TpmAndPinProtector  # Requires a custom group policy to enable PIN
-Restart-Computer -Confirm
-
 # Enable additional recovery keys
-#Add-BitLockerKeyProtector -MountPoint "C" -RecoveryPasswordProtector   # Store the generated recoverypassword in a safe location
+Add-BitLockerKeyProtector -MountPoint "C" -RecoveryPasswordProtector   # Store the generated recoverypassword in a safe location
+# Enable bitlocker for Data drives (D:)
+Enable-BitLocker -MountPoint "D:" -EncryptionMethod XtsAes256 -PasswordProtector -Password $Pass
+Enable-BitLockerAutoUnlock -MountPoint "D:"
+Restart-Computer -Confirm
