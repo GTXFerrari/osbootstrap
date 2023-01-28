@@ -112,6 +112,7 @@ install_virtualization() {
   if [[ "$docker" == "y" ]]; then
     pacman -S --needed docker docker-compose
     systemctl enable docker.service
+    usermod -aG docker jake
   fi
   echo -n "Is this machine a vmware guest? (y/n) "
   read -r vmware
