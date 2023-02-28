@@ -35,7 +35,7 @@ function set_root_password() {
   echo root:"$password" | chpasswd
 }
 install_core_packages() {
-  pacman -S --needed networkmanager nm-connection-editor network-manager-applet iwd avahi base-devel pacman-contrib dialog mtools xdg-user-dirs xdg-utils cifs-utils nfs-utils udisks2 bind cups cups-pdf hplip rsync openssh ssh-audit zsh zsh-completions zsh-autosuggestions firefox neofetch htop alacritty btop wireshark-qt polkit ranger atool ueberzug highlight exfat-utils cronie ttf-sourcecodepro-nerd lazygit mpd mpc mpv ncmpcpp
+  pacman -S --needed networkmanager nm-connection-editor network-manager-applet iwd avahi base-devel pacman-contrib dialog mtools xdg-user-dirs xdg-utils cifs-utils nfs-utils udisks2 bind cups cups-pdf hplip rsync openssh ssh-audit zsh zsh-completions zsh-autosuggestions firefox neofetch htop alacritty btop nvtop wireshark-qt polkit ranger atool ueberzug highlight exfat-utils cronie ttf-sourcecodepro-nerd lazygit mpd mpc mpv ncmpcpp
   systemctl enable NetworkManager.service avahi-daemon.service iwd.service cups.socket reflector.timer sshd.service fstrim.timer cronie.service
 usermod -aG wireshark jake
 }
@@ -51,7 +51,7 @@ create_user() {
 install_grub() {
   echo -n "Do you want to use GRUB as your bootloader? (y/n) "
   read -r grub
-
+ 
   if [[ $grub == "y" ]]; then
     pacman -S --needed --noconfirm grub efibootmgr os-prober
     grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
@@ -89,7 +89,7 @@ install_gaming() {
   echo -n "Will this machine be used for gaming? (y/n) "
   read -r game
   if [[ "$game" == "y" ]]; then
-  pacman -S --needed steam lutris discord retroarch retroarch-assets-xmb retroarch-assets-ozone libretro-core-info
+  pacman -S --needed steam lutris discord retroarch retroarch-assets-xmb retroarch-assets-ozone libretro-core-info gamescope
   fi
 }
 install_wine() {
@@ -140,7 +140,7 @@ select opt in "${options[@]}"
 do
     case $opt in
         "KDE")
-            pacman -S --needed xorg plasma kde-applications plasma-nm packagekit-qt5 sddm
+            pacman -S --needed xorg plasma kde-applications plasma-nm packagekit-qt5 sddm plasma-wayland-session qt5-wayland qt6-wayland
             systemctl enable sddm
             pacman -Rs network-manager-applet
             break
