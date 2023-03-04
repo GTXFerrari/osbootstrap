@@ -77,7 +77,7 @@ install_graphics() {
   echo -n "Are you using an AMD graphics card (y/n) "
   read -r amd
   if [[ "$amd" == "y" ]]; then
-    pacman -S --needed mesa lib32-mesa xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau
+    pacman -S --needed mesa lib32-mesa xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau opencl-mesa lib32-opencl-mesa rocm-opencl-runtime 
   fi 
   echo -n "Are you using an Intel graphics card (y/n) "
   read -r intel
