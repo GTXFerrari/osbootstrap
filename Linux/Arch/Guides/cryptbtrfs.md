@@ -5,8 +5,6 @@
 ---
 &nbsp;  
 
-<img src="https://infraops.info/content/images/2021/01/btrfs-logo-2.png" width="500" height="250">
-
 
 &nbsp;
 # **Partition Setup**
