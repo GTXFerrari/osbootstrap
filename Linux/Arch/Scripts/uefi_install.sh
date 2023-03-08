@@ -35,7 +35,7 @@ function set_root_password() {
   echo root:"$password" | chpasswd
 }
 install_core_packages() {
-  pacman -S --needed networkmanager nm-connection-editor network-manager-applet iwd avahi base-devel pacman-contrib dialog mtools xdg-user-dirs xdg-utils cifs-utils nfs-utils udisks2 bind cups cups-pdf hplip rsync openssh ssh-audit zsh zsh-completions zsh-autosuggestions firefox neofetch htop alacritty btop nvtop wireshark-qt polkit ranger atool ueberzug highlight exfat-utils cronie ttf-sourcecodepro-nerd lazygit mpd mpc mpv ncmpcpp
+  pacman -S --needed networkmanager nm-connection-editor iwd avahi base-devel pacman-contrib dialog mtools xdg-user-dirs xdg-utils cifs-utils nfs-utils udisks2 bind cups cups-pdf hplip rsync openssh ssh-audit zsh zsh-completions zsh-autosuggestions firefox neofetch htop alacritty btop nvtop wireshark-qt polkit ranger atool ueberzug highlight exfat-utils cronie ttf-sourcecodepro-nerd lazygit mpd mpc mpv ncmpcpp
   systemctl enable NetworkManager.service avahi-daemon.service iwd.service cups.socket reflector.timer sshd.service fstrim.timer cronie.service
 usermod -aG wireshark jake
 }
@@ -142,7 +142,6 @@ do
         "KDE")
             pacman -S --needed xorg plasma kde-applications plasma-nm packagekit-qt5 sddm plasma-wayland-session qt5-wayland qt6-wayland
             systemctl enable sddm
-            pacman -Rs network-manager-applet
             break
             ;;
         "Gnome")
@@ -190,7 +189,7 @@ select opt in "${options[@]}"
 do
     case $opt in 
         "Dwm")
-            pacman -S --needed xorg-server xorg-xinit xorg-xsetroot nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd
+            pacman -S --needed xorg-server xorg-xinit xorg-xsetroot nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd network-manager-applet
             if [ ! -d "$dir" ]; then
                 echo "Git directory does not exist, creating directory"
                 mkdir -p "$dir" && cd "$dir" || return
