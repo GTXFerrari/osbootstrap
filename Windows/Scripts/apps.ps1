@@ -58,6 +58,7 @@ $apps = @(
     @{name = "Nextcloud.NextcloudDesktop" },
     @{name = "7zip.7zip" },
     @{name = "MacType.MacType" },
+    @{name = "Dell.DisplayManager" }
     @{name = "Rufus.Rufus" },
     @{name = "WiresharkFoundation.Wireshark" },
     @{name = "FinalWire.AIDA64.Engineer" }
