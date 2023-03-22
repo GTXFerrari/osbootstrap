@@ -65,7 +65,7 @@ install_grub() {
   fi
 }
 install_audio() {
-  pacman -S --needed pipewire pipewire-docs pipewire-alsa lib32-pipewire easyeffects alsa-utils alsa-plugins pipewire-pulse wireplumber wireplumber-docs pipewire-jack lib32-pipewire-jack pulsemixer bluez bluez-utils lsp-plugins sof-firmware
+  pacman -S --needed pipewire pipewire-docs pipewire-alsa lib32-pipewire easyeffects alsa-utils alsa-plugins pipewire-pulse wireplumber pipewire-jack lib32-pipewire-jack pulsemixer bluez bluez-utils lsp-plugins sof-firmware
   systemctl enable bluetooth.service
 }
 install_graphics() {
@@ -89,7 +89,7 @@ install_gaming() {
   echo -n "Will this machine be used for gaming? (y/n) "
   read -r game
   if [[ "$game" == "y" ]]; then
-  pacman -S --needed steam lutris discord retroarch retroarch-assets-xmb retroarch-assets-ozone libretro-core-info gamescope
+  pacman -S --needed steam lutris discord retroarch retroarch-assets-xmb retroarch-assets-ozone libretro-core-info gamescope yuzu
   fi
 }
 install_wine() {

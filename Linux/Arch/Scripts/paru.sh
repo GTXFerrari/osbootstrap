@@ -24,13 +24,7 @@ if [ ! -d "$PARU" ]; then
 fi
 #Install packages with paru
 echo "Installing packages from the AUR"
-paru -S --needed betterdiscord-installer brave-bin cider fastfetch-git gdlauncher-bin mangohud noto-fonts-emoji-apple nsxiv ookla-speedtest-bin openrgb pfetch piavpn-bin proton-ge-custom-bin razergenie visual-studio-code-bin vmware-workstation cpu-x gwe duckstation-git pcsx2-git cemu yuzu-early-access lf goverlay-bin vkbasalt nvim-packer-git zsh-fast-syntax-highlighting zsh-theme-powerlevel10k-git rpcs3-git
-#BTRFS packages
-echo -n "Are you using btrfs? (y/n) "
-read -r btrfs
-if [[ "$btrfs" == "y" ]]; then
-    paru -S --needed timeshift timeshift-autosnap
-fi
+paru -S --needed betterdiscord-installer brave-bin cider fastfetch-git gdlauncher-bin mangohud noto-fonts-emoji-apple nsxiv ookla-speedtest-bin openrgb pfetch piavpn-bin proton-ge-custom-bin razergenie visual-studio-code-bin vmware-workstation cpu-x duckstation-git pcsx2-git cemu lf goverlay-bin nvim-packer-git zsh-fast-syntax-highlighting zsh-theme-powerlevel10k-git rpcs3-git
 # zramd
 echo -n "Would you like to use zramd for your swap? (y/n) "
 read -r zram
