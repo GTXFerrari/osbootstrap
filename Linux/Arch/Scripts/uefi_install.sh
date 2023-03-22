@@ -189,7 +189,7 @@ select opt in "${options[@]}"
 do
     case $opt in 
         "Dwm")
-            pacman -S --needed xorg-server xorg-xinit xorg-xsetroot nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd network-manager-applet
+            pacman -S --needed xorg-server xorg-xinit xorg-xsetroot nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd network-manager-applet papirus-icon-theme
             if [ ! -d "$dir" ]; then
                 echo "Git directory does not exist, creating directory"
                 mkdir -p "$dir" && cd "$dir" || return
@@ -236,22 +236,22 @@ do
             break
             ;;
         "Bspwm")
-             pacman -S --needed xorg-server xorg-xinit xorg-xsetroot bspwm rofi nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd
+             pacman -S --needed xorg-server xorg-xinit xorg-xsetroot bspwm rofi nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd papirus-icon-theme
            systemctl enable lightdm.service
             break
             ;;
         "Awesome")
-              pacman -S --needed xorg-server xorg-xinit xorg-xsetroot awesome nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd
+              pacman -S --needed xorg-server xorg-xinit xorg-xsetroot awesome nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd papirus-icon-theme
               systemctl enable lightdm.service
             break
             ;;
         "i3")
-             pacman -S --needed xorg-server xorg-xinit xorg-xsetroot i3 dmenu nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd
+             pacman -S --needed xorg-server xorg-xinit xorg-xsetroot i3 dmenu nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd papirus-icon-theme
              systemctl enable lightdm.service
             break
             ;;
         "Xmonad")
-            pacman -S --needed xorg-server xorg-xinit xorg-xsetroot xmonad xmonad-contrib dmenu nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd
+            pacman -S --needed xorg-server xorg-xinit xorg-xsetroot xmonad xmonad-contrib dmenu nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd papirus-icon-theme
             systemctl enable lightdm.service
            break
             ;;
