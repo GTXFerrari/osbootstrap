@@ -24,7 +24,7 @@ if [ ! -d "$PARU" ]; then
 fi
 #Install packages with paru
 echo "Installing packages from the AUR"
-paru -S --needed betterdiscord-installer brave-bin cider fastfetch-git gdlauncher-bin mangohud noto-fonts-emoji-apple nsxiv ookla-speedtest-bin openrgb pfetch piavpn-bin proton-ge-custom-bin razergenie visual-studio-code-bin vmware-workstation cpu-x duckstation-git pcsx2-git cemu lf goverlay-bin nvim-packer-git zsh-fast-syntax-highlighting zsh-theme-powerlevel10k-git rpcs3-git
+paru -S --needed betterdiscord-installer brave-bin cider fastfetch-git gdlauncher-bin mangohud noto-fonts-emoji-apple nsxiv ookla-speedtest-bin openrgb pfetch piavpn-bin proton-ge-custom-bin razergenie visual-studio-code-bin vmware-workstation cpu-x duckstation-git pcsx2-git cemu lf goverlay-bin nvim-packer-git zsh-fast-syntax-highlighting zsh-theme-powerlevel10k-git rpcs3-git adwaita-qt5 adwaita-qt6
 # zramd
 echo -n "Would you like to use zramd for your swap? (y/n) "
 read -r zram
