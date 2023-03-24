@@ -65,7 +65,7 @@ install_grub() {
   fi
 }
 install_audio() {
-  pacman -S --needed pipewire pipewire-docs pipewire-alsa lib32-pipewire easyeffects alsa-utils alsa-plugins pipewire-pulse wireplumber wireplumber-docs pipewire-jack lib32-pipewire-jack pulsemixer bluez bluez-utils lsp-plugins sof-firmware
+  pacman -S --needed pipewire pipewire-docs pipewire-alsa lib32-pipewire easyeffects alsa-utils alsa-plugins pipewire-pulse wireplumber pipewire-jack lib32-pipewire-jack pulsemixer bluez bluez-utils lsp-plugins sof-firmware
   systemctl enable bluetooth.service
 }
 install_graphics() {
@@ -89,7 +89,7 @@ install_gaming() {
   echo -n "Will this machine be used for gaming? (y/n) "
   read -r game
   if [[ "$game" == "y" ]]; then
-  pacman -S --needed steam lutris discord retroarch retroarch-assets-xmb retroarch-assets-ozone libretro-core-info gamescope
+  pacman -S --needed steam lutris discord retroarch retroarch-assets-xmb retroarch-assets-ozone libretro-core-info gamescope yuzu
   fi
 }
 install_wine() {
@@ -189,7 +189,7 @@ select opt in "${options[@]}"
 do
     case $opt in 
         "Dwm")
-            pacman -S --needed xorg-server xorg-xinit xorg-xsetroot nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd network-manager-applet
+            pacman -S --needed xorg-server xorg-xinit xorg-xsetroot nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd network-manager-applet papirus-icon-theme
             if [ ! -d "$dir" ]; then
                 echo "Git directory does not exist, creating directory"
                 mkdir -p "$dir" && cd "$dir" || return
@@ -236,22 +236,22 @@ do
             break
             ;;
         "Bspwm")
-             pacman -S --needed xorg-server xorg-xinit xorg-xsetroot bspwm rofi nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd
+             pacman -S --needed xorg-server xorg-xinit xorg-xsetroot bspwm rofi nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd papirus-icon-theme
            systemctl enable lightdm.service
             break
             ;;
         "Awesome")
-              pacman -S --needed xorg-server xorg-xinit xorg-xsetroot awesome nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd
+              pacman -S --needed xorg-server xorg-xinit xorg-xsetroot awesome nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd papirus-icon-theme
               systemctl enable lightdm.service
             break
             ;;
         "i3")
-             pacman -S --needed xorg-server xorg-xinit xorg-xsetroot i3 dmenu nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd
+             pacman -S --needed xorg-server xorg-xinit xorg-xsetroot i3 dmenu nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd papirus-icon-theme
              systemctl enable lightdm.service
             break
             ;;
         "Xmonad")
-            pacman -S --needed xorg-server xorg-xinit xorg-xsetroot xmonad xmonad-contrib dmenu nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd
+            pacman -S --needed xorg-server xorg-xinit xorg-xsetroot xmonad xmonad-contrib dmenu nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd papirus-icon-theme
             systemctl enable lightdm.service
            break
             ;;
