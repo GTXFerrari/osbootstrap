@@ -45,7 +45,7 @@ $apps = @(
     @{name = "Valve.Steam" },
     @{name = "ElectronicArts.EADesktop" },
     @{name = "Ubisoft.Connect" },
-    @{name = "PrismLauncher.PrismLauncher" },
+    @{name = "GorillaDevs.GDLauncher" },
     @{name = "Playnite.Playnite" },
     @{name = "Libretro.RetroArch" },
     @{name = "Microsoft.VCRedist.2015+.x86" },
@@ -59,9 +59,13 @@ $apps = @(
     @{name = "7zip.7zip" },
     @{name = "MacType.MacType" },
     @{name = "Dell.DisplayManager" }
+    @{name = "evernote.evernote" }
     @{name = "Rufus.Rufus" },
     @{name = "WiresharkFoundation.Wireshark" },
-    @{name = "FinalWire.AIDA64.Engineer" }
+    @{name = "FinalWire.AIDA64.Engineer" },
+    @{name = "9PLHCT3922NQ" } # Quizlet
+    @{name = "9PF4KZ2VN4W9" } # TranslucentTB
+    @{name = "9PKTQ5699M62" } # iCloud
 );
 Foreach ($app in $apps) {
     $listApp = winget list --exact -q $app.name
