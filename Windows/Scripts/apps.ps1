@@ -26,16 +26,13 @@ $apps = @(
     @{name = "Microsoft.VisualStudioCode" },
     @{name = "VMware.WorkstationPro" },
     @{name = "Python.Python.3.12" },
-    @{name = "Oracle.JDK.17" },
     @{name = "WinSCP.WinSCP" },
     @{name = "JanDeDobbeleer.OhMyPosh" },
-    @{name = "RussellBanks.HashHash" },
-    @{name = "Microsoft.Sysinternals.ProcessExplorer" },
     @{name = "Microsoft.PowerToys" },
     @{name = "BleachBit.BleachBit" },
     @{name = "CPUID.CPU-Z" },
     @{name = "TechPowerUp.GPU-Z" },
-    @{name = "SumatraPDF.SumatraPDF" },
+    @{name = "Adobe.Acrobat.Reader.64-bit" },
     @{name = "Joplin.Joplin" },
     @{name = "Notepad++.Notepad++" },
     @{name = "JAMSoftware.TreeSize.Free" },
@@ -52,9 +49,8 @@ $apps = @(
     @{name = "Microsoft.VCRedist.2015+.x64" },
     @{name = "Discord.Discord" },
     @{name = "PeterPawlowski.foobar2000" },
-    @{name = "clsid2.mpc-hc" },
+    @{name = "MPC-BE.MPC-BE" },
     @{name = "jurplel.qView" },
-    @{name = "Lexikos.AutoHotkey" },
     @{name = "Nextcloud.NextcloudDesktop" },
     @{name = "7zip.7zip" },
     @{name = "MacType.MacType" },
@@ -63,6 +59,7 @@ $apps = @(
     @{name = "Rufus.Rufus" },
     @{name = "WiresharkFoundation.Wireshark" },
     @{name = "FinalWire.AIDA64.Engineer" },
+    @{name = "Insecure.Nmap" },
     @{name = "9PLHCT3922NQ" } # Quizlet
     @{name = "9PF4KZ2VN4W9" } # TranslucentTB
     @{name = "9PKTQ5699M62" } # iCloud
@@ -92,6 +89,7 @@ choco install bind-toolsonly -y
 choco install zentimings -y
 choco install msiafterburner -y
 choco install lazygit -y 
+choco install sysinternals -y 
 
 # Install fonts using choco
 choco install cascadia-code-nerd-font -y 
