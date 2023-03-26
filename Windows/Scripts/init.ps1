@@ -19,8 +19,7 @@ if ((Get-Command -Name choco -ErrorAction Ignore) -and ($chocoVersion = (Get-Ite
     powershell choco feature enable -n allowGlobalConfirmation
 }
 
-# Install nvidia & amd drivers using choco
-choco install nvidia-display-driver -y
+# Install amd chipset drivers using choco
 choco install amd-ryzen-chipset -y
 
 # Enable Memory Core Isolation (Security)
