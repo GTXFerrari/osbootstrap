@@ -140,7 +140,7 @@ select opt in "${options[@]}"
 do
     case $opt in
         "KDE")
-            pacman -S --needed xorg plasma kde-applications plasma-nm packagekit-qt5 sddm plasma-wayland-session qt5-wayland qt6-wayland
+            pacman -S --needed xorg plasma kde-applications plasma-nm packagekit-qt5 sddm plasma-wayland-session qt5-wayland qt6-wayland adwaita-qt5 adwaita-qt6
             systemctl enable sddm
             break
             ;;
