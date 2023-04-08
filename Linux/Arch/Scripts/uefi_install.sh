@@ -35,7 +35,7 @@ function set_root_password() {
   echo root:"$password" | chpasswd
 }
 install_core_packages() {
-  pacman -S --needed networkmanager nm-connection-editor iwd avahi base-devel pacman-contrib dialog mtools xdg-user-dirs xdg-utils cifs-utils nfs-utils udisks2 bind cups cups-pdf hplip rsync openssh ssh-audit zsh zsh-completions zsh-autosuggestions firefox neofetch htop alacritty btop nvtop wireshark-qt polkit ranger atool ueberzug highlight exfat-utils cronie ttf-sourcecodepro-nerd lazygit mpd mpc mpv ncmpcpp ttf-jetbrains-mono-nerd lynx atool bat mediainfo ffmpegthumbnailer odt2txt zathura zathura-djvu zathura-pdf-mupdf zathura-ps
+  pacman -S --needed networkmanager nm-connection-editor iwd avahi base-devel pacman-contrib dialog mtools xdg-user-dirs xdg-utils cifs-utils nfs-utils udisks2 bind cups cups-pdf hplip rsync openssh ssh-audit zsh zsh-completions zsh-autosuggestions firefox neofetch htop alacritty btop nvtop wireshark-qt polkit ranger atool ueberzug highlight exfat-utils cronie ttf-sourcecodepro-nerd mpd mpc mpv ncmpcpp ttf-jetbrains-mono-nerd lynx atool bat mediainfo ffmpegthumbnailer odt2txt zathura zathura-djvu zathura-pdf-mupdf zathura-ps bitwarden
   systemctl enable NetworkManager.service avahi-daemon.service iwd.service cups.socket reflector.timer sshd.service fstrim.timer cronie.service
 usermod -aG wireshark jake
 }
