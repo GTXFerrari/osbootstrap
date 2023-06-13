@@ -43,11 +43,16 @@ fi
     echo " "
     echo "$NAS"/Jake       "$TRUENAS"/Jake         cifs        "$OPT"
     echo " "
-    echo "$NAS"/EMP        "$TRUENAS"/EMP          cifs        "$OPT"
+    echo "$NAS"/LTS        "$TRUENAS"/LTS          cifs        "$OPT"
     echo " "
     echo "$NAS"/Media      "$TRUENAS"/Media        cifs        "$OPT"
     echo " "
     echo "$NAS"/MP         "$TRUENAS"/MP           cifs        "$OPT"
+    echo " "
+    echo "$NAS"/Media2     "$TRUENAS"/Media2       cifs        "$OPT"
+    echo " "
+    echo "$NAS"/ISO         "$TRUENAS"/ISO         cifs        "$OPT"
+
 } | sudo tee -a /etc/fstab > /dev/null
 echo "Mounting Shares"
 systemctl daemon-reload && sudo mount -a
