@@ -10,10 +10,10 @@ sudo pacman -S --needed --noconfirm cifs-utils
 # Create a TrueNAS directory with share mountpoints
 if [ ! -d "$TRUENAS" ]; then
     echo "TrueNAS directory does not exist, creating"
-    mkdir -p "$TRUENAS" && cd "$TRUENAS" && mkdir EMP Jake MP Media
+    mkdir -p "$TRUENAS" && cd "$TRUENAS" && mkdir Jake MP LTS Media Media2 ISO
     else
     echo "TrueNAS directory already exists"
-    cd "$TRUENAS" && mkdir EMP Media MP Jake
+    cd "$TRUENAS" && mkdir Jake MP LTS Media Media2 ISO
 fi
 # Create /etc/samba/credentials directory
 if [ ! -d "$DIR" ]; then
