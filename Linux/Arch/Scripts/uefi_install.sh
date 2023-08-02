@@ -72,7 +72,7 @@ install_graphics() {
   echo -n "Are you using an NVIDIA graphics card (y/n) "
   read -r nvidia
   if [[ "$nvidia" == "y" ]]; then
-    pacman -S --needed nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader opencl-nvidia lib32-opencl-nvidia nvidia-settings
+    pacman -S --needed nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader opencl-nvidia lib32-opencl-nvidia nvidia-settings python-pytorch-cuda
   fi
   echo -n "Are you using an AMD graphics card (y/n) "
   read -r amd
