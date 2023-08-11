@@ -93,7 +93,7 @@ choco install sysinternals -y
 
 # Install fonts using choco
 choco install cascadia-code-nerd-font -y 
-choco install jetbrainsmononf -y 
+choco install nerd-fonts-jetbrainsmono -y 
 choco install nerd-fonts-sourcecodepro -y 
 
 # Download applications that do not support winget or choco (Uses curl & Git)
