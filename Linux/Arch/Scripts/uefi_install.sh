@@ -2,8 +2,6 @@
 
 # Functions
 init() {
-  echo "Enabling Network Time Protocol"
-  timedatectl set-ntp true
   echo "Setting timezone"
   ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
   echo "Syncing system clock"
