@@ -1,5 +1,18 @@
 #!/usr/bin/env bash
 
+# Colors
+NC='\033[0m' # No Color
+
+# Regular Colors
+Black='\033[0;30m'
+Red='\033[0;31m'
+Green='\033[0;32m'
+Yellow='\033[0;33m'
+Blue='\033[0;34m'
+Purple='\033[0;35m'
+Cyan='\033[0;36m'
+White='\033[0;37m'
+
 # Functions
 init() {
   echo "Setting timezone"
@@ -422,96 +435,208 @@ done
 
 
 window_manager() {
+  while true; do
   echo -n "Would you like to install a tiling window manager (y/n) "
   read -r window_manager 
   if [[ $window_manager == "y" ]]; then
-
-PS3='Please enter your choice: '
-options=("Dwm" "Bspwm" "Awesome" "i3" "Xmonad" "None")
-dir="/home/jake/Git"
-dwm="/home/jake/Git/dwm"
-dmenu="/home/jake/Git/dmenu"
-st="/home/jake/Git/st"
-dwmblocks="/home/jake/Git/dwmblocks"
-git="git clone https://github.com/gtxferrari"
-select opt in "${options[@]}"
-do
-    case $opt in 
+    PS3='Please enter your choice: '
+    options=("Dwm" "Bspwm" "Awesome" "i3" "Xmonad" "Exit")
+    dir="/home/jake/Git"
+    dwm="/home/jake/Git/dwm"
+    dmenu="/home/jake/Git/dmenu"
+    st="/home/jake/Git/st"
+    dwmblocks="/home/jake/Git/dwmblocks"
+    git="git clone https://github.com/gtxferrari"
+    select opt in "${options[@]}"
+    do
+      case $opt in 
         "Dwm")
-            pacman -S --needed xorg-server xorg-xinit xorg-xsetroot nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd network-manager-applet papirus-icon-theme
-            if [ ! -d "$dir" ]; then
-                echo "Git directory does not exist, creating directory"
-                mkdir -p "$dir" && cd "$dir" || return
-            else
-                echo "Git directory already exists" 
-                cd "$dir" || return
-            fi
-            if [ ! -d "$dwm" ]; then
-                echo "dwm does not exist, cloning repo & compiling"
-                cd "$dir" && $git/dwm && cd "$dir"/dwm && make && sudo make clean install
-                echo "Finished compiling & installing dwm"
-            else
-                echo "dwm already exists, reinstalling"
-                cd "$dwm" && make && sudo make clean install
-                echo "Finished reinstalling dwm"
-            fi
-            if [ ! -d "$dmenu" ]; then
-                echo "dmenu does note exist, cloning repo & compiling"
-                cd "$dir" && $git/dmenu && cd "$dir"/dmenu && make && sudo make clean install
-                echo "Finished compiling & installing dmenu"
-            else
-                echo "dmenu already exists, reinstalling"
-                cd "$dir"/dmenu && make && sudo make clean install
-                echo "Finished reinstalling dmenu"
-            fi
-            if [ ! -d "$st" ]; then
-                echo "st does not exist, cloning repo & compiling"
-                cd "$dir" && $git/st && cd "$dir"/st && make && sudo make clean install
-                echo "Finished compiling & installing st"
-            else
-                echo "st already exists, reinstalling"
-                cd "$dir"/st && make && sudo make clean install
-                echo "Finished reinstalling st"
-            fi
-            if [ ! -d "$dwmblocks" ]; then
-                echo "dwmblocks does not exist, cloning repo & compiling"
-                cd "$dir" && $git/dwmblocks && cd "$dir"/dwmblocks && make && sudo make clean install
-                echo "Finished installing & compiling dwmblocks"
-            else 
-                echo "dwmblocks already exists, reinstalling"
-                cd "$dir"/dwmblocks && make && sudo make clean install
-                echo "Finished reinstalling dwmblocks"
-            fi
-            break
-            ;;
+          pacman -S --needed xorg-server \
+            xorg-xinit \
+            xorg-xsetroot \
+            nitrogen \
+            picom \
+            qt5ct \
+            lxappearance \
+            gnome-themes-extra \
+            dunst \
+            polkit \
+            polkit-kde-agent \
+            kwallet-pam \
+            kwalletmanager \
+            ksshaskpass \
+            lightdm \
+            lightdm-gtk-greeter \
+            lightdm-webkit2-greeter \
+            sxhkd \
+            network-manager-applet \
+            papirus-icon-theme
+          if [ ! -d "$dir" ]; then
+            echo -e "${Red}Git directory does not exist, creating directory.${NC}"
+            mkdir -p "$dir" && cd "$dir" || return
+          else
+            echo -e "${Green}Git directory already exists.${NC}" 
+            cd "$dir" || return
+          fi
+          sleep 3
+          if [ ! -d "$dwm" ]; then
+            echo -e "${Red}Dwm does not exist, cloning repo & compiling.${NC}"
+            cd "$dir" && $git/dwm && cd "$dir"/dwm && make && sudo make clean install
+            echo -e "${Blue}Finished compiling & installing dwm.${NC}"
+          else
+            echo -e "${Green}dwm already exists, reinstalling.${NC}"
+            cd "$dwm" && make && sudo make clean install
+            echo -e "${Blue}Finished reinstalling dwm.${NC}"
+          fi
+          sleep 3
+          if [ ! -d "$dmenu" ]; then
+            echo -e "${Red}Dmenu does not exist, cloning repo & compiling.${NC}"
+            cd "$dir" && $git/dmenu && cd "$dir"/dmenu && make && sudo make clean install
+            echo -e "${Blue}Finished compiling & installing dmenu.${NC}"
+          else
+            echo -e "${Green}dmenu already exists, reinstalling.${NC}"
+            cd "$dir"/dmenu && make && sudo make clean install
+            echo -e "${Blue}Finished reinstalling dmenu.${NC}"
+          fi
+          sleep 3
+          if [ ! -d "$st" ]; then
+            echo -e "${Red}St does not exist, cloning repo & compiling.${NC}"
+            cd "$dir" && $git/st && cd "$dir"/st && make && sudo make clean install
+            echo -e "${Blue}Finished compiling & installing st.${NC}"
+          else
+            echo -e "${Green}St already exists, reinstalling.${NC}"
+            cd "$dir"/st && make && sudo make clean install
+            echo -e "${Blue}Finished reinstalling st.${NC}"
+          fi
+          sleep 3
+          if [ ! -d "$dwmblocks" ]; then
+            echo -e "${Red}Dwmblocks does not exist, cloning repo & compiling.${NC}"
+            cd "$dir" && $git/dwmblocks && cd "$dir"/dwmblocks && make && sudo make clean install
+            echo -e "${Blue}Finished installing & compiling dwmblocks.${NC}"
+          else 
+            echo -e "${Green}Dwmblocks already exists, reinstalling.${NC}"
+            cd "$dir"/dwmblocks && make && sudo make clean install
+            echo -e "${Blue}Finished reinstalling dwmblocks.${NC}"
+          fi
+          chown -R jake:jake $dir
+          exit
+          ;;
         "Bspwm")
-             pacman -S --needed xorg-server xorg-xinit xorg-xsetroot bspwm rofi nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd papirus-icon-theme
-           systemctl enable lightdm.service
-            break
-            ;;
+          pacman -S --needed \
+            xorg-server \
+            xorg-xinit \
+            xorg-xsetroot \
+            bspwm \
+            rofi \
+            nitrogen \
+            picom \
+            qt5ct \
+            lxappearance \
+            gnome-themes-extra \
+            dunst \
+            polkit \
+            polkit-kde-agent \
+            kwallet-pam \
+            kwalletmanager \
+            ksshaskpass \
+            lightdm \
+            lightdm-gtk-greeter \
+            lightdm-webkit2-greeter \
+            sxhkd \
+            papirus-icon-theme
+          systemctl enable lightdm.service
+          exit 
+          ;;
         "Awesome")
-              pacman -S --needed xorg-server xorg-xinit xorg-xsetroot awesome nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd papirus-icon-theme
-              systemctl enable lightdm.service
-            break
-            ;;
+          pacman -S --needed \
+            xorg-server \
+            xorg-xinit \
+            xorg-xsetroot \
+            awesome \
+            nitrogen \
+            picom \
+            qt5ct \
+            lxappearance \
+            gnome-themes-extra \
+            dunst \
+            polkit \
+            polkit-kde-agent \
+            kwallet-pam \
+            kwalletmanager \
+            ksshaskpass \
+            lightdm \
+            lightdm-gtk-greeter \
+            lightdm-webkit2-greeter \
+            sxhkd \
+            papirus-icon-theme
+          systemctl enable lightdm.service
+          exit 
+          ;;
         "i3")
-             pacman -S --needed xorg-server xorg-xinit xorg-xsetroot i3 dmenu nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd papirus-icon-theme
-             systemctl enable lightdm.service
-            break
-            ;;
+          pacman -S --needed xorg-server \
+            xorg-xinit \
+            xorg-xsetroot \
+            i3 \
+            dmenu \
+            nitrogen \
+            picom \
+            qt5ct \
+            lxappearance \
+            gnome-themes-extra \
+            dunst \
+            polkit \
+            polkit-kde-agent \
+            kwallet-pam \
+            kwalletmanager \
+            ksshaskpass \
+            lightdm \
+            lightdm-gtk-greeter \
+            lightdm-webkit2-greeter \
+            sxhkd \
+            papirus-icon-theme
+          systemctl enable lightdm.service
+          exit
+          ;;
         "Xmonad")
-            pacman -S --needed xorg-server xorg-xinit xorg-xsetroot xmonad xmonad-contrib dmenu nitrogen picom qt5ct lxappearance gnome-themes-extra dunst polkit polkit-gnome gnome-keyring libsecret seahorse ttf-joypixels lightdm lightdm-gtk-greeter lightdm-webkit2-greeter sxhkd papirus-icon-theme
-            systemctl enable lightdm.service
-           break
-            ;;
-        "None")
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
- done
-fi
+          pacman -S --needed \
+            xorg-server \
+            xorg-xinit \
+            xorg-xsetroot \
+            xmonad \
+            xmonad-contrib \
+            dmenu \
+            nitrogen \
+            picom \
+            qt5ct \
+            lxappearance \
+            gnome-themes-extra \
+            dunst \
+            polkit \
+            polkit-kde-agent \
+            kwallet-pam \
+            kwalletmanager \
+            ksshaskpass \
+            lightdm \
+            lightdm-gtk-greeter \
+            lightdm-webkit2-greeter \
+            sxhkd \
+            papirus-icon-theme
+          systemctl enable lightdm.service
+          exit
+          ;;
+        "Exit")
+          exit
+          ;;
+        *) echo "Invalid choice. Please enter a valid option."
+          ;;
+      esac
+    done
+  else
+    break
+  fi
+done
 }
+
 
 # Call functions
 init
