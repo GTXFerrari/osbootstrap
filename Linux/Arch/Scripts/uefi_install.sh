@@ -46,8 +46,8 @@ while true; do
     mount -o ${mount_opts},subvol=@libvirt /dev/mapper/cryptbtrfs /mnt/var/lib/libvirt
     mount -o ${mount_opts},subvol=@log /dev/mapper/cryptbtrfs /mnt/var/log
     mount -o ${mount_opts},subvol=@tmp /dev/mapper/cryptbtrfs /mnt/var/tmp
-    mkfs.fat -F32 /dev/${partition_choice}1
-    mount --mkdir /dev/${partition_choice}1 /mnt/boot
+    mkfs.fat -F32 /dev/${partition_choice}p1
+    mount --mkdir /dev/${partition_choice}p1 /mnt/boot
     exit
   else
     echo "Partition '/dev/$partition_choice' does not exist, please choose a valid partition"
