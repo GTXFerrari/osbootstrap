@@ -91,6 +91,7 @@ install_core_packages() {
     # Fonts
     ttf-sourcecodepro-nerd \
     ttf-jetbrains-mono-nerd \
+    ttf-joypixels
     # lf file manager
     lf \
     lynx \
@@ -269,79 +270,157 @@ install_wine() {
     zenity
   fi
 }
+
+
 install_virtualization() {
   echo -n "Are you using QEMU? (y/n) "
   read -r qemu
-  if [[ "$qemu" == "y" ]]; then
-  pacman -S  --needed virt-manager qemu-full qemu-emulators-full dmidecode edk2-ovmf iptables-nft dnsmasq openbsd-netcat bridge-utils vde2 libvirt swtpm qemu-audio-alsa qemu-audio-dbus qemu-audio-jack qemu-audio-oss qemu-audio-pa qemu-audio-sdl qemu-audio-spice qemu-block-curl qemu-block-dmg qemu-block-gluster qemu-block-iscsi qemu-block-nfs qemu-block-ssh qemu-chardev-baum qemu-chardev-spice qemu-docs qemu-hw-display-qxl qemu-hw-display-virtio-gpu qemu-hw-display-virtio-gpu-gl qemu-hw-display-virtio-gpu-pci qemu-hw-display-virtio-gpu-pci-gl qemu-hw-display-virtio-vga qemu-hw-display-virtio-vga-gl qemu-hw-s390x-virtio-gpu-ccw qemu-hw-usb-host qemu-hw-usb-redirect qemu-hw-usb-redirect qemu-hw-usb-smartcard qemu-img qemu-pr-helper qemu-system-aarch64 qemu-system-alpha qemu-system-arm qemu-system-avr qemu-system-cris qemu-system-hppa qemu-system-m68k qemu-system-microblaze qemu-system-mips qemu-system-nios2 qemu-system-or1k qemu-system-ppc qemu-system-riscv qemu-system-rx qemu-system-s390x qemu-system-sh4 qemu-system-sparc qemu-system-tricore qemu-system-x86 qemu-system-xtensa qemu-tests qemu-tools qemu-ui-curses qemu-ui-dbus qemu-ui-egl-headless qemu-ui-gtk qemu-ui-opengl qemu-ui-sdl qemu-ui-spice-app qemu-ui-spice-core qemu-user qemu-vhost-user-gpu qemu-virtiofsd
+if [[ "$qemu" == "y" ]]; then
+  pacman -S --needed \
+    qemu-full \
+    virt-manager \
+    dmidecode \
+    edk2-ovmf \
+    iptables-nft \
+    dnsmasq \
+    openbsd-netcat \
+    bridge-utils \
+    vde2 \
+    libvirt \
+    swtpm
   systemctl enable libvirtd.service
   usermod -aG libvirt jake
-  fi
+fi
   echo -n "Are you using docker? (y/n) "
   read -r docker
-  if [[ "$docker" == "y" ]]; then
-    pacman -S --needed docker docker-compose
-    systemctl enable docker.service
-    usermod -aG docker jake
-  fi
+if [[ "$docker" == "y" ]]; then
+  pacman -S --needed \
+    docker \
+    docker-compose
+  systemctl enable docker.service
+  usermod -aG docker jake
+fi
   echo -n "Is this machine a vmware guest? (y/n) "
   read -r vmware
-  if [[ "$vmware" == "y" ]]; then
-    pacman -S --needed --noconfirm open-vm-tools xf86-input-vmmouse xf86-video-vmware mesa gtkmm gtk2
-    systemctl enable vmtoolsd.service vmware-vmblock-fuse
-  fi
+if [[ "$vmware" == "y" ]]; then
+  pacman -S --needed \
+    open-vm-tools \
+    xf86-input-vmmouse \
+    xf86-video-vmware \
+    mesa \
+    gtkmm \
+    gtk2
+  systemctl enable vmtoolsd.service vmware-vmblock-fuse
+fi
 }
+
+
 laptop() {
   echo -n "Is this machine a laptop? (y/n) "
   read -r laptop 
   if [[ $laptop == "y" ]]; then
-    pacman -S --needed --noconfirm acpid tlp acpilight
+    pacman -S --needed \
+      acpid \
+      tlp \
+      acpilight
     systemctl enably tlp.service acpid.service
     usermod -aG video "$username"
   fi  
 }
+
+
 desktop_environment() {
+  while true; do
   echo -n "Would you like to install a desktop environment (y/n) "
   read -r desktop_environment 
   if [[ $desktop_environment == "y" ]]; then
-PS3='Please enter your choice: '
-options=("KDE" "Gnome" "Cinnamon" "Xfce" "Budgie" "None")
-select opt in "${options[@]}"
-do
-    case $opt in
+    PS3='Please enter your choice: '
+    options=("KDE" "Gnome" "Cinnamon" "Xfce" "Budgie" "Exit")
+    select opt in "${options[@]}"
+    do
+      case $opt in
         "KDE")
-            pacman -S --needed xorg plasma kde-applications plasma-nm packagekit-qt5 sddm plasma-wayland-session qt5-wayland qt6-wayland adwaita-qt5 adwaita-qt6
-            systemctl enable sddm
-            break
-            ;;
+          pacman -S --needed \
+            xorg \
+            plasma \
+            kde-applications \
+            latte-dock \
+            plasma-nm \
+            packagekit-qt5 \
+            sddm \
+            plasma-wayland-session \
+            qt5-wayland \
+            qt6-wayland
+          systemctl enable sddm
+          exit
+          ;;
         "Gnome")
-            pacman -S --needed xorg gnome gnome-extra gnome-tweaks gnome-themes-extra gdm
-            systemctl enable gdm.service
-            break
-            ;;
+          pacman -S --needed \
+            xorg \
+            gnome \
+            gnome-extra \
+            gnome-tweaks \
+            gnome-themes-extra \
+            gdm
+          systemctl enable gdm.service
+          exit
+          ;;
         "Cinnamon")
-            pacman -S --needed xorg cinnamon xed xreader metacity gnome-shell gnome-keyring libsecret seahorse system-config-printer blueberry gnome-screenshot gdm
-            systemctl enable gdm.service
-            break
-            ;;
+          pacman -S --needed \
+            xorg \
+            cinnamon \
+            xed \
+            xreader \
+            metacity \
+            gnome-shell \
+            gnome-keyring \
+            libsecret \
+            seahorse \
+            system-config-printer \
+            blueberry \
+            gnome-screenshot \
+            gdm
+          systemctl enable gdm.service
+          exit
+          ;;
         "Xfce")
-            pacman -S --needed xorg xfce4 xfce4-goodies lightdm lightdm-gtk-greeter lightdm-webkit2-greeter
-            systemctl enable lightdm.service
-            break
-            ;;
+          pacman -S --needed \
+            xorg \
+            xfce4 \
+            xfce4-goodies \
+            lightdm \
+            lightdm-gtk-greeter \
+            lightdm-webkit2-greeter
+          systemctl enable lightdm.service
+          exit 
+          ;;
         "Budgie")
-            pacman -S --needed xorg budgie-desktop budgie-desktop-view budgie-extras  lightdm lightdm-gtk-greeter lightdm-webkit2-greeter
-            systemctl enable lightdm.service
-            break
-            ;;
-        "None")
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-  done
-fi
+          pacman -S --needed \
+            xorg \
+            budgie-desktop \
+            budgie-desktop-view \
+            budgie-extras \
+            lightdm \
+            lightdm-gtk-greeter \
+            lightdm-webkit2-greeter
+          systemctl enable lightdm.service
+          exit
+          ;;
+        "Exit")
+          exit
+          ;;
+        *)
+          echo "Invalid choice. Please enter a valid option."
+          ;;
+      esac
+    done 
+  else
+    break
+  fi
+done
 }
+
+
 window_manager() {
   echo -n "Would you like to install a tiling window manager (y/n) "
   read -r window_manager 
