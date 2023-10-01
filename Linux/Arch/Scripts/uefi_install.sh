@@ -175,22 +175,65 @@ install_audio() {
 
 
 install_graphics() {
-  echo -n "Are you using an NVIDIA graphics card (y/n) "
-  read -r nvidia
-  if [[ "$nvidia" == "y" ]]; then
-    pacman -S --needed nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader opencl-nvidia lib32-opencl-nvidia nvidia-settings python-pytorch-cuda
+  while true; do
+  echo -n "Would you like to install a graphics driver (y/n) "
+  read -r graphics_driver
+  if [[ $graphics_driver == "y" ]]; then
+    PS3='Please enter your choice: '
+    options=("Nvidia" "AMD" "Intel" "Exit")
+    select opt in "${options[@]}"
+    do
+      case $opt in 
+        "Nvidia")
+          pacman -S --needed \
+            nvidia-dkms \
+            nvidia-utils \
+            lib32-nvidia-utils \
+            nvidia-settings \
+            vulkan-icd-loader \
+            lib32-vulkan-icd-loader \
+            opencl-nvidia \
+            lib32-opencl-nvidia \
+            nvidia-settings \
+            python-pytorch-cuda
+          exit
+          ;;
+        "AMD")
+          pacman -S --needed \
+            mesa \
+            lib32-mesa \
+            xf86-video-amdgpu \
+            vulkan-radeon \
+            lib32-vulkan-radeon \
+            libva-mesa-driver \
+            lib32-libva-mesa-driver \
+            mesa-vdpau \
+            lib32-mesa-vdpau \
+            rocm-opencl-runtime 
+          exit
+          ;;
+        "Intel")
+          pacman -S --needed \
+            mesa \
+            lib32-mesa \
+            vulkan-intel
+          exit
+          ;;
+        "Exit")
+          exit 
+          ;;
+        *)
+          echo "Invalid choice. Please enter a valid option."
+          ;;
+   esac
+ done
+else
+    break
   fi
-  echo -n "Are you using an AMD graphics card (y/n) "
-  read -r amd
-  if [[ "$amd" == "y" ]]; then
-    pacman -S --needed mesa lib32-mesa xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau opencl-mesa lib32-opencl-mesa rocm-opencl-runtime 
-  fi 
-  echo -n "Are you using an Intel graphics card (y/n) "
-  read -r intel
-  if [[ "$intel" == "y" ]]; then
-  pacman -S --needed mesa lib32-mesa vulkan-intel
-  fi
+done
 }
+
+
 install_gaming() {
   echo -n "Will this machine be used for gaming? (y/n) "
   read -r game
