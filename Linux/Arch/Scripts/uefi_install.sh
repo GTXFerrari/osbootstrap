@@ -24,8 +24,8 @@ while true; do
     sgdisk -Z /dev/$partition_choice
     sgdisk --clear --new=1:0:+512MiB --typecode=1:ef00 --change-name=1:EFI --new=2:0:0 --typecode=2:8300 --change-name=2:cryptsys /dev/$partition_choice
     # Encryption
-    cryptsetup luksFormat --type luks2 --align-payload=8192 -c aes-xts-plain64 -s 512 -h sha512 -y --use-urandom /dev/${partition_choice}2
-    cryptsetup open /dev/${partition_choice}2 cryptbtrfs
+    cryptsetup luksFormat --type luks2 --align-payload=8192 -c aes-xts-plain64 -s 512 -h sha512 -y --use-urandom /dev/${partition_choice}p2
+    cryptsetup open /dev/${partition_choice}p2 cryptbtrfs
     # BTRFS
     mkfs.btrfs -L archbtrfs /dev/mapper/cryptbtrfs
     mount /dev/mapper/cryptbtrfs /mnt
