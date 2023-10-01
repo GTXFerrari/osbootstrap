@@ -12,11 +12,13 @@ init() {
   echo "Enabling multilib"
   sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
   echo "Updating mirrorlist"
-  reflector -c 'United States' -a 6 -p https --sort rate --save /etc/pacman.d/mirrorlist
+  reflector -c 'United States' -a 12 -p https --sort rate --save /etc/pacman.d/mirrorlist
   pacman -Sy
   echo "Updating keyring"
   pacman -S --noconfirm archlinux-keyring sudo
 }
+
+
 set_hostname() {
   echo -n "Enter a value for hostname: "
   read -r hostname
@@ -26,17 +28,101 @@ set_hostname() {
       echo "127.0.1.1 $hostname.localdomain.$hostname"
   } >> /etc/hosts
 }
-function set_root_password() {
+
+
+set_root_password() {
   echo -n "Enter a value for the root password: "
   read -r password
-
   echo root:"$password" | chpasswd
 }
+
+
 install_core_packages() {
-  pacman -S --needed efibootmgr networkmanager nm-connection-editor iwd avahi base-devel pacman-contrib dialog mtools xdg-user-dirs xdg-utils cifs-utils nfs-utils udisks2 bind cups cups-pdf hplip rsync openssh ssh-audit zsh zsh-completions zsh-autosuggestions firefox neofetch htop alacritty btop nvtop wireshark-qt polkit ranger atool ueberzug highlight exfat-utils cronie ttf-sourcecodepro-nerd mpd mpc mpv ncmpcpp ttf-jetbrains-mono-nerd lynx atool bat mediainfo ffmpegthumbnailer odt2txt zathura zathura-djvu zathura-pdf-mupdf zathura-ps bitwarden
-  systemctl enable NetworkManager.service avahi-daemon.service iwd.service cups.socket reflector.timer sshd.service fstrim.timer cronie.service
+  pacman -S --needed \
+    # Bootloader
+    efibootmgr \
+    sbctl \
+    # Network
+    networkmanager \
+    nm-connection-editor \
+    iwd \
+    avahi \
+    bind \
+    cifs-utils \
+    nfs-utils \
+    # System Tools
+    base-devel \
+    pacman-contrib \
+    polkit \
+    cronie \
+    # User Dirs
+    xdg-user-dirs \
+    xdg-utils \
+    # Storage
+    udisks2 \
+    exfatprogs \
+    mtools \
+    dosfstools \
+    btrfs-progs
+    # Print
+    cups \
+    cups-pdf \
+    hplip \
+    # Cli Tools
+    alacritty \
+    rsync \
+    openssh \
+    ssh-audit \
+    zsh \
+    zsh-completions \
+    zsh-autosuggestions \
+    neofetch \
+    htop \
+    cmatrix
+    cowsay \
+    btop \
+    nvtop \
+    wireshark-qt \
+    # Media
+    mpd \
+    mpc \
+    mpv \
+    ncmpcpp \
+    # Fonts
+    ttf-sourcecodepro-nerd \
+    ttf-jetbrains-mono-nerd \
+    # lf file manager
+    lf \
+    lynx \
+    ueberzug \
+    atool \
+    highlight \
+    atool \
+    bat \
+    mediainfo \
+    ffmpegthumbnailer \
+    odt2txt \
+    # PDF & EPUB
+    zathura \
+    zathura-djvu \
+    zathura-pdf-mupdf \
+    zathura-ps \
+    # User Apps
+    firefox \
+    bitwarden
+  systemctl enable \
+    NetworkManager.service \
+    avahi-daemon.service \
+    iwd.service \
+    cups.socket \
+    reflector.timer \
+    sshd.service \
+    fstrim.timer \
+    cronie.service
 usermod -aG wireshark jake
 }
+
+
 create_user() {
   echo -n "Enter a username: "
   read -r username
@@ -46,26 +132,48 @@ create_user() {
   echo "$username":"$password" | chpasswd
   echo "$username ALL=(ALL) ALL" >> /etc/sudoers.d/"$username"
 }
-install_grub() {
-  echo -n "Do you want to use GRUB as your bootloader? (y/n) "
-  read -r grub
- 
-  if [[ $grub == "y" ]]; then
-    pacman -S --needed --noconfirm grub efibootmgr os-prober
-    grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-    grub-mkconfig -o /boot/grub/grub.cfg
-  fi
 
-  echo -n "Are you using btrfs? (y/n) "
-  read -r grub_btrfs
-  if [[ $grub_btrfs == "y" ]]; then
-    pacman -S --needed --noconfirm grub-btrfs
-  fi
+
+install_bootloader() {
+  echo "Installing Bootloader"
+  bootctl install
+  touch /boot/loader/entries/arch.conf
+  touch /boot/loader/entries/arch-zen.conf
+  echo "title Arch Linux
+  linux /vmlinuz-linux
+  initrd /amd-ucode.img
+  initrd /initramfs-linux.img
+  options cryptdedvice=UUID=ENTERUUID:allow-discards root=/dev/mapper/luks rootflags=subvol=@ rd.luks.options=discard nvidia_drm.modeset=1 amd_iommu=on" >> /boot/loader/entries/arch.conf
+  echo "title Arch Linux (Zen)
+  linux /vmlinuz-linux-zen
+  initrd /amd-ucode.img
+  initrd /initramfs-linux-zen.img
+  options cryptdedvice=UUID=ENTERUUID:allow-discards root=/dev/mapper/luks rootflags=subvol=@ rd.luks.options=discard nvidia_drm.modeset=1 amd_iommu=on" >> /boot/loader/entries/arch-zen.conf
 }
+
+
 install_audio() {
-  pacman -S --needed pipewire pipewire-docs pipewire-alsa lib32-pipewire easyeffects alsa-utils alsa-plugins pipewire-pulse wireplumber pipewire-jack lib32-pipewire-jack pulsemixer bluez bluez-utils lsp-plugins sof-firmware
+  pacman -S --needed \
+    pipewire \
+    pipewire-docs \
+    pipewire-alsa \
+    lib32-pipewire \
+    easyeffects \
+    alsa-utils \
+    alsa-plugins \
+    pipewire-pulse \
+    wireplumber \
+    pipewire-jack \
+    lib32-pipewire-jack \
+    pulsemixer \
+    bluez \
+    bluez-utils \
+    lsp-plugins \
+    sof-firmware 
   systemctl enable bluetooth.service
 }
+
+
 install_graphics() {
   echo -n "Are you using an NVIDIA graphics card (y/n) "
   read -r nvidia
@@ -268,7 +376,7 @@ set_hostname
 set_root_password
 create_user
 install_core_packages
-install_grub
+install_bootloader
 install_audio
 install_graphics
 install_gaming
