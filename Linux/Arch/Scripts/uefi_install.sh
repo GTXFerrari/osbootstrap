@@ -55,6 +55,28 @@ while true; do
   fi
 done
 }
+
+pacstab() {
+  pacstrap /mnt \
+    base \
+    linux \
+    linux-headers \
+    linux-zen \
+    linux-zen-headers \
+    linux-firmware \
+    sof-firmware \
+    amd-ucode \
+    git \
+    neovim \
+    reflector \
+    man-db \
+    dosfstools \
+    btrfs-progs
+
+  genfstab -U /mnt >> /mnt/etc/fstab
+  arch-chroot /mnt
+}
+
 init() {
   echo "Setting timezone"
   ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
@@ -72,7 +94,6 @@ init() {
   pacman -S --noconfirm archlinux-keyring sudo
 }
 
-
 set_hostname() {
   echo -n "Enter a value for hostname: "
   read -r hostname
@@ -83,13 +104,11 @@ set_hostname() {
   } >> /etc/hosts
 }
 
-
 set_root_password() {
   echo -n "Enter a value for the root password: "
   read -r password
   echo root:"$password" | chpasswd
 }
-
 
 install_core_packages() {
   pacman -S --needed \
@@ -178,7 +197,6 @@ install_core_packages() {
 usermod -aG wireshark jake
 }
 
-
 create_user() {
   echo -n "Enter a username: "
   read -r username
@@ -188,7 +206,6 @@ create_user() {
   echo "$username":"$password" | chpasswd
   echo "$username ALL=(ALL) ALL" >> /etc/sudoers.d/"$username"
 }
-
 
 install_bootloader() {
   echo "Installing Bootloader"
@@ -206,7 +223,6 @@ install_bootloader() {
   initrd /initramfs-linux-zen.img
   options cryptdedvice=UUID=ENTERUUID:allow-discards root=/dev/mapper/luks rootflags=subvol=@ rd.luks.options=discard nvidia_drm.modeset=1 amd_iommu=on" >> /boot/loader/entries/arch-zen.conf
 }
-
 
 install_audio() {
   pacman -S --needed \
@@ -228,7 +244,6 @@ install_audio() {
     sof-firmware
   systemctl enable bluetooth.service
 }
-
 
 install_graphics() {
   while true; do
@@ -289,7 +304,6 @@ else
 done
 }
 
-
 install_gaming() {
   echo -n "Will this machine be used for gaming? (y/n) "
   read -r game
@@ -306,6 +320,7 @@ install_gaming() {
     yuzu
   fi
 }
+
 install_wine() {
   echo -n "Do you want to install Wine? (y/n) "
   read -r wine
@@ -325,7 +340,6 @@ install_wine() {
     zenity
   fi
 }
-
 
 install_virtualization() {
   echo -n "Are you using QEMU? (y/n) "
@@ -369,7 +383,6 @@ if [[ "$vmware" == "y" ]]; then
 fi
 }
 
-
 laptop() {
   echo -n "Is this machine a laptop? (y/n) "
   read -r laptop 
@@ -382,7 +395,6 @@ laptop() {
     usermod -aG video "$username"
   fi  
 }
-
 
 desktop_environment() {
   while true; do
@@ -474,7 +486,6 @@ desktop_environment() {
   fi
 done
 }
-
 
 window_manager() {
   while true; do
@@ -682,6 +693,7 @@ done
 
 # Call functions
 drive_partition
+pacstab
 init
 set_hostname
 set_root_password
