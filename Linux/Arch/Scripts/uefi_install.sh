@@ -48,7 +48,7 @@ while true; do
     mount -o ${mount_opts},subvol=@tmp /dev/mapper/cryptbtrfs /mnt/var/tmp
     mkfs.fat -F32 /dev/${partition_choice}p1
     mount --mkdir /dev/${partition_choice}p1 /mnt/boot
-    exit
+    break 
   else
     echo "Partition '/dev/$partition_choice' does not exist, please choose a valid partition"
     sleep 3
