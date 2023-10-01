@@ -83,6 +83,7 @@ install_core_packages() {
     hplip \
     # Cli Tools
     alacritty \
+    arch-install-scripts
     rsync \
     openssh \
     ssh-audit \
