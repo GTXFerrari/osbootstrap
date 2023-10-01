@@ -14,6 +14,47 @@ Cyan='\033[0;36m'
 White='\033[0;37m'
 
 # Functions
+drive_partition() {
+while true; do
+  echo "Available disk partitions:"
+  lsblk -o NAME,FSTYPE,SIZE,MOUNTPOINT | grep -v "loop\|sr0"
+  read -p "Enter the name of the partition you want to use: " partition_choice
+  if [ -e "/dev/$partition_choice" ]; then
+    # Partition using sgdisk
+    sgdisk -Z /dev/$partition_choice
+    sgdisk --clear --new=1:0:+512MiB --typecode=1:ef00 --change-name=1:EFI --new=2:0:0 --typecode=2:8300 --change-name=2:cryptsys /dev/$partition_choice
+    # Encryption
+    cryptsetup luksFormat --type luks2 --align-payload=8192 -c aes-xts-plain64 -s 512 -h sha512 -y --use-urandom /dev/${partition_choice}2
+    cryptsetup open /dev/${partition_choice}2
+    # BTRFS
+    mkfs.btrfs -L archbtrfs /dev/mapper/cryptbtrfs
+    mount /dev/mapper/cryptbtrfs /mnt
+    btrfs subvolume create /mnt/@
+    btrfs subvolume create /mnt/@home
+    btrfs subvolume create /mnt/@snapshots
+    btrfs subvolume create /mnt/@cache
+    btrfs subvolume create /mnt/@libvirt
+    btrfs subvolume create /mnt/@log
+    btrfs subvolume create /mnt/@tmp
+    umount -R /mnt
+    mount_opts="rw,noatime,compress-force=zstd:1,space_cache=v2"
+    mount -o ${mount_opts},subvol=@ /dev/mapper/cryptbtrfs /mnt
+    mkdir -p /mnt/{home,.snapshots,var/cache,var/lib/libvirt,var/log,var/tmp}
+    mount -o ${mount_opts},subvol=@home /dev/mapper/cryptbtrfs /mnt/home
+    mount -o ${mount_opts},subvol=@snapshots /dev/mapper/cryptbtrfs /mnt/.snapshots
+    mount -o ${mount_opts},subvol=@cache /dev/mapper/cryptbtrfs /mnt/var/cache
+    mount -o ${mount_opts},subvol=@libvirt /dev/mapper/cryptbtrfs /mnt/var/lib/libvirt
+    mount -o ${mount_opts},subvol=@log /dev/mapper/cryptbtrfs /mnt/var/log
+    mount -o ${mount_opts},subvol=@tmp /dev/mapper/cryptbtrfs /mnt/var/tmp
+    mkfs.fat -F32 /dev/${partition_choice}1
+    mount --mkdir /dev/${partition_choice}1 /mnt/boot
+    exit
+  else
+    echo "Partition '/dev/$partition_choice' does not exist, please choose a valid partition"
+    sleep 3
+  fi
+done
+}
 init() {
   echo "Setting timezone"
   ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
@@ -640,6 +681,7 @@ done
 
 
 # Call functions
+drive_partition
 init
 set_hostname
 set_root_password
