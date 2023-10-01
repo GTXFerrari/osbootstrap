@@ -59,6 +59,7 @@ paru -S --needed \
   proton-ge-custom-bin \
   razergenie \
   visual-studio-code-bin \
+  github-desktop-bin \
   vmware-workstation \
   cpu-x \
   duckstation-git \
