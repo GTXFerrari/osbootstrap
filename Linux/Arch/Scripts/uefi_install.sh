@@ -169,7 +169,7 @@ install_audio() {
     bluez \
     bluez-utils \
     lsp-plugins \
-    sof-firmware 
+    sof-firmware
   systemctl enable bluetooth.service
 }
 
