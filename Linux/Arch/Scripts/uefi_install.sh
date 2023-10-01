@@ -254,7 +254,19 @@ install_wine() {
   echo -n "Do you want to install Wine? (y/n) "
   read -r wine
   if [[ "$wine" == "y" ]]; then
-  pacman -S --needed wine-staging wine-gecko wine-mono pipewire-pulse lib32-libpulse lib32-alsa-oss lib32-gnutls lib32-gst-plugins-base lib32-gst-plugins-good samba winetricks zenity
+  pacman -S --needed \
+    wine-staging \
+    wine-gecko \
+    wine-mono \
+    pipewire-pulse \
+    lib32-libpulse \
+    lib32-alsa-oss \
+    lib32-gnutls \
+    lib32-gst-plugins-base \
+    lib32-gst-plugins-good \
+    samba \
+    winetricks \
+    zenity
   fi
 }
 install_virtualization() {
