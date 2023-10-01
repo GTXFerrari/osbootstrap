@@ -238,7 +238,16 @@ install_gaming() {
   echo -n "Will this machine be used for gaming? (y/n) "
   read -r game
   if [[ "$game" == "y" ]]; then
-  pacman -S --needed steam lutris discord retroarch retroarch-assets-xmb retroarch-assets-ozone libretro-core-info gamescope yuzu
+  pacman -S --needed \
+    steam \
+    lutris \
+    discord \
+    retroarch \
+    retroarch-assets-xmb \
+    retroarch-assets-ozone \
+    libretro-core-info \
+    gamescope \
+    yuzu
   fi
 }
 install_wine() {
