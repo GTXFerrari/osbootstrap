@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 sudo pacman -S --needed \
+  tree-sitter \
   go \
   rust \
   luarocks \
