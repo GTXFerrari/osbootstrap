@@ -21,7 +21,7 @@ init() {
   echo "LANG=en_US.UTF-8" >> /etc/locale.conf
   echo -e "${Green}Enabling multilib.${NC}"
   sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
-  echo -e "${Green}Updating mirrorlist.{NC}"
+  echo -e "${Green}Updating mirrorlist.${NC}"
   reflector -c 'United States' -a 12 -p https --sort rate --save /etc/pacman.d/mirrorlist
   pacman -Sy
   echo -e "${Green}Updating keyring.${NC}"
