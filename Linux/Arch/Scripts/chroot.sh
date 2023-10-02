@@ -618,6 +618,7 @@ mkinitcpio_setup() {
   modules="nvidia nvidia_modeset nvidia_uvm nvidia_drm btrfs"
   hooks="base udev keyboard autodetect keymap consolefont modconf block encrypt filesystems fsck"
   mkinitcpio_conf="/etc/mkinitcpio.conf"
+   sed -i 's/\(MODULES=([^)]*\))/MODULES=()/' "$mkinitcpio_conf"
    sed -i "/MODULES=(/ s/)/$modules)/" "$mkinitcpio_conf"
    sed -i 's/\(HOOKS=([^)]*\))/HOOKS=()/' "$mkinitcpio_conf"
    sed -i "/HOOKS=(/ s/)/$hooks)/" "$mkinitcpio_conf"
