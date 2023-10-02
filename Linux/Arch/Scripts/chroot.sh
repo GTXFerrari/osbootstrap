@@ -191,7 +191,7 @@ install_graphics() {
             lib32-opencl-nvidia \
             nvidia-settings \
             python-pytorch-cuda
-          exit
+          break
           ;;
         "AMD")
           pacman -S --needed \
@@ -205,17 +205,17 @@ install_graphics() {
             mesa-vdpau \
             lib32-mesa-vdpau \
             rocm-opencl-runtime 
-          exit
+          break
           ;;
         "Intel")
           pacman -S --needed \
             mesa \
             lib32-mesa \
             vulkan-intel
-          exit
+          break
           ;;
         "Exit")
-          exit 
+          break 
           ;;
         *)
           echo "Invalid choice. Please enter a valid option."
@@ -343,7 +343,7 @@ desktop_environment() {
             qt5-wayland \
             qt6-wayland
           systemctl enable sddm
-          exit
+          break
           ;;
         "Gnome")
           pacman -S --needed \
@@ -354,7 +354,7 @@ desktop_environment() {
             gnome-themes-extra \
             gdm
           systemctl enable gdm.service
-          exit
+          break
           ;;
         "Cinnamon")
           pacman -S --needed \
@@ -372,7 +372,7 @@ desktop_environment() {
             gnome-screenshot \
             gdm
           systemctl enable gdm.service
-          exit
+          break
           ;;
         "Xfce")
           pacman -S --needed \
@@ -383,7 +383,7 @@ desktop_environment() {
             lightdm-gtk-greeter \
             lightdm-webkit2-greeter
           systemctl enable lightdm.service
-          exit 
+          break 
           ;;
         "Budgie")
           pacman -S --needed \
@@ -395,10 +395,10 @@ desktop_environment() {
             lightdm-gtk-greeter \
             lightdm-webkit2-greeter
           systemctl enable lightdm.service
-          exit
+          break
           ;;
         "Exit")
-          exit
+          break
           ;;
         *)
           echo "Invalid choice. Please enter a valid option."
@@ -496,7 +496,7 @@ window_manager() {
             echo -e "${Blue}Finished reinstalling dwmblocks.${NC}"
           fi
           chown -R jake:jake $dir
-          exit
+          break
           ;;
         "Bspwm")
           pacman -S --needed \
@@ -522,7 +522,7 @@ window_manager() {
             sxhkd \
             papirus-icon-theme
           systemctl enable lightdm.service
-          exit 
+          break 
           ;;
         "Awesome")
           pacman -S --needed \
@@ -547,7 +547,7 @@ window_manager() {
             sxhkd \
             papirus-icon-theme
           systemctl enable lightdm.service
-          exit 
+          break 
           ;;
         "i3")
           pacman -S --needed xorg-server \
@@ -572,7 +572,7 @@ window_manager() {
             sxhkd \
             papirus-icon-theme
           systemctl enable lightdm.service
-          exit
+          break
           ;;
         "Xmonad")
           pacman -S --needed \
@@ -599,10 +599,10 @@ window_manager() {
             sxhkd \
             papirus-icon-theme
           systemctl enable lightdm.service
-          exit
+          break
           ;;
         "Exit")
-          exit
+          break
           ;;
         *) echo "Invalid choice. Please enter a valid option."
           ;;
@@ -614,7 +614,17 @@ window_manager() {
 done
 }
 
+mkinitcpio_setup() {
+  modules="nvidia nvidia_modeset nvidia_uvm nvidia_drm btrfs"
+  hooks="base udev keyboard autodetect keymap consolefont modconf block encrypt filesystems fsck"
+  mkinitcpio_conf="/home/jake/Documents/testmkinitcpio.conf"
+   sed -i "/MODULES=(/ s/)/$modules)/" "$mkinitcpio_conf"
+   sed -i 's/\(HOOKS=([^)]*\))/HOOKS=()/' "$mkinitcpio_conf"
+   sed -i "/HOOKS=(/ s/)/$hooks)/" "$mkinitcpio_conf"
+   mkinitcpio -P
+}
 
+# Call functions
 init
 set_hostname
 set_root_password
@@ -626,6 +636,7 @@ install_graphics
 install_gaming
 install_wine
 install_virtualization
-laptop
+#laptop
+mkinitcpio_setup
 desktop_environment
 window_manager
