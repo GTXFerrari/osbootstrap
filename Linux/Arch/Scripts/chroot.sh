@@ -132,7 +132,7 @@ create_user() {
 }
 
 install_bootloader() {
-  luksuuid=$(blkid -s UUID -o value ${partition_choice}2
+  luksuuid=$(blkid -s UUID -o value ${partition_choice}2)
   echo "Installing Bootloader"
   bootctl install
   touch /boot/loader/entries/arch.conf
