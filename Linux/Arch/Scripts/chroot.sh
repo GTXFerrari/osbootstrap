@@ -132,6 +132,7 @@ create_user() {
 }
 
 install_bootloader() {
+  luksuuid=$(blkid -s UUID -o value ${partition_choice}2
   echo "Installing Bootloader"
   bootctl install
   touch /boot/loader/entries/arch.conf
@@ -140,12 +141,12 @@ install_bootloader() {
   linux /vmlinuz-linux
   initrd /amd-ucode.img
   initrd /initramfs-linux.img
-  options cryptdedvice=UUID=ENTERUUID:allow-discards root=/dev/mapper/luks rootflags=subvol=@ rd.luks.options=discard nvidia_drm.modeset=1 amd_iommu=on" >> /boot/loader/entries/arch.conf
+  options cryptdedvice=UUID=$luksuuid:allow-discards root=/dev/mapper/luks rootflags=subvol=@ rd.luks.options=discard nvidia_drm.modeset=1 amd_iommu=on" >> /boot/loader/entries/arch.conf
   echo "title Arch Linux (Zen)
   linux /vmlinuz-linux-zen
   initrd /amd-ucode.img
   initrd /initramfs-linux-zen.img
-  options cryptdedvice=UUID=ENTERUUID:allow-discards root=/dev/mapper/luks rootflags=subvol=@ rd.luks.options=discard nvidia_drm.modeset=1 amd_iommu=on" >> /boot/loader/entries/arch-zen.conf
+  options cryptdedvice=UUID=$luksuuid:allow-discards root=/dev/mapper/luks rootflags=subvol=@ rd.luks.options=discard nvidia_drm.modeset=1 amd_iommu=on" >> /boot/loader/entries/arch-zen.conf
 }
 
 install_audio() {
