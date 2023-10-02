@@ -191,7 +191,7 @@ install_graphics() {
             lib32-opencl-nvidia \
             nvidia-settings \
             python-pytorch-cuda
-          break
+          break 2
           ;;
         "AMD")
           pacman -S --needed \
@@ -205,17 +205,17 @@ install_graphics() {
             mesa-vdpau \
             lib32-mesa-vdpau \
             rocm-opencl-runtime 
-          break
+          break 2
           ;;
         "Intel")
           pacman -S --needed \
             mesa \
             lib32-mesa \
             vulkan-intel
-          break
+          break 2
           ;;
         "Exit")
-          break 
+          break 2 
           ;;
         *)
           echo "Invalid choice. Please enter a valid option."
@@ -223,7 +223,7 @@ install_graphics() {
    esac
  done
 else
-    break
+    break 2
   fi
 done
 }
@@ -343,7 +343,7 @@ desktop_environment() {
             qt5-wayland \
             qt6-wayland
           systemctl enable sddm
-          break
+          break 2
           ;;
         "Gnome")
           pacman -S --needed \
@@ -354,7 +354,7 @@ desktop_environment() {
             gnome-themes-extra \
             gdm
           systemctl enable gdm.service
-          break
+          break 2
           ;;
         "Cinnamon")
           pacman -S --needed \
@@ -372,7 +372,7 @@ desktop_environment() {
             gnome-screenshot \
             gdm
           systemctl enable gdm.service
-          break
+          break 2
           ;;
         "Xfce")
           pacman -S --needed \
@@ -383,7 +383,7 @@ desktop_environment() {
             lightdm-gtk-greeter \
             lightdm-webkit2-greeter
           systemctl enable lightdm.service
-          break 
+          break 2 
           ;;
         "Budgie")
           pacman -S --needed \
@@ -395,10 +395,10 @@ desktop_environment() {
             lightdm-gtk-greeter \
             lightdm-webkit2-greeter
           systemctl enable lightdm.service
-          break
+          break 2
           ;;
         "Exit")
-          break
+          break 2
           ;;
         *)
           echo "Invalid choice. Please enter a valid option."
@@ -406,7 +406,7 @@ desktop_environment() {
       esac
     done 
   else
-    break
+    break 2
   fi
 done
 }
@@ -496,7 +496,7 @@ window_manager() {
             echo -e "${Blue}Finished reinstalling dwmblocks.${NC}"
           fi
           chown -R jake:jake $dir
-          break
+          break 2
           ;;
         "Bspwm")
           pacman -S --needed \
@@ -522,7 +522,7 @@ window_manager() {
             sxhkd \
             papirus-icon-theme
           systemctl enable lightdm.service
-          break 
+          break 2 
           ;;
         "Awesome")
           pacman -S --needed \
@@ -547,7 +547,7 @@ window_manager() {
             sxhkd \
             papirus-icon-theme
           systemctl enable lightdm.service
-          break 
+          break 2 
           ;;
         "i3")
           pacman -S --needed xorg-server \
@@ -572,7 +572,7 @@ window_manager() {
             sxhkd \
             papirus-icon-theme
           systemctl enable lightdm.service
-          break
+          break 2
           ;;
         "Xmonad")
           pacman -S --needed \
@@ -599,17 +599,17 @@ window_manager() {
             sxhkd \
             papirus-icon-theme
           systemctl enable lightdm.service
-          break
+          break 2
           ;;
         "Exit")
-          break
+          break 2
           ;;
         *) echo "Invalid choice. Please enter a valid option."
           ;;
       esac
     done
   else
-    break
+    break 2
   fi
 done
 }
