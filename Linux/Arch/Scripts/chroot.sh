@@ -46,10 +46,8 @@ set_root_password() {
 
 install_core_packages() {
   pacman -S --needed \
-    # Bootloader
     efibootmgr \
     sbctl \
-    # Network
     networkmanager \
     nm-connection-editor \
     iwd \
@@ -57,27 +55,22 @@ install_core_packages() {
     bind \
     cifs-utils \
     nfs-utils \
-    # System Tools
     base-devel \
     pacman-contrib \
     polkit \
     cronie \
-    # User Dirs
     xdg-user-dirs \
     xdg-utils \
-    # Storage
     udisks2 \
     exfatprogs \
     mtools \
     dosfstools \
-    btrfs-progs
-    # Print
+    btrfs-progs \
     cups \
     cups-pdf \
     hplip \
-    # Cli Tools
     alacritty \
-    arch-install-scripts
+    arch-install-scripts \
     rsync \
     openssh \
     ssh-audit \
@@ -86,21 +79,18 @@ install_core_packages() {
     zsh-autosuggestions \
     neofetch \
     htop \
-    cmatrix
+    cmatrix \
     cowsay \
     btop \
     nvtop \
     wireshark-qt \
-    # Media
     mpd \
     mpc \
     mpv \
     ncmpcpp \
-    # Fonts
     ttf-sourcecodepro-nerd \
     ttf-jetbrains-mono-nerd \
-    ttf-joypixels
-    # lf file manager
+    ttf-joypixels \
     lf \
     lynx \
     ueberzug \
@@ -111,14 +101,13 @@ install_core_packages() {
     mediainfo \
     ffmpegthumbnailer \
     odt2txt \
-    # PDF & EPUB
     zathura \
     zathura-djvu \
     zathura-pdf-mupdf \
     zathura-ps \
-    # User Apps
     firefox \
     bitwarden
+
   systemctl enable \
     NetworkManager.service \
     avahi-daemon.service \
@@ -128,6 +117,7 @@ install_core_packages() {
     sshd.service \
     fstrim.timer \
     cronie.service
+
 usermod -aG wireshark jake
 }
 
