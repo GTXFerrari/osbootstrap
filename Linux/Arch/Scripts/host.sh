@@ -17,6 +17,7 @@ while true; do
   echo "Available disk partitions:"
   lsblk -o NAME,FSTYPE,SIZE,MOUNTPOINT | grep -v "loop\|sr0"
   read -p "Enter the name of the partition you want to use: " partition_choice
+  export partition_choice
   if [ -e "/dev/$partition_choice" ]; then
     # Partition using sgdisk
     sgdisk -Z /dev/$partition_choice
