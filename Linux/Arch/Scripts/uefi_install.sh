@@ -2,8 +2,6 @@
 
 # Colors
 NC='\033[0m' # No Color
-
-# Regular Colors
 Black='\033[0;30m'
 Red='\033[0;31m'
 Green='\033[0;32m'
@@ -57,6 +55,13 @@ done
 }
 
 pacstab() {
+  cpu_vendor=$(grep -m1 'vendor_id' /p roc/cpuinfo | awk '{print $3}')
+  if [ "$cpu_vendor" == "AuthenticAMD" ]; then
+    ucode="amd-ucode"
+  else
+    ucode="intel-ucode"
+  fi
+
   pacstrap /mnt \
     base \
     linux \
@@ -65,7 +70,7 @@ pacstab() {
     linux-zen-headers \
     linux-firmware \
     sof-firmware \
-    amd-ucode \
+    $ucode \
     git \
     neovim \
     reflector \
