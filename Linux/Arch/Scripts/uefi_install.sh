@@ -83,7 +83,7 @@ pacstab() {
 }
 
 init() {
-  echo "Setting timezone"
+  echo -e "${Green}Setting timezone.${NC}"
   ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
   echo "Syncing system clock"
   hwclock --systohc
@@ -696,9 +696,11 @@ done
 }
 
 
-# Call functions
 drive_partition
 pacstab
+# Chroot
+arch-chroot /mnt
+#
 init
 set_hostname
 set_root_password
