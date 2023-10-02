@@ -79,8 +79,8 @@ pacstab() {
     btrfs-progs
 
   genfstab -U /mnt >> /mnt/etc/fstab
-  cp /./chroot.sh /mnt # Possible breakage if PATH is wrong, need to find solution
-  arch-chroot /mnt ./host.sh
+  cp chroot.sh /mnt # Possible breakage if PATH is wrong, need to find solution
+  arch-chroot /mnt ./chroot.sh
 }
 
 drive_partition
