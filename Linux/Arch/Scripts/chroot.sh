@@ -19,12 +19,12 @@ init() {
   sed -i '171s/.//' /etc/locale.gen
   locale-gen
   echo "LANG=en_US.UTF-8" >> /etc/locale.conf
-  echo "Enabling multilib"
+  echo -e "${Green}Enabling multilib.${NC}"
   sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
-  echo "Updating mirrorlist"
+  echo -e "${Green}Updating mirrorlist.{NC}"
   reflector -c 'United States' -a 12 -p https --sort rate --save /etc/pacman.d/mirrorlist
   pacman -Sy
-  echo "Updating keyring"
+  echo -e "${Green}Updating keyring.${NC}"
   pacman -S --noconfirm archlinux-keyring sudo
 }
 
@@ -617,7 +617,7 @@ done
 mkinitcpio_setup() {
   modules="nvidia nvidia_modeset nvidia_uvm nvidia_drm btrfs"
   hooks="base udev keyboard autodetect keymap consolefont modconf block encrypt filesystems fsck"
-  mkinitcpio_conf="/home/jake/Documents/testmkinitcpio.conf"
+  mkinitcpio_conf="/etc/mkinitcpio.conf"
    sed -i "/MODULES=(/ s/)/$modules)/" "$mkinitcpio_conf"
    sed -i 's/\(HOOKS=([^)]*\))/HOOKS=()/' "$mkinitcpio_conf"
    sed -i "/HOOKS=(/ s/)/$hooks)/" "$mkinitcpio_conf"
