@@ -20,7 +20,7 @@ Write-Host "Code is running as administrator — go on executing the script..." 
 Enable-BitLocker -MountPoint "C" -EncryptionMethod XtsAes256 -Pin $Pin -TpmAndPinProtector  # Requires a custom group policy to enable PIN
 # Enable additional recovery keys
 Add-BitLockerKeyProtector -MountPoint "C" -RecoveryPasswordProtector   # Store the generated recoverypassword in a safe location
-manage-bde -protectors -get C: > '\\10.0.40.5\Jake\Backups\Bitlocker\Jakes-PC Bitlocker Recovery Codes\recoverycode.txt'
+manage-bde -protectors -get C: > '\\10.0.40.5\Jake\Backups\Bitlocker\Jakes-PC Bitlocker Recovery Codes\C_Drive\BLRecoveryKey.txt'
 # Enable bitlocker for Data drives (D:)
 #Enable-BitLocker -MountPoint "D:" -EncryptionMethod XtsAes256 -PasswordProtector -Password $Pass
 #Enable-BitLockerAutoUnlock -MountPoint "D:"
