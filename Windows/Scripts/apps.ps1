@@ -80,7 +80,6 @@ choco install madvr -y
 choco install bind-toolsonly -y
 choco install zentimings -y
 choco install msiafterburner -y
-choco install lazygit -y 
 choco install sysinternals -y 
 
 # Install fonts using choco
