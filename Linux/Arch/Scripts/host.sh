@@ -21,9 +21,9 @@ while true; do
   if [ -e "/dev/$partition_choice" ]; then
     # Partition using sgdisk
     sgdisk -Z /dev/$partition_choice
-    sgdisk --clear --new=1:0:+512MiB --typecode=1:ef00 --change-name=1:EFI --new=2:0:0 --typecode=2:8300 --change-name=2:cryptsys /dev/$partition_choice
+    sgdisk --clear --new=1:0:+512MiB --typecode=1:ef00 --change-name=1:EFI --new=2:0:0 --typecode=2:8300 --change-name=2:system /dev/$partition_choice
     # Encryption
-    cryptsetup luksFormat --type luks2 --align-payload=8192 -c aes-xts-plain64 -s 512 -h sha512 -y --use-urandom /dev/${partition_choice}p2
+    cryptsetup luksFormat --type luks2 --align-payload=4096 -c aes-xts-plain64 -s 512 -h sha512 -y --use-urandom /dev/${partition_choice}p2 # Need to create a conditional in case the selected drive is not an NVME device
     cryptsetup open /dev/${partition_choice}p2 cryptbtrfs
     # BTRFS
     mkfs.btrfs -L archbtrfs /dev/mapper/cryptbtrfs
