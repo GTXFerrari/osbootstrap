@@ -16,7 +16,7 @@ Break
 else {
 Write-Output "Code is running as administrator - go on executing the script..."
 }
-                                                                                                                                                                                                                                                                      
+
 # Install applications using winget
 Write-Output "Installing Applications"
 $apps = @(
