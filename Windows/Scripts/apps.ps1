@@ -55,7 +55,10 @@ $apps = @(
     @{name = "WiresharkFoundation.Wireshark" },
     @{name = "FinalWire.AIDA64.Engineer" },
     @{name = "Flow-Launcher.Flow-Launcher" },
-    @{name = "Insecure.Nmap" }
+    @{name = "Insecure.Nmap" },
+    @{name = "9PF4KZ2VN4W9" }, # TranslucentTB
+    @{name = "9NBLGGH30XJ3" }, # Xbox Accessories
+    @{name = "9PFHDD62MXS1" } # Apple Music Preview
 );
 Foreach ($app in $apps) {
     $listApp = winget list --exact -q $app.name
