@@ -16,7 +16,7 @@ Start-Sleep 3
 
 # Create new drive partition from extra space on OS disk
 Write-Warning "Drive D is about to be created from disk 0, is the information correct?" -WarningAction Inquire
-New-Partition -DiskNumber 0 -UseMaximumSize -DriveLetter D | Format-Volume -FileSystem NTFS -NewFileSystemLabel "Games"
+New-Partition -DiskNumber 0 -UseMaximumSize -DriveLetter D | Format-Volume -FileSystem NTFS -NewFileSystemLabel "Data"
 
 # Create directories in new partition
 Set-Location -LiteralPath D:
@@ -40,6 +40,6 @@ Set-Location -LiteralPath D:\VM
 New-Item -ItemType Directory VMware,ISO
 
 # Move Game files to location 
-robocopy /V /ETA /E Z:\Games\Nintendo\Switch\ D:\Games\Emulator\Nintendo\Switch\Titles\
-robocopy /V /ETA /E 'Z:\Games\Nintendo\Wii U\BOTW' 'D:\Games\Emulator\Nintendo\Wii U\Titles\'
-robocopy /V /ETA /E 'Z:\Games\Sony\Playstation 3\' 'D:\Games\Emulator\Sony\Playstation 3\Titles\'
+#robocopy /V /ETA /E Z:\Games\Nintendo\Switch\ D:\Games\Emulator\Nintendo\Switch\Titles\
+#robocopy /V /ETA /E 'Z:\Games\Nintendo\Wii U\BOTW' 'D:\Games\Emulator\Nintendo\Wii U\Titles\'
+#robocopy /V /ETA /E 'Z:\Games\Sony\Playstation 3\' 'D:\Games\Emulator\Sony\Playstation 3\Titles\'
