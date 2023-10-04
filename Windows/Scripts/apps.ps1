@@ -57,6 +57,7 @@ $apps = @(
     @{name = "Flow-Launcher.Flow-Launcher" },
     @{name = "Insecure.Nmap" },
     @{name = "OBSProject.OBSStudio" },
+    @{name = "lenxc.ChatGPT" },
     @{name = "9PF4KZ2VN4W9" }, # TranslucentTB
     @{name = "9NBLGGH30XJ3" }, # Xbox Accessories
     @{name = "9PFHDD62MXS1" } # Apple Music Preview
