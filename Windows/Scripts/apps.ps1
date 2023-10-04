@@ -59,6 +59,7 @@ $apps = @(
     @{name = "OBSProject.OBSStudio" },
     @{name = "lenxc.ChatGPT" },
     @{name = "GitHub.GitHubDesktop" },
+    @{name = "OpenJS.NodeJS" },
     @{name = "9PF4KZ2VN4W9" }, # TranslucentTB
     @{name = "9NBLGGH30XJ3" }, # Xbox Accessories
     @{name = "9PFHDD62MXS1" } # Apple Music Preview
@@ -77,6 +78,8 @@ Foreach ($app in $apps) {
 # Refresh PATH (PATH needs to be refreshed to enable Git & 7z)
 Write-Output "Refreshing PATH"
 $Env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")  
+# Add npm to path
+System.Environment]::SetEnvironmentVariable("Path", "$env:Path;C:\Program Files\nodejs\node_modules\npm\bin\", [System.EnvironmentVariableTarget]::Machine)
 
 # Download applications using choco
 choco install openrgb -y
