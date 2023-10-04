@@ -58,6 +58,7 @@ $apps = @(
     @{name = "Insecure.Nmap" },
     @{name = "OBSProject.OBSStudio" },
     @{name = "lenxc.ChatGPT" },
+    @{name = "GitHub.GitHubDesktop" },
     @{name = "9PF4KZ2VN4W9" }, # TranslucentTB
     @{name = "9NBLGGH30XJ3" }, # Xbox Accessories
     @{name = "9PFHDD62MXS1" } # Apple Music Preview
