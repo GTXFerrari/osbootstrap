@@ -441,14 +441,9 @@ window_manager() {
             dunst \
             polkit \
             polkit-kde-agent \
-            kwallet-pam \
-            kwalletmanager \
-            ksshaskpass \
-            lightdm \
-            lightdm-gtk-greeter \
-            lightdm-webkit2-greeter \
             sxhkd \
             network-manager-applet \
+            unclutter \
             papirus-icon-theme
           if [ ! -d "$dir" ]; then
             echo -e "${Red}Git directory does not exist, creating directory.${NC}"
