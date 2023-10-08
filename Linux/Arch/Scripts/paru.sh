@@ -70,6 +70,7 @@ paru -S --needed \
   zsh-fast-syntax-highlighting \
   zsh-theme-powerlevel10k-git \
   rpcs3-git \
+  cava \
   xone-dkms
 
 # Enable systemd services
