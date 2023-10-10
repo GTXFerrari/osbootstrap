@@ -88,8 +88,7 @@ install_core_packages() {
     mpc \
     mpv \
     ncmpcpp \
-    ttf-sourcecodepro-nerd \
-    ttf-jetbrains-mono-nerd \
+    nerd-fonts \
     ttf-joypixels \
     lf \
     lynx \
