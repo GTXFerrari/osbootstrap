@@ -71,7 +71,7 @@ paru -S --needed \
   zsh-theme-powerlevel10k-git \
   rpcs3-git \
   cava \
-  xone-dkms
+  xone-dkms-git
 
 # Enable systemd services
 sudo systemctl enable --now \
