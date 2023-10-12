@@ -86,3 +86,9 @@ pacstab() {
 
 drive_partition
 pacstab
+
+# Clean Up
+echo -e "${Green}Cleaning up.${NC}"
+rm /mnt/chroot.sh
+umount -R /mnt
+reboot
