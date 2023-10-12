@@ -242,7 +242,10 @@ install_gaming() {
     retroarch-assets-ozone \
     libretro-core-info \
     gamescope \
-    yuzu
+    yuzu \
+    obs-studio \
+    teamspeak3
+    
   fi
 }
 
