@@ -67,6 +67,7 @@ paru -S --needed \
   cemu \
   goverlay-bin \
   nvim-packer-git \
+  nvim-lazy \
   zsh-fast-syntax-highlighting \
   zsh-theme-powerlevel10k-git \
   rpcs3-git \
