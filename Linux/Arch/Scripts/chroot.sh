@@ -105,6 +105,7 @@ install_core_packages() {
     zathura-pdf-mupdf \
     zathura-ps \
     firefox \
+    lazygit \
     bitwarden
 
   systemctl enable \
