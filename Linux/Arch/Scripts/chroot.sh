@@ -106,6 +106,7 @@ install_core_packages() {
     zathura-ps \
     firefox \
     lazygit \
+    hugo \
     bitwarden
 
   systemctl enable \
