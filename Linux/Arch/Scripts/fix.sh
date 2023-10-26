@@ -3,7 +3,6 @@
 cryptsetup open /dev/nvme1n1p2 cryptbtrfs
 mount_opts="rw,noatime,compress-force=zstd:1,space_cache=v2"
 mount -o ${mount_opts},subvol=@ /dev/mapper/cryptbtrfs /mnt
-mkdir -p /mnt/{home,.snapshots,var/cache,var/lib/libvirt,var/log,var/tmp}
 mount -o ${mount_opts},subvol=@home /dev/mapper/cryptbtrfs /mnt/home
 mount -o ${mount_opts},subvol=@snapshots /dev/mapper/cryptbtrfs /mnt/.snapshots
 mount -o ${mount_opts},subvol=@cache /dev/mapper/cryptbtrfs /mnt/var/cache
