@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # This script is used to chroot into the system in case you need to fix something
 cryptsetup open /dev/nvme1n1p2 cryptbtrfs
 mount_opts="rw,noatime,compress-force=zstd:1,space_cache=v2"
