@@ -1,16 +1,5 @@
 #!/usr/bin/env bash
 
-# Colors
-NC='\033[0m' # No Color
-Black='\033[0;30m'
-Red='\033[0;31m'
-Green='\033[0;32m'
-Yellow='\033[0;33m'
-Blue='\033[0;34m'
-Purple='\033[0;35m'
-Cyan='\033[0;36m'
-White='\033[0;37m'
-
 init() {
   echo -e "${Green}Setting timezone.${NC}"
   ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
@@ -88,8 +77,7 @@ install_core_packages() {
     mpc \
     mpv \
     ncmpcpp \
-    ttf-sourcecodepro-nerd \
-    ttf-jetbrains-mono-nerd \
+    nerd-fonts \
     ttf-joypixels \
     lf \
     lynx \
@@ -106,6 +94,8 @@ install_core_packages() {
     zathura-pdf-mupdf \
     zathura-ps \
     firefox \
+    lazygit \
+    hugo \
     bitwarden
 
   systemctl enable \
@@ -243,7 +233,10 @@ install_gaming() {
     retroarch-assets-ozone \
     libretro-core-info \
     gamescope \
-    yuzu
+    yuzu \
+    obs-studio \
+    teamspeak3
+    
   fi
 }
 
@@ -441,14 +434,9 @@ window_manager() {
             dunst \
             polkit \
             polkit-kde-agent \
-            kwallet-pam \
-            kwalletmanager \
-            ksshaskpass \
-            lightdm \
-            lightdm-gtk-greeter \
-            lightdm-webkit2-greeter \
             sxhkd \
             network-manager-applet \
+            unclutter \
             papirus-icon-theme
           if [ ! -d "$dir" ]; then
             echo -e "${Red}Git directory does not exist, creating directory.${NC}"

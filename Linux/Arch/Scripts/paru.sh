@@ -67,10 +67,12 @@ paru -S --needed \
   cemu \
   goverlay-bin \
   nvim-packer-git \
+  nvim-lazy \
   zsh-fast-syntax-highlighting \
   zsh-theme-powerlevel10k-git \
   rpcs3-git \
-  xone-dkms
+  cava \
+  xone-dkms-git
 
 # Enable systemd services
 sudo systemctl enable --now \
