@@ -3,7 +3,7 @@
 # Variables
 DIR="/etc/samba/credentials"
 SHARE="/etc/samba/credentials/share"
-TRUENAS="/home/jake/TrueNAS"
+TRUENAS="/mnt/truenas"
 NAS="//10.0.40.5"
 OPT="file_mode=0777,dir_mode=0777,_netdev,nofail,credentials=/etc/samba/credentials/share 0 0"
 
@@ -20,13 +20,13 @@ White='\033[0;37m'
 
 echo -e "${Blue}Downloading prerequisite packages.${NC}"
 sudo pacman -S --needed --noconfirm cifs-utils
-# Create a TrueNAS directory with share mountpoints
+# Create a trueNAS directory with share mountpoints
 if [ ! -d "$TRUENAS" ]; then
     echo -e "${Red}TrueNAS directory does not exist, creating.${NC}"
-    mkdir -p "$TRUENAS" && cd "$TRUENAS" && mkdir Jake MP LTS Media Media2 ISO
+    mkdir -p "$TRUENAS" && cd "$TRUENAS" && mkdir jake gold stash media iso
     else
     echo -e "${Blue}TrueNAS directory already exists.${NC}"
-    cd "$TRUENAS" && mkdir Jake MP LTS Media Media2 ISO
+    cd "$TRUENAS" && mkdir jake gold stash media iso 
 fi
 
 # Create /etc/samba/credentials directory
@@ -58,18 +58,16 @@ fi
 # Add SMB share to fstab for automounting
 {
     echo " "
-    echo "$NAS"/Jake       "$TRUENAS"/Jake         cifs        "$OPT"
+    echo "$NAS"/Jake       "$TRUENAS"/jake         cifs        "$OPT"
     echo " "
-    echo "$NAS"/LTS        "$TRUENAS"/LTS          cifs        "$OPT"
+    echo "$NAS"/Stash        "$TRUENAS"/stash          cifs        "$OPT"
     echo " "
-    echo "$NAS"/Media      "$TRUENAS"/Media        cifs        "$OPT"
+    echo "$NAS"/Media      "$TRUENAS"/media        cifs        "$OPT"
     echo " "
-    echo "$NAS"/Media2     "$TRUENAS"/Media2       cifs        "$OPT"
+    echo "$NAS"/Gold         "$TRUENAS"/gold           cifs        "$OPT"
     echo " "
-    echo "$NAS"/MP         "$TRUENAS"/MP           cifs        "$OPT"
-    echo " "
-    echo "$NAS"/ISO         "$TRUENAS"/ISO         cifs        "$OPT"
+    echo "$NAS"/ISO         "$TRUENAS"/iso         cifs        "$OPT"
 
 } | sudo tee -a /etc/fstab > /dev/null
 echo -e "${Blue}Mounting Shares.${NC}"
-systemctl daemon-reload && sudo mount -a
+sudo systemctl daemon-reload && sudo mount -a
