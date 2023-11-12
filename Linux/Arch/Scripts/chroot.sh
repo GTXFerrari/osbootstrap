@@ -4,7 +4,6 @@ init() {
   ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
   echo -e "${Green}Syncing system clock.${NC}"
   hwclock --systohc
-  systemctl enable systemd-timesyncd.service
   sed -i '/^#en_US.UTF-8 UTF-8/s/^#//' /etc/locale.gen
   locale-gen
   echo "LANG=en_US.UTF-8" >> /etc/locale.conf
@@ -113,6 +112,7 @@ install_core_packages() {
     reflector.timer \
     sshd.service \
     fstrim.timer \
+    systemd-timesyncd.service \
     cronie.service
 
 usermod -aG wireshark jake
