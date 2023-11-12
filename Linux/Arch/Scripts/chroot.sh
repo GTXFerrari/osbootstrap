@@ -23,7 +23,6 @@ set_hostname() {
   echo "$hostname" >>/etc/hostname
   {   echo "127.0.0.1  localhost"
       echo "::1   localhost"
-      echo "127.0.1.1 $hostname.localdomain.$hostname"
   } >> /etc/hosts
 }
 
