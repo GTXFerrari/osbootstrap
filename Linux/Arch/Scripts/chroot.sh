@@ -27,6 +27,13 @@ set_hostname() {
   } >> /etc/hosts
 }
 
+# Set vconsole to high resolution during initram env
+set_vconsole() {
+  {  echo "KEYMAP=us"
+     echo "FONT=ter-v32n"
+  } > /etc/vconsole.conf
+}
+
 set_root_password() {
   echo -n "Enter a value for the root password: "
   read -r password
@@ -619,6 +626,7 @@ mkinitcpio_setup() {
 # Call functions
 init
 set_hostname
+set_vconsole
 set_root_password
 create_user
 install_core_packages
