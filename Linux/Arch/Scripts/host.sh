@@ -13,6 +13,20 @@ export White='\033[0;37m'
 
 # Functions
 
+check_uefi() {
+  efi_platform_size_file="/sys/firmware/efi/fw_platform_size"
+  if [ -e "$efi_platform_size_file" ]; then
+    value=$(cat "$efi_platform_size_file")
+
+    if [ "$value" -eq 64 ]; then
+      echo "The system was booted using UEFI, proceeding..."
+    else
+      echo "The system was not booted using UEFI, change the settings in the BIOS before proceeding"
+      exit 1
+    fi
+  fi
+}
+
 check_internet_connection() {
   websites=("archlinux.org" "google.com" "example.com")
   echo "Checking internet connection"
@@ -31,7 +45,7 @@ if check_internet_connection; then
   echo "Internet connection available. Starting script"
 else
   echo "No internet connection found. Exiting..."
-  exit
+  exit 1
 fi
 }
 
@@ -117,6 +131,8 @@ pacstab() {
 
 
 # Call functions
+setfont ter-132n
+check_uefi
 internet_check
 drive_partition
 pacstab
