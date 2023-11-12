@@ -5,7 +5,8 @@ init() {
   ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
   echo -e "${Green}Syncing system clock.${NC}"
   hwclock --systohc
-  sed -i '171s/.//' /etc/locale.gen
+  systemctl enable systemd-timesyncd.service
+  sed -i '171s/.//' /etc/locale.gen # FIX
   locale-gen
   echo "LANG=en_US.UTF-8" >> /etc/locale.conf
   echo -e "${Green}Enabling multilib.${NC}"
