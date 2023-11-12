@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
-
 init() {
   echo -e "${Green}Setting timezone.${NC}"
   ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
   echo -e "${Green}Syncing system clock.${NC}"
   hwclock --systohc
   systemctl enable systemd-timesyncd.service
-  sed -i '171s/.//' /etc/locale.gen # FIX
+  sed -i '/^#en_US.UTF-8 UTF-8/s/^#//' /etc/locale.gen
   locale-gen
   echo "LANG=en_US.UTF-8" >> /etc/locale.conf
   echo -e "${Green}Enabling multilib.${NC}"
