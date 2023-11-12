@@ -25,6 +25,16 @@ check_internet_connection() {
   return 1
 }
 
+internet_check() {
+# Check for internet connection
+if check_internet_connection; then
+  echo "Internet connection available. Starting script"
+else
+  echo "No internet connection found. Exiting..."
+  exit
+fi
+}
+
 drive_partition() {
 while true; do
   echo "Available disk partitions:"
@@ -105,14 +115,9 @@ pacstab() {
   arch-chroot /mnt ./chroot.sh
 }
 
-# Check for internet connection
-if check_internet_connection; then
-  echo "Internet connection available. Starting script"
-else
-  echo "No internet connection found. Exiting..."
-fi
 
 # Call functions
+internet_check
 drive_partition
 pacstab
 
