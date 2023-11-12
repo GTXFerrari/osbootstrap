@@ -84,7 +84,7 @@ pacstab() {
     ucode="intel-ucode"
   fi
 
-  pacstrap /mnt \
+  pacstrap -K /mnt \
     base \
     linux \
     linux-headers \
