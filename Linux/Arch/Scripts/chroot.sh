@@ -96,7 +96,8 @@ install_core_packages() {
     firefox \
     lazygit \
     hugo \
-    bitwarden
+    bitwarden \
+    terminus-font
 
   systemctl enable \
     NetworkManager.service \
