@@ -14,15 +14,21 @@ export White='\033[0;37m'
 # Functions
 
 check_uefi() {
+  if [ -d /sys/firmware/efi/efivars/ ]; then
+    echo "System is booted using UEFI, proceeding"
+  else
+    echo "System is not booted using UEFI, change in the BIOS before proceeding."
+    exit 1
+  fi
+
   efi_platform_size_file="/sys/firmware/efi/fw_platform_size"
   if [ -e "$efi_platform_size_file" ]; then
     value=$(cat "$efi_platform_size_file")
 
     if [ "$value" -eq 64 ]; then
-      echo "The system was booted using UEFI, proceeding..."
+      echo "The system is using a 64 bit UEFI, proceeding..."
     else
-      echo "The system was not booted using UEFI, change the settings in the BIOS before proceeding"
-      exit 1
+      echo "The system is using a 32 bit UEFI, only systemd-boot is supported"
     fi
   fi
 }
