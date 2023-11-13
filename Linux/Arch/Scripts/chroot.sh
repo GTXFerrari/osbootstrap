@@ -60,6 +60,7 @@ install_core_packages() {
     mtools \
     dosfstools \
     btrfs-progs \
+    snapper \
     cups \
     cups-pdf \
     hplip \
