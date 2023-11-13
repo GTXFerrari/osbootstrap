@@ -74,7 +74,7 @@ paru -S --needed \
   cava \
   btrfs-assistant \
   btrfsmaintenance \
-
+  snapper-gui-git \
   xone-dkms-git
 
 # Enable systemd services
