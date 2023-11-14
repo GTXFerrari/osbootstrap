@@ -28,7 +28,7 @@ set_hostname() {
 # Set vconsole to high resolution during initram env
 set_vconsole() {
   {  echo "KEYMAP=us"
-     echo "FONT=ter-v32n"
+     echo "FONT=ter-v32b"
   } > /etc/vconsole.conf
 }
 
