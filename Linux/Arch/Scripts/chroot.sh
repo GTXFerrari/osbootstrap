@@ -191,6 +191,10 @@ install_graphics() {
             lib32-opencl-nvidia \
             nvidia-settings \
             python-pytorch-cuda
+
+          { echo "options nvidia_drm modeset=1"
+            echo "options nvidia_drm fbdev=1"
+          } >> /etc/modprobe.d/nvidia_drm.conf
           break 2
           ;;
         "AMD")
