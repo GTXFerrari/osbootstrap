@@ -50,7 +50,6 @@ paru -S --needed \
   fastfetch-git \
   gdlauncher-bin \
   mangohud \
-  noto-fonts-emoji-apple \
   nsxiv \
   ookla-speedtest-bin \
   openrgb \
