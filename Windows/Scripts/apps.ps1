@@ -67,6 +67,7 @@ $apps = @(
     @{name = "Guru3D.Afterburner" },
     @{name = "Microsoft.DirectX" },
     @{name = "OpenJS.NodeJS" },
+    @{name = "Plex.Plex" },
     @{name = "9PF4KZ2VN4W9" }, # TranslucentTB
     @{name = "9NBLGGH30XJ3" }, # Xbox Accessories
     @{name = "9PFHDD62MXS1" } # Apple Music Preview
