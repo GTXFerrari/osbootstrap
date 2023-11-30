@@ -23,6 +23,7 @@ $apps = @(
     @{name = "M2Team.NanaZip"}
     @{name = "Git.Git" },
     @{name = "Neovim.Neovim" },
+    @{name = "Neovide.Neovide" },
     @{name = "Microsoft.VisualStudioCode" },
     @{name = "Microsoft.VisualStudio.2022.Community" },
     @{name = "VMware.WorkstationPro" },
