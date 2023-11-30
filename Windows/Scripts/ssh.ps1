@@ -11,8 +11,6 @@ Write-Host "Code is running as administrator — go on executing the script..." 
 }
 
 New-Item -ItemType Directory $env:USERPROFILE\.ssh\
-Copy-Item -Path \\10.0.40.5\Jake\SSH\id_ed25519 -Destination $env:USERPROFILE\.ssh\ 
 Get-Service ssh-agent | Set-Service -StartupType Automatic
 Start-Service ssh-agent
 Get-Service ssh-agent
-ssh-add $env:USERPROFILE\.ssh\id_ed25519
