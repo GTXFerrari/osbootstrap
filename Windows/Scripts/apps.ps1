@@ -60,6 +60,7 @@ $apps = @(
     @{name = "Insecure.Nmap" },
     @{name = "OBSProject.OBSStudio" },
     @{name = "HandBrake.HandBrake" },
+    @{name = "AndreWiethoff.ExactAudioCopy" },
     @{name = "lenxc.ChatGPT" },
     @{name = "GitHub.GitHubDesktop" },
     @{name = "Guru3D.Afterburner" },
