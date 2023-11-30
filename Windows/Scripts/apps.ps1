@@ -59,6 +59,7 @@ $apps = @(
     @{name = "Flow-Launcher.Flow-Launcher" },
     @{name = "Insecure.Nmap" },
     @{name = "OBSProject.OBSStudio" },
+    @{name = "HandBrake.HandBrake" },
     @{name = "lenxc.ChatGPT" },
     @{name = "GitHub.GitHubDesktop" },
     @{name = "Guru3D.Afterburner" },
