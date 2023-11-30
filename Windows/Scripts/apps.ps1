@@ -61,6 +61,8 @@ $apps = @(
     @{name = "OBSProject.OBSStudio" },
     @{name = "lenxc.ChatGPT" },
     @{name = "GitHub.GitHubDesktop" },
+    @{name = "Guru3D.Afterburner" },
+    @{name = "Microsoft.DirectX" },
     @{name = "OpenJS.NodeJS" },
     @{name = "9PF4KZ2VN4W9" }, # TranslucentTB
     @{name = "9NBLGGH30XJ3" }, # Xbox Accessories
@@ -91,7 +93,6 @@ choco install samsung-magician -y
 choco install madvr -y
 choco install bind-toolsonly -y
 choco install zentimings -y
-choco install msiafterburner -y
 choco install sysinternals -y 
 
 # Install fonts using choco
