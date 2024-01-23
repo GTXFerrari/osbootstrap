@@ -26,6 +26,7 @@ $apps = @(
     @{name = "Neovide.Neovide" },
     @{name = "Microsoft.VisualStudioCode" },
     @{name = "Microsoft.VisualStudio.2022.Community" },
+    @{name = "Docker.DockerDesktop" },
     @{name = "VMware.WorkstationPro" },
     @{name = "Python.Python.3.11" },
     @{name = "WinSCP.WinSCP" },
