@@ -247,7 +247,8 @@ install_gaming() {
     gamescope \
     yuzu \
     obs-studio \
-    teamspeak3
+    mangohud \
+    goverlay
     
   fi
 }
