@@ -44,13 +44,8 @@ fi
 #Install packages with paru
 echo -e "${Blue}Installing packages from the AUR.${NC}"
 paru -S --needed \
-  betterdiscord-installer \
   brave-bin \
-  cider \
   fastfetch-git \
-  gdlauncher-bin \
-  mangohud \
-  nsxiv \
   ookla-speedtest-bin \
   openrgb \
   pfetch \
@@ -64,8 +59,6 @@ paru -S --needed \
   duckstation-git \
   pcsx2-git \
   cemu \
-  goverlay-bin \
-  nvim-packer-git \
   nvim-lazy \
   zsh-fast-syntax-highlighting \
   zsh-theme-powerlevel10k-git \
