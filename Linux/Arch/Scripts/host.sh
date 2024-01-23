@@ -64,7 +64,7 @@ while true; do
   if [ -e "/dev/$partition_choice" ]; then
     # Partition using sgdisk
     sgdisk -Z /dev/"$partition_choice"
-    sgdisk --clear --new=1:0:+512MiB --typecode=1:ef00 --change-name=1:EFI --new=2:0:0 --typecode=2:8300 --change-name=2:system /dev/$partition_choice
+    sgdisk --clear --new=1:0:+2G --typecode=1:ef00 --change-name=1:EFI --new=2:0:0 --typecode=2:8300 --change-name=2:system /dev/$partition_choice
     # Encryption
     while true; do
       if [ $? -eq 0 ]; then
