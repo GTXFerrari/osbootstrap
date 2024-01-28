@@ -69,6 +69,7 @@ $apps = @(
     @{name = "Microsoft.DirectX" },
     @{name = "OpenJS.NodeJS" },
     @{name = "Plex.Plex" },
+    @{name = "Google.PlatformTools" }, # ADB Installer for shield
     @{name = "9PF4KZ2VN4W9" }, # TranslucentTB
     @{name = "9NBLGGH30XJ3" }, # Xbox Accessories
     @{name = "9PFHDD62MXS1" } # Apple Music Preview
