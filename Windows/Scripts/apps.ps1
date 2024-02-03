@@ -69,6 +69,7 @@ $apps = @(
     @{name = "OpenJS.NodeJS" },
     @{name = "Plex.Plex" },
     @{name = "VirtualDesktop.Streamer" },
+    @{name = "LizardByte.Sunshine" },
     @{name = "Google.PlatformTools" }, # ADB Installer for shield
     @{name = "9PF4KZ2VN4W9" }, # TranslucentTB
     @{name = "9NBLGGH30XJ3" }, # Xbox Accessories
