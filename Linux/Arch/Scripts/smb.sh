@@ -23,7 +23,7 @@ sudo pacman -S --needed --noconfirm cifs-utils
 # Create a trueNAS directory with share mountpoints
 if [ ! -d "$TRUENAS" ]; then
     echo -e "${Red}TrueNAS directory does not exist, creating.${NC}"
-    sudo mkdir -p "$TRUENAS" && cd "$TRUENAS" && sudo mkdir jake gold stash media iso
+    sudo mkdir -p "$TRUENAS" && cd "$TRUENAS" && sudo mkdir jake gold stash stash2 media iso
     else
     echo -e "${Blue}TrueNAS directory already exists.${NC}"
     cd "$TRUENAS" && sudo mkdir jake gold stash media iso 
@@ -61,6 +61,8 @@ fi
     echo "$NAS"/Jake       "$TRUENAS"/jake         cifs        "$OPT"
     echo " "
     echo "$NAS"/Stash        "$TRUENAS"/stash          cifs        "$OPT"
+    echo " "
+    echo "$NAS"/Stash2        "$TRUENAS"/stash2          cifs        "$OPT"
     echo " "
     echo "$NAS"/Media      "$TRUENAS"/media        cifs        "$OPT"
     echo " "
