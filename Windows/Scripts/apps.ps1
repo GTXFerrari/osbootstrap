@@ -1,5 +1,4 @@
 Start-Transcript -Append $env:USERPROFILE\Documents\apps.log
-### Variables ###
 $DL = "$env:USERPROFILE\Downloads"
 $PF = "$env:ProgramFiles\"
 $PF86 = "${env:ProgramFiles(x86)}\"
@@ -25,9 +24,6 @@ $apps = @(
     @{name = "Neovim.Neovim" },
     @{name = "Neovide.Neovide" },
     @{name = "Microsoft.VisualStudioCode" },
-    @{name = "Docker.DockerDesktop" },
-    @{name = "VMware.WorkstationPro" },
-    @{name = "Python.Python.3.11" },
     @{name = "WinSCP.WinSCP" },
     @{name = "JanDeDobbeleer.OhMyPosh" },
     @{name = "Microsoft.PowerToys" },
@@ -43,9 +39,7 @@ $apps = @(
     @{name = "Valve.Steam" },
     @{name = "ElectronicArts.EADesktop" },
     @{name = "Ubisoft.Connect" },
-    @{name = "PrismLauncher.PrismLauncher" },
     @{name = "Playnite.Playnite" },
-    @{name = "Libretro.RetroArch" },
     @{name = "Microsoft.VCRedist.2015+.x86" },
     @{name = "Microsoft.VCRedist.2015+.x64" },
     @{name = "Discord.Discord" },
@@ -62,18 +56,17 @@ $apps = @(
     @{name = "OBSProject.OBSStudio" },
     @{name = "HandBrake.HandBrake" },
     @{name = "AndreWiethoff.ExactAudioCopy" },
-    @{name = "lenxc.ChatGPT" },
+    @{name = "lencx.ChatGPT" },
     @{name = "GitHub.GitHubDesktop" },
     @{name = "Guru3D.Afterburner" },
     @{name = "Microsoft.DirectX" },
-    @{name = "OpenJS.NodeJS" },
     @{name = "Plex.Plex" },
     @{name = "VirtualDesktop.Streamer" },
     @{name = "LizardByte.Sunshine" },
     @{name = "Google.PlatformTools" }, # ADB Installer for shield
-    @{name = "9PF4KZ2VN4W9" }, # TranslucentTB
     @{name = "9NBLGGH30XJ3" }, # Xbox Accessories
-    @{name = "9PFHDD62MXS1" } # Apple Music Preview
+    @{name = "9PFHDD62MXS1" }, # Apple Music Preview
+    @{name = "9N7F2SM5D1LR" } # HDR Calibration Tool
 );
 Foreach ($app in $apps) {
     $listApp = winget list --exact -q $app.name
@@ -86,12 +79,6 @@ Foreach ($app in $apps) {
     }
 }
 
-# Refresh PATH (PATH needs to be refreshed to enable Git & 7z)
-Write-Output "Refreshing PATH"
-$Env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")  
-# Add npm to path
-System.Environment]::SetEnvironmentVariable("Path", "$env:Path;C:\Program Files\nodejs\node_modules\npm\bin\", [System.EnvironmentVariableTarget]::Machine)
-
 # Download applications using choco
 choco install openrgb -y
 choco install equalizerapo -y
@@ -100,59 +87,27 @@ choco install samsung-magician -y
 choco install madvr -y
 choco install bind-toolsonly -y
 choco install zentimings -y
-choco install sysinternals -y 
-
-# Install fonts using choco
-choco install cascadia-code-nerd-font -y 
+choco install vmwareworkstation -y
 choco install nerd-fonts-jetbrainsmono -y 
 choco install nerd-fonts-sourcecodepro -y 
+choco install nerd-fonts-meslo -y
+choco install nerd-fonts-cascadiacode -y
 
-# Download applications that do not support winget or choco (Uses curl & Git)
-Set-Location $DL
-curl -LOJs --no-clobber 'https://sourceforge.net/projects/peace-equalizer-apo-extension/files/latest/download'
-curl -LOJs --no-clobber 'https://www.battle.net/download/getInstallerForGame?os=win&gameProgram=BATTLENET_APP&version=Live&id=undefined'
-curl -LOJs --no-clobber 'https://cemu.info/releases/cemu_1.26.2.zip'
-curl -LOJs --no-clobber 'https://github.com/yuzu-emu/liftinstall/releases/download/1.8/yuzu_install.exe'
-curl -LOJs --no-clobber 'https://github.com/stenzek/duckstation/releases/download/latest/duckstation-windows-x64-release.zip'
-curl -LOJs --no-clobber 'https://github.com/PCSX2/pcsx2/releases/download/v1.7.3714/pcsx2-v1.7.3714-windows-64bit-AVX2-Qt.7z'
-curl -LOJs --no-clobber 'https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-7e35679ec29472ac243ffd2c3c6733003fcfef57/rpcs3-v0.0.25-14476-7e35679e_win64.7z'
-
-# Use Git to clone various repos
-git clone 'https://github.com/Ottodix/Eole-foobar-theme.git'
-git clone 'https://github.com/minischetti/metro-for-steam.git'
-git clone 'https://github.com/redsigma/UPMetroSkin.git'
-
-# Unzip archives and remove them (Requires 7zip cli tool)
-Write-Output "Extracting Files"
-Set-Location $DL
-7z x *.zip -o*
-7z x *.7z -o*
-Remove-Item  -Path $DL\*.zip
-Remove-Item  -Path $DL\*.7z
-
-# Move files to desired location
-Write-Output "Moving Files"
-Copy-Item -Recurse -Force -Path $DL\pcsx2-* -Destination $PF
-Copy-Item -Recurse -Force -Path $DL\rpcs3-* -Destination $PF
-Copy-Item -Recurse -Force -Path $DL\duckstation-* -Destination $PF
-Copy-Item -Recurse -Force -Path $DL\cemu_*\cemu_* -Destination $PF
-Copy-Item -Recurse -Force -Path "$DL\UPMetroSkin\Unofficial 4.x Patch\Main Files [Install First]\*" -Destination $DL\metro-for-steam\
-New-Item -Path $PF86\Steam\ -Name "skins" -ItemType "directory"
-Copy-Item -Recurse -Force -Path $DL\metro-for-steam -Destination $PF86\Steam\skins\
-& $PF86\foobar2000\foobar2000.exe | Out-Null # Launch foobar once to create config folder in APPDATA
-Copy-Item -Recurse -Force -Path $DL\Eole-foobar-theme\* -Destination $env:APPDATA\foobar2000\ 
-
-# Run app installers
-Write-Output "Running app installers"
-Set-Location $DL
-.\Battle.net-Setup.exe | Out-Null
-.\yuzu_install.exe | Out-Null
-.\PeaceSetup.exe | Out-Null
-
-# Clean Up
-Write-Output "Cleaning Up"
-Remove-Item -Recurse -Force $DL\* 
-Move-Item -Path $PF\cemu_* -Destination $PF\Cemu 
-Move-Item -Path $PF\duckstation-* -Destination $PF\Duckstation
-Move-Item -Path $PF\pcsx2* -Destination $PF\PCSX2 
-Move-Item -Path $PF\rpcs3* -Destination $PF\RPCS3
+# Download applications using scoop
+scoop bucket add main
+scoop bucket add nonportable 
+scoop bucket add games
+scoop bucket add extras
+scoop install main/python
+scoop install main/ntop
+scoop install main/btop-lhm
+scoop install games/battlenet
+scoop install games/duckstation
+scoop install games/pcsx2-dev
+scoop install games/rpcs3
+scoop install games/cemu-dev
+scoop install games/yuzu
+scoop install games/ryujinx
+scoop install games/prismlauncher
+scoop install nonportable/peace-np
+scoop install extras/retroarch
