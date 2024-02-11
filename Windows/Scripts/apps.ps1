@@ -25,7 +25,6 @@ $apps = @(
     @{name = "Neovide.Neovide" },
     @{name = "Microsoft.VisualStudioCode" },
     @{name = "WinSCP.WinSCP" },
-    @{name = "JanDeDobbeleer.OhMyPosh" },
     @{name = "Microsoft.PowerToys" },
     @{name = "BleachBit.BleachBit" },
     @{name = "CPUID.CPU-Z" },
@@ -91,7 +90,6 @@ choco install vmwareworkstation -y
 choco install nerd-fonts-jetbrainsmono -y 
 choco install nerd-fonts-sourcecodepro -y 
 choco install nerd-fonts-meslo -y
-choco install nerd-fonts-cascadiacode -y
 
 # Download applications using scoop
 scoop bucket add main

@@ -1,4 +1,5 @@
-Write-Warning "This script will install Chocolatey, Install nvidia & amd drivers, Set the power plan to high performance, disable pointer precision, & rename the PC (Requires Powershell 7+ & Admin) Would you like to proceed?" -WarningAction Inquire
+Write-Warning "This script will install Chocolatey & Scoop, Install nvidia & amd drivers, Set the power plan to high performance, & rename the PC (Requires Powershell 7+ & Admin) Would you like to proceed?" -WarningAction Inquire
+
 # Check if running as ADMIN
 Write-Host "Checking for elevated permissions..."
 if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`
@@ -10,7 +11,7 @@ else {
 Write-Host "Code is running as administrator — go on executing the script..." -ForegroundColor Green
 }
 
-# Install Choco if not local
+# Install Choco
 if ((Get-Command -Name choco -ErrorAction Ignore) -and ($chocoVersion = (Get-Item "$env:ChocolateyInstall\choco.exe" -ErrorAction Ignore).VersionInfo.ProductVersion)) {
     Write-Output "Chocolatey Version $chocoVersion is already installed"
 }else {
@@ -19,14 +20,17 @@ if ((Get-Command -Name choco -ErrorAction Ignore) -and ($chocoVersion = (Get-Ite
     powershell choco feature enable -n allowGlobalConfirmation
 }
 
+# Install scoop
+Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+
 # Install amd chipset drivers & nvidia display driver using choco
 choco install amd-ryzen-chipset -y
 choco install nvidia-display-driver -y
+choco install oh-my-posh -y
+choco install nerd-fonts-cascadiacode -y
 
-# Enable Memory Core Isolation (Security)
-# reg import .\Reg-Files\Enable_Mem_CoreISO.reg
-
-# Enable Dark Mode
+# Enable Memory Core Isolation (Security) & Enable Dark Mode
+#reg import .\Reg-Files\Enable_Mem_CoreISO.reg
 #reg import .\Reg-Files\Enable_Dark_Mode.reg
 
 # Disable UAC
@@ -42,6 +46,17 @@ powercfg /x -monitor-timeout-ac 0
 powercfg /x -monitor-timeout-dc 0
 Powercfg /x -standby-timeout-ac 0
 powercfg /x -standby-timeout-dc 0
+
+# Wallpapers
+New-Item -ItemType Directory $env:USERPROFILE\Pictures\Wallpapers
+robocopy /V /ETA /E \\10.0.40.5\Jake\Assets\Wallpapers\3440x1440 $env:USERPROFILE\Pictures\Wallpapers\
+
+# PWSH
+Copy-Item \\10.0.40.5\Jake\Backups\Powershell\Microsoft.PowerShell_profile.ps1 $env:USERPROFILE\Documents\PowerShell\
+Install-Script winfetch
+Install-Module -Name Terminal-Icons -Repository PSGallery
+Install-Module PSWindowsUpdate
+Add-WUServiceManager -MicrosoftUpdate
 
 # Rename the PC
 Rename-Computer -Confirm -NewName Jakes-PC -Restart
