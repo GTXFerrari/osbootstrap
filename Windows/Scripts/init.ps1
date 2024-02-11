@@ -29,7 +29,7 @@ choco install nvidia-display-driver -y
 choco install oh-my-posh -y
 choco install nerd-fonts-cascadiacode -y
 
-# Enable Memory Core Isolation (Security) & Enable Dark Mode
+# Enable Memory Core Isolation (Security) & Enable Dark Mode (For vm's without key)
 #reg import .\Reg-Files\Enable_Mem_CoreISO.reg
 #reg import .\Reg-Files\Enable_Dark_Mode.reg
 
