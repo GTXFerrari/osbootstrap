@@ -1,8 +1,4 @@
 Start-Transcript -Append $env:USERPROFILE\Documents\apps.log
-$DL = "$env:USERPROFILE\Downloads"
-$PF = "$env:ProgramFiles\"
-$PF86 = "${env:ProgramFiles(x86)}\"
-
 Write-Warning "This script will install applications on your machine (Requires Powershell 7+ & Admin) Would you like to proceed?" -WarningAction Inquire
 
 # Check if running as ADMIN
