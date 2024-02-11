@@ -58,5 +58,11 @@ Install-Module -Name Terminal-Icons -Repository PSGallery
 Install-Module PSWindowsUpdate
 Add-WUServiceManager -MicrosoftUpdate
 
+# SSH
+New-Item -ItemType Directory $env:USERPROFILE\.ssh\
+Get-Service ssh-agent | Set-Service -StartupType Automatic
+Start-Service ssh-agent
+Get-Service ssh-agent
+
 # Rename the PC
 Rename-Computer -Confirm -NewName Jakes-PC -Restart
