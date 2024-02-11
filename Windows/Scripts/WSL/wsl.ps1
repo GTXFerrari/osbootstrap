@@ -9,5 +9,5 @@ Write-Host "Code is running as administrator — go on executing the script..." 
 }
 
 # Install WSL with Debian
-wsl --install -d debian # Set debian to testing in /etc/apt/sources.list
+wsl --install -d debian
 Restart-Computer -Confirm
