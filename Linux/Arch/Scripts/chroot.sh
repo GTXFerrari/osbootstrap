@@ -245,7 +245,6 @@ install_gaming() {
     retroarch-assets-ozone \
     libretro-core-info \
     gamescope \
-    yuzu \
     obs-studio \
     mangohud \
     goverlay
@@ -343,11 +342,9 @@ desktop_environment() {
             xorg \
             plasma \
             kde-applications \
-            latte-dock \
             plasma-nm \
             packagekit-qt5 \
             sddm \
-            plasma-wayland-session \
             qt5-wayland \
             qt6-wayland
           systemctl enable sddm
