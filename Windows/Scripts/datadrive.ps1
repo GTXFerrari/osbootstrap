@@ -25,30 +25,14 @@ New-Partition -DiskNumber $cDriveDiskNumber -UseMaximumSize -DriveLetter D | For
 
 # Create directories in new partition
 Set-Location -LiteralPath D:
-New-Item -ItemType Directory VM,Games,Code,WSL
+New-Item -ItemType Directory Code,Games,Git,Pictures,VM
 Set-Location -LiteralPath D:\Games
-New-Item -ItemType Directory Steam,EA,Blizzard,Emulator,Ubisoft
-Set-Location -LiteralPath D:\Games\Emulator
-New-Item -ItemType Directory Nintendo,Microsoft,Sony,Retroarch,BIOS 
-Set-Location -LiteralPath D:\Games\Emulator\Nintendo
-New-Item -ItemType Directory Switch,'Wii U'
-New-Item -ItemType Directory Switch\Titles
-New-Item -ItemType Directory 'Wii U\Titles'
-Set-Location -LiteralPath D:\Games\Emulator\Sony
-New-Item -ItemType Directory 'Playstation 3','Playstation 2','Playstation 1'
-New-Item -ItemType Directory 'Playstation 3\Titles'
-New-Item -ItemType Directory 'Playstation 2\Titles'
-New-Item -ItemType Directory 'Playstation 1\Titles'
-Set-Location -LiteralPath D:\Games\Emulator\Retroarch
-New-Item -ItemType Directory ROMS
+New-Item -ItemType Directory Blizzard,EA,Emulator,Steam,Ubisoft
 Set-Location -LiteralPath D:\VM
 New-Item -ItemType Directory VMware,ISO
 
-# Move Game files to location 
-robocopy /V /ETA /E '\\10.0.40.5\Media\Games\System BIOS\' 'D:\Games\Emulator\BIOS\'
-robocopy /V /ETA /E '\\10.0.40.5\Media\Games\Nintendo\Switch\' 'D:\Games\Emulator\Nintendo\Switch\Titles\'
-robocopy /V /ETA /E '\\10.0.40.5\Media\Games\Nintendo\Wii U\' 'D:\Games\Emulator\Nintendo\Wii U\Titles\'
-robocopy /V /ETA /E '\\10.0.40.5\Media\Games\Sony\Playstation 3\' 'D:\Games\Emulator\Sony\Playstation 3\Titles\'
+# Move Game files to destination
+robocopy /V /ETA /E '\\10.0.40.5\Media\Games\Emulator\' 'D:\Games\Emulator\'
 
 # Enable bitlocker for Data drives (D:)
 Enable-BitLocker -MountPoint "D:" -EncryptionMethod XtsAes256 -PasswordProtector -Password $Pass
