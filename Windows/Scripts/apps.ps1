@@ -15,11 +15,16 @@ Write-Output "Code is running as administrator - go on executing the script..."
 # Install applications using winget
 Write-Output "Installing Applications"
 $apps = @(
-    @{name = "M2Team.NanaZip"}
+    @{name = "SomePythonThings.WingetUIStore"},
+    @{name = "Microsoft.VCRedist.2015+.x86" },
+    @{name = "Microsoft.VCRedist.2015+.x64" },
+    @{name = "M2Team.NanaZip"},
     @{name = "Git.Git" },
     @{name = "Neovim.Neovim" },
     @{name = "Neovide.Neovide" },
     @{name = "Microsoft.VisualStudioCode" },
+    @{name = "Python.Python.3.12" },
+    @{name = "gsass1.NTop" },
     @{name = "WinSCP.WinSCP" },
     @{name = "Microsoft.PowerToys" },
     @{name = "BleachBit.BleachBit" },
@@ -34,16 +39,14 @@ $apps = @(
     @{name = "Valve.Steam" },
     @{name = "ElectronicArts.EADesktop" },
     @{name = "Ubisoft.Connect" },
+    @{name = "PrismLauncher.PrismLauncher" },
     @{name = "Playnite.Playnite" },
-    @{name = "Microsoft.VCRedist.2015+.x86" },
-    @{name = "Microsoft.VCRedist.2015+.x64" },
     @{name = "Discord.Discord" },
     @{name = "PeterPawlowski.foobar2000" },
     @{name = "MPC-BE.MPC-BE" },
-    @{name = "jurplel.qView" },
+    @{name = "DuongDieuPhap.ImageGlass" },
     @{name = "7zip.7zip" },
     @{name = "Dell.DisplayManager" }
-    @{name = "evernote.evernote" }
     @{name = "WiresharkFoundation.Wireshark" },
     @{name = "FinalWire.AIDA64.Engineer" },
     @{name = "Flow-Launcher.Flow-Launcher" },
@@ -52,12 +55,13 @@ $apps = @(
     @{name = "HandBrake.HandBrake" },
     @{name = "AndreWiethoff.ExactAudioCopy" },
     @{name = "lencx.ChatGPT" },
-    @{name = "GitHub.GitHubDesktop" },
     @{name = "Guru3D.Afterburner" },
     @{name = "Microsoft.DirectX" },
     @{name = "Plex.Plex" },
     @{name = "VirtualDesktop.Streamer" },
     @{name = "LizardByte.Sunshine" },
+    @{name = "GeekUninstaller.GeekUninstaller" },
+    @{name = "VMware.WorkstationPro" },
     @{name = "Google.PlatformTools" }, # ADB Installer for shield
     @{name = "9NBLGGH30XJ3" }, # Xbox Accessories
     @{name = "9PFHDD62MXS1" }, # Apple Music Preview
@@ -77,31 +81,18 @@ Foreach ($app in $apps) {
 # Download applications using choco
 choco install openrgb -y
 choco install equalizerapo -y
-choco install geekuninstaller -y
 choco install samsung-magician -y
 choco install madvr -y
 choco install bind-toolsonly -y
-choco install zentimings -y
-choco install vmwareworkstation -y
 choco install nerd-fonts-jetbrainsmono -y 
 choco install nerd-fonts-sourcecodepro -y 
 choco install nerd-fonts-meslo -y
+choco install mingw # C compiler for windows (required for nvim-treesitter)
 
 # Download applications using scoop
 scoop bucket add main
 scoop bucket add nonportable 
 scoop bucket add games
-scoop bucket add extras
-scoop install main/python
-scoop install main/ntop
 scoop install main/btop-lhm
 scoop install games/battlenet
-scoop install games/duckstation
-scoop install games/pcsx2-dev
-scoop install games/rpcs3
-scoop install games/cemu-dev
-scoop install games/yuzu
-scoop install games/ryujinx
-scoop install games/prismlauncher
 scoop install nonportable/peace-np
-scoop install extras/retroarch
