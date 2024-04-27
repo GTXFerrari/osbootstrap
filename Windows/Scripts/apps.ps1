@@ -25,6 +25,7 @@ $apps = @(
     @{name = "Microsoft.VisualStudioCode" },
     @{name = "Python.Python.3.12" },
     @{name = "BurntSushi.ripgrep.MSVC" },
+    @{name = "sharkdp.fd" },
     @{name = "gsass1.NTop" },
     @{name = "WinSCP.WinSCP" },
     @{name = "Microsoft.PowerToys" },
