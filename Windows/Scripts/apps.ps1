@@ -24,6 +24,7 @@ $apps = @(
     @{name = "Neovide.Neovide" },
     @{name = "Microsoft.VisualStudioCode" },
     @{name = "Python.Python.3.12" },
+    @{name = "Oracle.JDK.22" },
     @{name = "BurntSushi.ripgrep.MSVC" },
     @{name = "sharkdp.fd" },
     @{name = "gsass1.NTop" },
