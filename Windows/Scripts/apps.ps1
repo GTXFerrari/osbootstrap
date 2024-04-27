@@ -15,7 +15,7 @@ Write-Output "Code is running as administrator - go on executing the script..."
 # Install applications using winget
 Write-Output "Installing Applications"
 $apps = @(
-    @{name = "SomePythonThings.WingetUIStore"},
+    @{name = "SomePythonThings.WingetUIStore" },
     @{name = "Microsoft.VCRedist.2015+.x86" },
     @{name = "Microsoft.VCRedist.2015+.x64" },
     @{name = "M2Team.NanaZip"},
@@ -24,6 +24,7 @@ $apps = @(
     @{name = "Neovide.Neovide" },
     @{name = "Microsoft.VisualStudioCode" },
     @{name = "Python.Python.3.12" },
+    @{name = "BurntSushi.ripgrep.MSVC" },
     @{name = "gsass1.NTop" },
     @{name = "WinSCP.WinSCP" },
     @{name = "Microsoft.PowerToys" },
