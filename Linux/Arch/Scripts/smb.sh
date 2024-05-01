@@ -26,7 +26,7 @@ if [ ! -d "$TRUENAS" ]; then
     sudo mkdir -p "$TRUENAS" && cd "$TRUENAS" && sudo mkdir jake gold stash stash2 media iso
     else
     echo -e "${Blue}TrueNAS directory already exists.${NC}"
-    cd "$TRUENAS" && sudo mkdir jake gold stash media iso 
+    cd "$TRUENAS" && sudo mkdir jake gold stash media iso photos
 fi
 
 # Create /etc/samba/credentials directory
@@ -69,6 +69,8 @@ fi
     echo "$NAS"/Gold         "$TRUENAS"/gold           cifs        "$OPT"
     echo " "
     echo "$NAS"/ISO         "$TRUENAS"/iso         cifs        "$OPT"
+    echo " "
+    echo "$NAS"/Photos	   "$TRUENAS"/photos	cifs        "$OPT"
 
 } | sudo tee -a /etc/fstab > /dev/null
 echo -e "${Blue}Mounting Shares.${NC}"
