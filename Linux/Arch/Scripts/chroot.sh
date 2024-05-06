@@ -625,6 +625,14 @@ mkinitcpio_setup() {
    mkinitcpio -P
 }
 
+zramd_setup() {
+	echo "zramd" > /etc/modules-load.d/zramd.conf
+	echo "ACTION==\"add\", KERNEL==\"zram0\", ATTR{comp_algorithm}=\"zstd\", ATTR{disksize}=\"8G\", RUN=\"/usr/bin/mkswap -U clear /dev/%k\", TAG+=\"systemd\"" > /etc/udev/rules.d/99-zram.rules
+	echo " " >> /etc/fstab
+	echo "# ZRAMD" >> /etc/fstab
+	echo "/dev/zram0 	none	swap	defaults,pri=100 0 0" >> /etc/fstab
+}
+
 # Call functions
 init
 set_hostname
@@ -640,5 +648,6 @@ install_wine
 install_virtualization
 #laptop
 mkinitcpio_setup
+zramd_setup
 desktop_environment
 window_manager
