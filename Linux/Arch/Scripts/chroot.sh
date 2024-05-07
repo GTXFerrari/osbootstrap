@@ -630,7 +630,7 @@ mkinitcpio_setup() {
 }
 
 zramd_setup() {
-	echo "zramd" > /etc/modules-load.d/zramd.conf
+	echo "zram" > /etc/modules-load.d/zram.conf
 	echo "ACTION==\"add\", KERNEL==\"zram0\", ATTR{comp_algorithm}=\"zstd\", ATTR{disksize}=\"8G\", RUN=\"/usr/bin/mkswap -U clear /dev/%k\", TAG+=\"systemd\"" > /etc/udev/rules.d/99-zram.rules
 	echo " " >> /etc/fstab
 	echo "# ZRAMD" >> /etc/fstab
