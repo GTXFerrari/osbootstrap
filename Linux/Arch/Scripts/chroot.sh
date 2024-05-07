@@ -103,7 +103,11 @@ install_core_packages() {
     lazygit \
     hugo \
     bitwarden \
-    terminus-font
+    terminus-font \
+    python \
+    python-pip \
+    python-pipx \
+    python-virtualenv
 
   systemctl enable \
     NetworkManager.service \

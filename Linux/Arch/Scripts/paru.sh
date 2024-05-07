@@ -64,6 +64,7 @@ paru -S --needed \
   zsh-theme-powerlevel10k-git \
   rpcs3-git \
   cava \
+  python310 \
 
 # Enable systemd services
 sudo systemctl enable --now \
