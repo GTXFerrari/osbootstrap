@@ -68,6 +68,7 @@ $apps = @(
     @{name = "GeekUninstaller.GeekUninstaller" },
     @{name = "VMware.WorkstationPro" },
     @{name = "Google.PlatformTools" }, # ADB Installer for shield
+    @{name = "gokcehan.lf" }, # ADB Installer for shield
     @{name = "9NBLGGH30XJ3" }, # Xbox Accessories
     @{name = "9PFHDD62MXS1" }, # Apple Music Preview
     @{name = "9N7F2SM5D1LR" } # HDR Calibration Tool
