@@ -36,6 +36,9 @@ choco install nerd-fonts-cascadiacode -y
 # Disable UAC
 Set-ItemProperty -Path REGISTRY::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System -Name ConsentPromptBehaviorAdmin -Value 0
 
+# Enable LongPaths
+Set-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem' -Name 'LongPathsEnabled' -Value 1
+
 # Configure power
 powercfg /S 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c # Set power plan to high performance
 powercfg /x -hibernate-timeout-ac 0
