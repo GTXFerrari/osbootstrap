@@ -1,0 +1,20 @@
+sudo pacman -S --needed \
+  xorg-xinit \
+  xorg \
+  scrot \
+  network-manager-applet \
+  blueman \
+  lxappearance \
+  qt5ct \
+  qt6ct \
+  pasystray \
+  polkit \
+  polkit-kde-agent \
+  gnome-keyring \
+  gnome-themes-extra \
+  papirus-icon-theme \
+  libsecret \
+  seahorse \
+  nitrogen \
+  picom \
+  unclutter \
