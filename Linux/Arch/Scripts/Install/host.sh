@@ -13,6 +13,17 @@ export White='\033[0;37m'
 
 # Functions
 
+vm_check() {
+	VM_TYPE=$(systemd-detect-virt)
+	if [[ $VM_TYPE == 'none' ]]; then
+		VM_STATUS="not_in_vm"
+	else
+		VM_STATUS="in_vm"
+fi
+
+export VM_STATUS
+}
+
 check_uefi() {
   if [ -d /sys/firmware/efi/efivars/ ]; then
     echo "System is booted using UEFI, proceeding"
