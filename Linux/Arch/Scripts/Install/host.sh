@@ -21,11 +21,11 @@ vm_check() {
 		VM_STATUS="in_vm"
 fi
 
-export VM_STATUS
+export VM_STATUS #TODO: Add this variable to nvidia function so mkinit modules are not loaded
 }
 
 check_uefi() {
-  if [ -d /sys/firmware/efi/efivars/ ]; then
+  if [[ -d /sys/firmware/efi/efivars/ ]]; then
     echo "System is booted using UEFI, proceeding"
   else
     echo "System is not booted using UEFI, change in the BIOS before proceeding."
@@ -33,10 +33,10 @@ check_uefi() {
   fi
 
   efi_platform_size_file="/sys/firmware/efi/fw_platform_size"
-  if [ -e "$efi_platform_size_file" ]; then
+  if [[ -e "$efi_platform_size_file" ]]; then
     value=$(cat "$efi_platform_size_file")
 
-    if [ "$value" -eq 64 ]; then
+    if [[ "$value" -eq 64 ]]; then
       echo "The system is using a 64 bit UEFI, proceeding..."
     else
       echo "The system is using a 32 bit UEFI, only systemd-boot is supported"
@@ -54,6 +54,7 @@ check_internet_connection() {
     fi
   done
   return 1
+  #TODO: Combine this with internet check function since they should be in one function
 }
 
 internet_check() {
@@ -72,21 +73,21 @@ while true; do
   lsblk -o NAME,FSTYPE,SIZE,MOUNTPOINT | grep -v "loop\|sr0"
   read -rp "Enter the name of the partition you want to use: " partition_choice
   export partition_choice
-  if [ -e "/dev/$partition_choice" ]; then
+  if [[ -e "/dev/$partition_choice" ]]; then
     # Partition using sgdisk
     sgdisk -Z /dev/"$partition_choice"
-    sgdisk --clear --new=1:0:+2G --typecode=1:ef00 --change-name=1:EFI --new=2:0:0 --typecode=2:8300 --change-name=2:system /dev/$partition_choice
+    sgdisk --clear --new=1:0:+2G --typecode=1:ef00 --change-name=1:EFI --new=2:0:0 --typecode=2:8300 --change-name=2:system /dev/$partition_choice #TODO: Create a variable to determine if partition is NVME or not since nvme uses p# instead of just using partition + number like vda1,sda1 etc
     # Encryption
     while true; do
-      if [ $? -eq 0 ]; then
+      if [[ $? -eq 0 ]]; then
         break
       else
         echo "Cryptsetup command failed, Retrying..."
         sleep 3
       fi
     done
-    cryptsetup luksFormat --type luks2 --align-payload=4096 -c aes-xts-plain64 -s 512 -h sha512 -y --use-urandom /dev/${partition_choice}p2 # Need to create a conditional in case the selected drive is not an NVME device
-    cryptsetup open /dev/"${partition_choice}"p2 cryptbtrfs
+    cryptsetup luksFormat --type luks2 --align-payload=4096 -c aes-xts-plain64 -s 512 -h sha512 -y --use-urandom /dev/${partition_choice}p2 #TODO: fix partition variable
+    cryptsetup open /dev/"${partition_choice}"p2 cryptbtrfs #TODO: Fix partition variable
     # BTRFS
     mkfs.btrfs -L archbtrfs /dev/mapper/cryptbtrfs
     mount /dev/mapper/cryptbtrfs /mnt
@@ -107,8 +108,8 @@ while true; do
     mount -o ${mount_opts},subvol=@libvirt /dev/mapper/cryptbtrfs /mnt/var/lib/libvirt
     mount -o ${mount_opts},subvol=@log /dev/mapper/cryptbtrfs /mnt/var/log
     mount -o ${mount_opts},subvol=@tmp /dev/mapper/cryptbtrfs /mnt/var/tmp
-    mkfs.fat -F32 /dev/"${partition_choice}"p1
-    mount --mkdir /dev/"${partition_choice}"p1 /mnt/boot
+    mkfs.fat -F32 /dev/"${partition_choice}"p1 #TODO: Fix partition variable
+    mount --mkdir /dev/"${partition_choice}"p1 /mnt/boot #TODO: Fix partition variable
     break 
   else
     echo "Partition '/dev/$partition_choice' does not exist, please choose a valid partition"
@@ -119,13 +120,15 @@ done
 
 pacstab() {
   cpu_vendor=$(grep -m1 'vendor_id' /proc/cpuinfo | awk '{print $3}')
-  if [ "$cpu_vendor" == "AuthenticAMD" ]; then
+  if [[ "$cpu_vendor" == "AuthenticAMD" ]]; then
     ucode="amd-ucode"
   else
     ucode="intel-ucode"
   fi
+  #TODO: add vm variable to use nothing for ucode if inside a VM
 
   pacstrap -K /mnt \
+    $ucode \
     base \
     linux \
     linux-headers \
@@ -133,7 +136,6 @@ pacstab() {
     linux-zen-headers \
     linux-firmware \
     sof-firmware \
-    $ucode \
     git \
     neovim \
     reflector \
@@ -142,20 +144,27 @@ pacstab() {
     btrfs-progs
 
   genfstab -U /mnt >> /mnt/etc/fstab
-  cp /root/osbootstrap/Linux/Arch/Scripts/chroot.sh /mnt # Possible breakage if PATH is wrong, need to find solution
+  cp /root/osbootstrap/Linux/Arch/Scripts/chroot.sh /mnt #TODO: Fix path on host side since it can break whole script if it is not correct
   arch-chroot /mnt ./chroot.sh
 }
 
+clean_up() {
+  echo -e "${Green}Cleaning up.${NC}"
+  rm /mnt/chroot.sh
+  umount -R /mnt
+  echo -n "Would you like to reboot? (y/n) "
+  read -r reboot
+  if [[ $reboot == "y" ]]; then
+    reboot
+  else
+    return 1
+  fi
+}
 
 # Call functions
-setfont ter-132n
+setfont ter-132n #TODO: If in VM use a smaller font size (since virt manager res is low for guest)
 check_uefi
 internet_check
 drive_partition
 pacstab
-
-# Clean Up
-echo -e "${Green}Cleaning up.${NC}"
-rm /mnt/chroot.sh
-umount -R /mnt
-reboot
+clean_up
