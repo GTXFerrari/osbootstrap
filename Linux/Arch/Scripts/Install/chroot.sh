@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 init() {
   echo -e "${Green}Setting timezone.${NC}"
   ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
