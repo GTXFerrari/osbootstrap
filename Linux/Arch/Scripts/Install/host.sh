@@ -24,6 +24,14 @@ fi
 export VM_STATUS #TODO: Add this variable to nvidia function so mkinit modules are not loaded
 }
 
+termfonts() {
+  if [[ $VM_STATUS == "in_vm" ]]; then
+    setfont ter-124b
+  else
+    setfont ter-132b
+  fi
+}
+
 check_uefi() {
   if [[ -d /sys/firmware/efi/efivars/ ]]; then
     echo "System is booted using UEFI, proceeding"
@@ -110,7 +118,7 @@ while true; do
     mount -o ${mount_opts},subvol=@tmp /dev/mapper/cryptbtrfs /mnt/var/tmp
     mkfs.fat -F32 /dev/"${partition_choice}"p1 #TODO: Fix partition variable
     mount --mkdir /dev/"${partition_choice}"p1 /mnt/boot #TODO: Fix partition variable
-    break 
+    break
   else
     echo "Partition '/dev/$partition_choice' does not exist, please choose a valid partition"
     sleep 3
@@ -162,7 +170,8 @@ clean_up() {
 }
 
 # Call functions
-setfont ter-132n #TODO: If in VM use a smaller font size (since virt manager res is low for guest)
+vm_check
+termfonts
 check_uefi
 internet_check
 drive_partition
