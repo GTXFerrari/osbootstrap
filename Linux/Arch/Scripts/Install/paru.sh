@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Variables
 
 # Path
 DIR="/home/jake/Git"
