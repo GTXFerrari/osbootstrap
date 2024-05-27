@@ -14,18 +14,22 @@ export White='\033[0;37m'
 # Functions
 
 vm_check() {
-	VM_TYPE=$(systemd-detect-virt)
-	if [[ $VM_TYPE == 'none' ]]; then
-		VM_STATUS="not_in_vm"
-	else
-		VM_STATUS="in_vm"
-fi
+  VM_TYPE=$(systemd-detect-virt)
+  if [[ "$VM_TYPE" == "none" ]]; then
+    VM_STATUS="not_in_vm"
+  elif [[ "$VM_TYPE" == "kvm" ]]; then
+    VM_STATUS="kvm"
+  elif [[ "$VM_TYPE" == "vmware" ]]; then
+    VM_STATUS="vmware"
+  else
+    VM_STATUS="other"
+  fi
 
-export VM_STATUS #TODO: Add this variable to nvidia function so mkinit modules are not loaded
+  export VM_STATUS
 }
 
 termfonts() {
-  if [[ $VM_STATUS == "in_vm" ]]; then
+  if [[ "$VM_STATUS" != "not_in_vm" ]]; then
     setfont ter-124b
   else
     setfont ter-132b
@@ -35,8 +39,10 @@ termfonts() {
 check_uefi() {
   if [[ -d /sys/firmware/efi/efivars/ ]]; then
     echo "System is booted using UEFI, proceeding"
+    sleep 3
   else
     echo "System is not booted using UEFI, change in the BIOS before proceeding."
+    sleep 3
     exit 1
   fi
 
@@ -46,8 +52,10 @@ check_uefi() {
 
     if [[ "$value" -eq 64 ]]; then
       echo "The system is using a 64 bit UEFI, proceeding..."
+      sleep 3
     else
       echo "The system is using a 32 bit UEFI, only systemd-boot is supported"
+      sleep 3
     fi
   fi
 }
@@ -128,12 +136,11 @@ done
 
 pacstab() {
   cpu_vendor=$(grep -m1 'vendor_id' /proc/cpuinfo | awk '{print $3}')
-  if [[ "$cpu_vendor" == "AuthenticAMD" ]]; then
+  if [[ "$VM_STATUS" == "not_in_vm" && "$cpu_vendor" == "AuthenticAMD" ]]; then
     ucode="amd-ucode"
-  else
-    ucode="intel-ucode"
+  else 
+    "$ucode" == "" #TODO: Can create a conditional for intel cpus
   fi
-  #TODO: add vm variable to use nothing for ucode if inside a VM
 
   pacstrap -K /mnt \
     $ucode \
@@ -152,7 +159,7 @@ pacstab() {
     btrfs-progs
 
   genfstab -U /mnt >> /mnt/etc/fstab
-  cp /root/osbootstrap/Linux/Arch/Scripts/chroot.sh /mnt #TODO: Fix path on host side since it can break whole script if it is not correct
+  cp ./chroot.sh /mnt
   arch-chroot /mnt ./chroot.sh
 }
 
@@ -169,7 +176,7 @@ clean_up() {
   fi
 }
 
-# Call functions
+
 vm_check
 termfonts
 check_uefi
