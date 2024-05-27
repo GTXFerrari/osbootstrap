@@ -29,7 +29,7 @@ set_hostname() {
 # Set vconsole to high resolution during initram env
 set_vconsole() {
   {  echo "KEYMAP=us"
-     echo "FONT=ter-v32b"
+     echo "FONT=ter-132b"
   } > /etc/vconsole.conf
 }
 
@@ -76,7 +76,6 @@ install_core_packages() {
     neofetch \
     htop \
     cmatrix \
-    cowsay \
     btop \
     nvtop \
     wireshark-qt \
@@ -91,23 +90,21 @@ install_core_packages() {
     ueberzug \
     atool \
     highlight \
-    atool \
     bat \
     mediainfo \
     ffmpegthumbnailer \
     odt2txt \
     zathura \
-    zathura-djvu \
     zathura-pdf-mupdf \
     zathura-ps \
     firefox \
+    chromium \
     lazygit \
     hugo \
     bitwarden \
     terminus-font \
     python \
     python-pip \
-    python-pipx \
     python-virtualenv
 
   systemctl enable \
@@ -120,8 +117,6 @@ install_core_packages() {
     fstrim.timer \
     systemd-timesyncd.service \
     cronie.service
-
-usermod -aG wireshark jake
 }
 
 create_user() {
@@ -132,10 +127,10 @@ create_user() {
   read -r password
   echo "$username":"$password" | chpasswd
   echo "$username ALL=(ALL) ALL" >> /etc/sudoers.d/"$username"
+  usermod -aG wireshark,input,video jake
 }
 
 install_bootloader() {
-
   luksuuid=$(blkid -s UUID -o value /dev/${partition_choice}p2)
   echo "Installing Bootloader"
   bootctl install
@@ -175,18 +170,18 @@ install_audio() {
 }
 
 install_graphics() {
+  local chosen_graphics=""
   while true; do
   echo -n "Would you like to install a graphics driver (y/n) "
   read -r graphics_driver
-  if [[ $graphics_driver == "y" ]]; then
+  if [[ "$graphics_driver" == "y" ]]; then
     PS3='Please enter your choice: '
     options=("Nvidia" "AMD" "Intel" "Exit")
-    select opt in "${options[@]}"
-    do
+    select opt in "${options[@]}"; do
       case $opt in 
         "Nvidia")
           pacman -S --needed \
-            nvidia-dkms \
+            nvidia-open-dkms \
             nvidia-utils \
             lib32-nvidia-utils \
             nvidia-settings \
@@ -194,12 +189,9 @@ install_graphics() {
             lib32-vulkan-icd-loader \
             opencl-nvidia \
             lib32-opencl-nvidia \
-            nvidia-settings \
-            python-pytorch-cuda
-
-          { echo "options nvidia_drm modeset=1"
-            echo "options nvidia_drm fbdev=1"
-          } >> /etc/modprobe.d/nvidia_drm.conf
+            python-pytorch-cuda \
+            cuda
+          chosen_graphics="Nvidia"
           break 2
           ;;
         "AMD")
@@ -214,6 +206,7 @@ install_graphics() {
             mesa-vdpau \
             lib32-mesa-vdpau \
             rocm-opencl-runtime 
+          chosen_graphics="AMD"
           break 2
           ;;
         "Intel")
@@ -221,6 +214,7 @@ install_graphics() {
             mesa \
             lib32-mesa \
             vulkan-intel
+          chosen_graphics="Intel"
           break 2
           ;;
         "Exit")
@@ -235,6 +229,9 @@ else
     break 2
   fi
 done
+
+
+export chosen_graphics
 }
 
 install_gaming() {
@@ -253,7 +250,6 @@ install_gaming() {
     obs-studio \
     mangohud \
     goverlay
-    
   fi
 }
 
@@ -315,21 +311,8 @@ if [[ "$vmware" == "y" ]]; then
     mesa \
     gtkmm \
     gtk2
-  systemctl enable vmtoolsd.service vmware-vmblock-fuse
+  systemctl enable vmtoolsd.service vmware-vmblock-fuse.service
 fi
-}
-
-laptop() {
-  echo -n "Is this machine a laptop? (y/n) "
-  read -r laptop 
-  if [[ $laptop == "y" ]]; then
-    pacman -S --needed \
-      acpid \
-      tlp \
-      acpilight
-    systemctl enably tlp.service acpid.service
-    usermod -aG video "$username"
-  fi  
 }
 
 desktop_environment() {
@@ -620,14 +603,34 @@ done
 }
 
 mkinitcpio_setup() {
-  modules="nvidia nvidia_modeset nvidia_uvm nvidia_drm btrfs"
+  nvidia_modules="nvidia nvidia_modeset nvidia_uvm nvidia_drm btrfs"
+  kvm_modules="virtio virtio_blk virtio_pci virtio_net"
+  vmware_modules="vmw_balloon vmw_pvscsi vsock vwm_sock_vmci_transport vmwgfx vmxnet3"
   hooks="base udev keyboard autodetect keymap consolefont modconf block encrypt filesystems fsck"
   mkinitcpio_conf="/etc/mkinitcpio.conf"
+
+  if [[ $VM_STATUS == "not_in_vm" && chosen_graphics == "nvidia" ]]; then
    sed -i 's/\(MODULES=([^)]*\))/MODULES=()/' "$mkinitcpio_conf"
-   sed -i "/MODULES=(/ s/)/$modules)/" "$mkinitcpio_conf"
+   sed -i "/MODULES=(/ s/)/$nvidia_modules)/" "$mkinitcpio_conf"
    sed -i 's/\(HOOKS=([^)]*\))/HOOKS=()/' "$mkinitcpio_conf"
    sed -i "/HOOKS=(/ s/)/$hooks)/" "$mkinitcpio_conf"
-   mkinitcpio -P
+   mkinitcpio -P # Rebuild mkinit for all installed kernels
+ elif [[ $VM_STATUS == "kvm" ]]; then
+   sed -i 's/\(MODULES=([^)]*\))/MODULES=()/' "$mkinitcpio_conf"
+   sed -i "/MODULES=(/ s/)/$kvm_modules)/" "$mkinitcpio_conf"
+   sed -i 's/\(HOOKS=([^)]*\))/HOOKS=()/' "$mkinitcpio_conf"
+   sed -i "/HOOKS=(/ s/)/$hooks)/" "$mkinitcpio_conf"
+ elif [[ $VM_STATUS == "vmware" ]]; then
+   sed -i 's/\(MODULES=([^)]*\))/MODULES=()/' "$mkinitcpio_conf"
+   sed -i "/MODULES=(/ s/)/$vmware_modules)/" "$mkinitcpio_conf"
+   sed -i 's/\(HOOKS=([^)]*\))/HOOKS=()/' "$mkinitcpio_conf"
+   sed -i "/HOOKS=(/ s/)/$hooks)/" "$mkinitcpio_conf"
+ elif [[ $VM_STATUS == "other" ]]; then
+   sed -i 's/\(HOOKS=([^)]*\))/HOOKS=()/' "$mkinitcpio_conf"
+   sed -i "/HOOKS=(/ s/)/$hooks)/" "$mkinitcpio_conf"
+  fi
+
+  mkinitcpio -P # Rebuild mkinit for all installed kernels
 }
 
 zramd_setup() {
@@ -651,7 +654,6 @@ install_graphics
 install_gaming
 install_wine
 install_virtualization
-#laptop
 mkinitcpio_setup
 zramd_setup
 desktop_environment
