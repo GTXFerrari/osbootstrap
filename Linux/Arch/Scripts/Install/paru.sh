@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
 
 # Path
-DIR="/home/jake/Git"
-PARU="/home/jake/Git/paru"
+DIR="/home/$USER/Git"
+PARU="/home/$USER/Git/paru"
 
 # Colors
 NC='\033[0m' # No Color
-
-# Regular Colors
 Black='\033[0;30m'
 Red='\033[0;31m'
 Green='\033[0;32m'
@@ -17,7 +15,7 @@ Purple='\033[0;35m'
 Cyan='\033[0;36m'
 White='\033[0;37m'
 
-echo -n -e "${Blue}This script should be ran as a standard user after rebooting from the install ISO, would you like to continue? (y/n) ${NC}"
+echo -ne "${Blue}This script should be ran as a standard user after rebooting from the install ISO, would you like to continue? (y/n) ${NC}"
 read -r usr 
 if [[ "$usr" == "n" ]]; then
     exit
@@ -44,33 +42,30 @@ fi
 echo -e "${Blue}Installing packages from the AUR.${NC}"
 paru -S --needed \
   brave-bin \
-  fastfetch-git \
   ookla-speedtest-bin \
-  openrgb \
-  pfetch \
   piavpn-bin \
-  proton-ge-custom-bin \
   razergenie \
   visual-studio-code-bin \
   github-desktop-bin \
   vmware-workstation \
   cpu-x \
+  proton-ge-custom-bin \
   duckstation-git \
   pcsx2-git \
+  rpcs3-bin \
   cemu \
+  ryujinx \
+  cava \
+  python310 \
   nvim-lazy \
   zsh-fast-syntax-highlighting \
   zsh-theme-powerlevel10k-git \
-  rpcs3-git \
-  cava \
-  python310 \
 
-# Enable systemd services
 sudo systemctl enable --now \
   piavpn.service \
   vmware-networks.service \
   vmware-usbarbitrator.service
-sudo systemctl start vmware-networks-configuration.service
+  sudo systemctl start vmware-networks-configuration.service
 
 # Add user to plugdev group for razergenie
 sudo gpasswd -a "$USER" plugdev
