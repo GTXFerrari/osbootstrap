@@ -33,9 +33,15 @@ set_hostname() {
 }
 
 set_vconsole() {
-  {  echo "KEYMAP=us"
-     echo "FONT=ter-132b"
-  } > /etc/vconsole.conf
+  if [[ "$VM_STATUS" == "none" ]]; then
+    {  echo "KEYMAP=us"
+      echo "FONT=ter-132b"
+    } > /etc/vconsole.conf
+  else
+    {  echo "KEYMAP=us"
+      echo "FONT=ter-124b"
+    } > /etc/vconsole.conf
+  fi
 }
 
 set_root_password() {
