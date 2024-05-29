@@ -64,8 +64,8 @@ check_uefi() {
 
 check_internet_connection() {
   websites=("archlinux.org" "google.com" "example.com")
-  echo "Checking internet connection"
-  sleep 2
+  echo -e "${Green}Checking internet${NC}"
+  sleep 1
   for site in "${websites[@]}"; do
     if ping -c 1 "$site" > /dev/null 2>&1; then
       return 0
@@ -76,11 +76,10 @@ check_internet_connection() {
 }
 
 internet_check() {
-# Check for internet connection
 if check_internet_connection; then
-  echo "Internet connection available. Starting script"
+  echo -e "${Green}Internet available, starting script${NC}"
 else
-  echo "No internet connection found. Exiting..."
+  echo -e "${Red}No internet, check your connection${NC}"
   exit 1
 fi
 }
