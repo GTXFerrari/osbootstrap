@@ -170,6 +170,8 @@ install_bootloader() {
 }
 
 install_audio() {
+  echo -e "${Green}Installing audio${NC}"
+  sleep 1
   pacman -S --needed \
     pipewire \
     pipewire-docs \
