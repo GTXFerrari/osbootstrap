@@ -120,6 +120,7 @@ install_core_packages() {
     sshd.service \
     fstrim.timer \
     systemd-timesyncd.service
+  usermod -aG wireshark,input,video "$username"
 }
 
 create_user() {
@@ -130,7 +131,6 @@ create_user() {
   read -r password
   echo "$username":"$password" | chpasswd
   echo "$username ALL=(ALL) ALL" >> /etc/sudoers.d/"$username"
-  usermod -aG wireshark,input,video "$username"
   export username
 }
 
