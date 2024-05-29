@@ -85,54 +85,135 @@ fi
 }
 
 drive_partition() {
-while true; do
-  echo "Available disk partitions:"
-  lsblk -o NAME,FSTYPE,SIZE,MOUNTPOINT | grep -v "loop\|sr0"
-  read -rp "Enter the name of the partition you want to use: " partition_choice
-  export partition_choice
-  if [[ -e "/dev/$partition_choice" ]]; then
-    # Partition using sgdisk
-    sgdisk -Z /dev/"$partition_choice"
-    sgdisk --clear --new=1:0:+2G --typecode=1:ef00 --change-name=1:EFI --new=2:0:0 --typecode=2:8300 --change-name=2:system /dev/$partition_choice #TODO: Create a variable to determine if partition is NVME or not since nvme uses p# instead of just using partition + number like vda1,sda1 etc
-    # Encryption
-    while true; do
-      if [[ $? -eq 0 ]]; then
-        break
-      else
-        echo "Cryptsetup command failed, Retrying..."
-        sleep 3
+  local chosen_filesystem=""
+  while true; do
+    echo -e "${Green}Available disk partitions:${NC}"
+    lsblk -o NAME,FSTYPE,SIZE,MOUNTPOINT | grep -v "loop\|sr0"
+    read -rp "Enter the name of the partition you want to use: " partition_choice
+    export partition_choice
+    if [[ "$partition_choice" == nvme* ]]; then
+      partition_suffix="p"
+      export partition_suffix
+    else
+      partition_suffix=""
+      export partition_suffix
+    fi
+    if [[ -e "/dev/$partition_choice" ]]; then
+      sgdisk -Z /dev/"$partition_choice"
+      sgdisk --clear --new=1:0:+2G --typecode=1:ef00 --change-name=1:EFI --new=2:0:0 --typecode=2:8300 --change-name=2:system /dev/$partition_choice
+      echo -en "${Green}Would you like to use LUKS encryption? (y/n) ${NC}"
+      read -r encryption
+      if [[ "$encryption" == "y" ]]; then
+        cryptsetup luksFormat --type luks2 --align-payload=4096 -c aes-xts-plain64 -s 512 -h sha512 -y --use-urandom /dev/${partition_choice}${partition_suffix}2
+        cryptsetup open /dev/${partition_choice}${partition_suffix}
+        export encryption
       fi
-    done
-    cryptsetup luksFormat --type luks2 --align-payload=4096 -c aes-xts-plain64 -s 512 -h sha512 -y --use-urandom /dev/${partition_choice}p2 #TODO: fix partition variable
-    cryptsetup open /dev/"${partition_choice}"p2 cryptbtrfs #TODO: Fix partition variable
-    # BTRFS
-    mkfs.btrfs -L archbtrfs /dev/mapper/cryptbtrfs
-    mount /dev/mapper/cryptbtrfs /mnt
-    btrfs subvolume create /mnt/@
-    btrfs subvolume create /mnt/@home
-    btrfs subvolume create /mnt/@snapshots
-    btrfs subvolume create /mnt/@cache
-    btrfs subvolume create /mnt/@libvirt
-    btrfs subvolume create /mnt/@log
-    btrfs subvolume create /mnt/@tmp
-    umount -R /mnt
-    mount_opts="rw,noatime,compress-force=zstd:1,space_cache=v2"
-    mount -o ${mount_opts},subvol=@ /dev/mapper/cryptbtrfs /mnt
-    mkdir -p /mnt/{home,.snapshots,var/cache,var/lib/libvirt,var/log,var/tmp}
-    mount -o ${mount_opts},subvol=@home /dev/mapper/cryptbtrfs /mnt/home
-    mount -o ${mount_opts},subvol=@snapshots /dev/mapper/cryptbtrfs /mnt/.snapshots
-    mount -o ${mount_opts},subvol=@cache /dev/mapper/cryptbtrfs /mnt/var/cache
-    mount -o ${mount_opts},subvol=@libvirt /dev/mapper/cryptbtrfs /mnt/var/lib/libvirt
-    mount -o ${mount_opts},subvol=@log /dev/mapper/cryptbtrfs /mnt/var/log
-    mount -o ${mount_opts},subvol=@tmp /dev/mapper/cryptbtrfs /mnt/var/tmp
-    mkfs.fat -F32 /dev/"${partition_choice}"p1 #TODO: Fix partition variable
-    mount --mkdir /dev/"${partition_choice}"p1 /mnt/boot #TODO: Fix partition variable
-    break
-  else
-    echo "Partition '/dev/$partition_choice' does not exist, please choose a valid partition"
-    sleep 3
-  fi
-done
+      while true; do
+        PS3='Select a filesystem type: '
+        options=("btrfs" "xfs" "ext4")
+        select opt in "${options[@]}"; do
+          case $opt in
+            "btrfs")
+              if [[ "$encryption" == "y" ]]; then
+                mkfs.btrfs -L archbtrfs /dev/mapper/cryptarch
+                mount /dev/mapper/cryptarch /mnt
+                echo -e "${Green}Setting up subvolumes${NC}"
+                sleep 2
+                btrfs subvolume create /mnt/@
+                btrfs subvolume create /mnt/@home
+                btrfs subvolume create /mnt/@snapshots
+                btrfs subvolume create /mnt/@cache
+                btrfs subvolume create /mnt/@libvirt
+                btrfs subvolume create /mnt/@log
+                btrfs subvolume create /mnt/@tmp
+                umount -R /mnt
+                mount_opts="rw,noatime,compress-force=zstd:1,space_cache=v2"
+                mount -o ${mount_opts},subvol=@ /dev/mapper/cryptarch /mnt
+                mkdir -p /mnt/{home,.snapshots,var/cache,var/lib/libvirt,var/log,var/tmp}
+                mount -o ${mount_opts},subvol=@home /dev/mapper/cryptarch /mnt/home
+                mount -o ${mount_opts},subvol=@snapshots /dev/mapper/cryptarch /mnt/.snapshots
+                mount -o ${mount_opts},subvol=@cache /dev/mapper/cryptarch /mnt/var/cache
+                mount -o ${mount_opts},subvol=@libvirt /dev/mapper/cryptarch /mnt/var/lib/libvirt
+                mount -o ${mount_opts},subvol=@log /dev/mapper/cryptarch /mnt/var/log
+                mount -o ${mount_opts},subvol=@tmp /dev/mapper/cryptarch /mnt/var/tmp
+                mkfs.fat -F32 /dev/${partition_choice}${partition_suffix}1
+                mount --mkdir /dev/${partition_choice}${partition_suffix}1 /mnt/boot
+                export chosen_filesystem="btrfs"
+              else [[ "$encryption" != "y" ]]; then
+                mkfs.btrfs -L archbtrfs /dev/${partition_choice}${partition_suffix}2
+                mount /dev/${partition_choice}${partition_suffix} /mnt 
+                echo -e "${Green}Setting up subvolumes${NC}"
+                sleep 2
+                btrfs subvolume create /mnt/@
+                btrfs subvolume create /mnt/@home
+                btrfs subvolume create /mnt/@snapshots
+                btrfs subvolume create /mnt/@cache
+                btrfs subvolume create /mnt/@libvirt
+                btrfs subvolume create /mnt/@log
+                btrfs subvolume create /mnt/@tmp
+                umount -R /mnt
+                mount_opts="rw,noatime,compress-force=zstd:1,space_cache=v2"
+                mount -o ${mount_opts},subvol=@ /dev/${partition_choice}${partition_suffix}2 /mnt
+                mkdir -p /mnt/{home,.snapshots,var/cache,var/lib/libvirt,var/log,var/tmp}
+                mount -o ${mount_opts},subvol=@home /dev/${partition_choice}${partition_suffix}2 /mnt/home
+                mount -o ${mount_opts},subvol=@snapshots /${partition_choice}${partition_suffix}2 /mnt/.snapshots
+                mount -o ${mount_opts},subvol=@cache /${partition_choice}${partition_suffix}2 /mnt/var/cache
+                mount -o ${mount_opts},subvol=@libvirt /${partition_choice}${partition_suffix}2 /mnt/var/lib/libvirt
+                mount -o ${mount_opts},subvol=@log /${partition_choice}${partition_suffix}2 /mnt/var/log
+                mount -o ${mount_opts},subvol=@tmp /${partition_choice}${partition_suffix}2 /mnt/var/tmp
+                mkfs.fat -F32 /dev/${partition_choice}${partition_suffix}1
+                mount --mkdir /dev/${partition_choice}${partition_suffix}1 /mnt/boot
+                export chosen_filesystem="btrfs"
+              fi
+              break 2
+              ;;
+            "xfs")
+              if [[ "$encryption" == "y" ]]; then
+                mkfs.xfs /dev/mapper/cryptarch
+                mount /dev/mapper/cryptarch /mnt
+                mkdir /mnt/{home,boot}
+                mkfs.fat -F32 /dev/${partition_choice}${partition_suffix}1
+                mount --mkdir /dev/${partition_choice}${partition_suffix}1 /mnt/boot
+                export chosen_filesystem="xfs"
+              elif [[ "$encryption" != "y" ]]; then
+                mkfs.xfs /dev/${partition_choice}${partition_suffix}2
+                mount /dev/${partition_choice}${partition_suffix}2 /mnt
+                mkdir /mnt/{home,boot}
+                mkfs.fat -F32 /dev/${partition_choice}${partition_suffix}1
+                mount --mkdir /dev/${partition_choice}${partition_suffix}1 /mnt/boot
+                export chosen_filesystem="xfs"
+              fi
+              break 2
+              ;;
+            "ext4")
+              if [[ "$encryption" == "y" ]]; then
+                mkfs.ext4 /dev/mapper/cryptarch
+                mount /dev/mapper/cryptarch /mnt
+                mkdir /mnt/{home,boot}
+                mkfs.fat -F32 /dev/${partition_choice}${partition_suffix}1
+                mount --mkdir /dev/${partition_choice}${partition_suffix}1 /mnt/boot
+                export chosen_filesystem="ext4"
+              elif [[ "$encryption" != "y" ]]; then
+                mkfs.ext4 /dev/${partition_choice}${partition_suffix}2
+                mount /dev/${partition_choice}${partition_suffix}2 /mnt
+                mkdir /mnt/{home,boot}
+                mkfs.fat -F32 /dev/${partition_choice}${partition_suffix}1
+                mount --mkdir /dev/${partition_choice}${partition_suffix}1 /mnt/boot
+                export chosen_filesystem="ext4"
+              fi
+              break 2
+              ;;
+            *)
+              echo -e "${Red}Invalid option${NC}"
+              ;;
+          esac
+        done
+      done
+    else
+      echo -e "${Red}Partition /dev/"$partition_choice" does not exist, enter a valid partition${NC}"
+      sleep 3
+    fi
+  done
 }
 
 pacstab() {
