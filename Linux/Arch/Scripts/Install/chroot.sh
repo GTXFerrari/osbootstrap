@@ -52,27 +52,20 @@ set_root_password() {
 
 install_core_packages() {
   pacman -S --needed \
-    efibootmgr \
-    sbctl \
+    base-devel \
     networkmanager \
     nm-connection-editor \
     iwd \
     avahi \
     bind \
     cifs-utils \
-    nfs-utils \
-    base-devel \
     pacman-contrib \
-    polkit \
-    cronie \
     xdg-user-dirs \
     xdg-utils \
     udisks2 \
     exfatprogs \
     mtools \
     dosfstools \
-    btrfs-progs \
-    snapper \
     cups \
     cups-pdf \
     hplip \
@@ -87,9 +80,9 @@ install_core_packages() {
     neofetch \
     fastfetch \
     htop \
-    cmatrix \
-    btop \
     nvtop \
+    btop \
+    cmatrix \
     wireshark-qt \
     mpd \
     mpc \
@@ -107,13 +100,9 @@ install_core_packages() {
     ffmpegthumbnailer \
     odt2txt \
     zathura \
-    zathura-pdf-mupdf \
-    zathura-ps \
     firefox \
     chromium \
-    lazygit \
     hugo \
-    bitwarden \
     terminus-font \
     python \
     python-pip \
@@ -129,7 +118,6 @@ install_core_packages() {
     sshd.service \
     fstrim.timer \
     systemd-timesyncd.service \
-    cronie.service
 }
 
 create_user() {
