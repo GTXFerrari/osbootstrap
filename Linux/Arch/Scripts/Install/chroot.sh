@@ -232,41 +232,41 @@ export chosen_graphics
 }
 
 install_gaming() {
-  echo -n "Will this machine be used for gaming? (y/n) "
-  read -r game
-  if [[ "$game" == "y" ]]; then
-  pacman -S --needed \
-    steam \
-    lutris \
-    discord \
-    retroarch \
-    retroarch-assets-xmb \
-    retroarch-assets-ozone \
-    libretro-core-info \
-    gamescope \
-    obs-studio \
-    mangohud \
-    goverlay
+  if [[ "$VM_STATUS" == "none" ]]; then
+    pacman -S --needed \
+      steam \
+      lutris \
+      discord \
+      retroarch \
+      retroarch-assets-xmb \
+      retroarch-assets-ozone \
+      libretro-core-info \
+      gamescope \
+      obs-studio \
+      mangohud \
+      goverlay
+        else
+          return 0
   fi
 }
 
 install_wine() {
-  echo -n "Do you want to install Wine? (y/n) "
-  read -r wine
-  if [[ "$wine" == "y" ]]; then
-  pacman -S --needed \
-    wine-staging \
-    wine-gecko \
-    wine-mono \
-    pipewire-pulse \
-    lib32-libpulse \
-    lib32-alsa-oss \
-    lib32-gnutls \
-    lib32-gst-plugins-base \
-    lib32-gst-plugins-good \
-    samba \
-    winetricks \
-    zenity
+  if [[ "$VM_STATUS" == "none" ]]; then
+    pacman -S --needed \
+      wine-staging \
+      wine-gecko \
+      wine-mono \
+      pipewire-pulse \
+      lib32-libpulse \
+      lib32-alsa-oss \
+      lib32-gnutls \
+      lib32-gst-plugins-base \
+      lib32-gst-plugins-good \
+      samba \
+      winetricks \
+      zenity
+        else
+          return 0
   fi
 }
 
