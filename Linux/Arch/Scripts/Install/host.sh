@@ -66,7 +66,7 @@ check_uefi() {
   fi
 
   if [[ "$value" -eq 64 ]]; then
-    echo -e "${Green}The system is using a 64 bit UEFI, GRUB & Systemd-Boot are supported${NC}" #TODO: Create a conditional for bootloader
+    echo -e "${Green}The system is using a 64 bit UEFI, GRUB & Systemd-Boot are supported${NC}"
     uefi="64"
     export uefi
     sleep 3
