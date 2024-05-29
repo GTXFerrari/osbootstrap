@@ -135,41 +135,47 @@ create_user() {
 }
 
 install_bootloader() {
-  while true; do
-    PS3='Select a bootloader: '
-    options=("GRUB" "Systemd-Boot")
-    select opt in "${options[@]}"; do
-      case $opt in
-        "GRUB")
-          pacman -S --needed --noconfirm grub efibootmgr os-prober sbctl
-          grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-          grub-mkconfig -o /boot/grub/grub.cfg
-          break 2
-          ;;
+  if [[ "$uefi" == "32" ]]; then
+    pacman -S --needed --noconfirm grub efibootmgr os-prober sbctl
+    grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+    grub-mkconfig -o /boot/grub/grub.cfg
+  else
+    while true; do
+      PS3='Select a bootloader: '
+      options=("GRUB" "Systemd-Boot")
+      select opt in "${options[@]}"; do
+        case $opt in
+          "GRUB")
+            pacman -S --needed --noconfirm grub efibootmgr os-prober sbctl
+            grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+            grub-mkconfig -o /boot/grub/grub.cfg
+            break 2
+            ;;
           "Systemd-Boot")
-          luksuuid=$(blkid -s UUID -o value /dev/${partition_choice}${partition_suffix}2)
-          echo "Installing Bootloader"
-          bootctl install
-          touch /boot/loader/entries/arch.conf
-          touch /boot/loader/entries/arch-zen.conf
-          echo "title Arch Linux
-          linux /vmlinuz-linux
-          initrd /amd-ucode.img
-          initrd /initramfs-linux.img
-          options cryptdevice=UUID=$luksuuid:luks:allow-discards root=/dev/mapper/luks rootflags=subvol=@ rd.luks.options=discard nvidia_drm.modeset=1 amd_iommu=on rw" > /boot/loader/entries/arch.conf
-          echo "title Arch Linux (Zen)
-          linux /vmlinuz-linux-zen
-          initrd /amd-ucode.img
-          initrd /initramfs-linux-zen.img
-          options cryptdevice=UUID=$luksuuid:luks:allow-discards root=/dev/mapper/luks rootflags=subvol=@ rd.luks.options=discard nvidia_drm.modeset=1 amd_iommu=on rw" > /boot/loader/entries/arch-zen.conf
-          break 2
-          ;;
-        *)
-          echo -e "${Red}Invalid option, select a valid bootloader.${NC}"
-          ;;
-      esac
+            luksuuid=$(blkid -s UUID -o value /dev/"${partition_choice}""${partition_suffix}"2)
+            echo "Installing Bootloader"
+            bootctl install
+            touch /boot/loader/entries/arch.conf
+            touch /boot/loader/entries/arch-zen.conf
+            echo "title Arch Linux
+            linux /vmlinuz-linux
+            initrd /amd-ucode.img
+            initrd /initramfs-linux.img
+            options cryptdevice=UUID=$luksuuid:luks:allow-discards root=/dev/mapper/luks rootflags=subvol=@ rd.luks.options=discard nvidia_drm.modeset=1 amd_iommu=on rw" > /boot/loader/entries/arch.conf
+            echo "title Arch Linux (Zen)
+            linux /vmlinuz-linux-zen
+            initrd /amd-ucode.img
+            initrd /initramfs-linux-zen.img
+            options cryptdevice=UUID=$luksuuid:luks:allow-discards root=/dev/mapper/luks rootflags=subvol=@ rd.luks.options=discard nvidia_drm.modeset=1 amd_iommu=on rw" > /boot/loader/entries/arch-zen.conf
+            break 2
+            ;;
+          *)
+            echo -e "${Red}Invalid option, select a valid bootloader.${NC}"
+            ;;
+        esac
+      done
     done
-  done
+  fi
 }
 
 install_audio() {
