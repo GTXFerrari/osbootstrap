@@ -26,7 +26,6 @@ set_hostname() {
   } >> /etc/hosts
 }
 
-# Set vconsole to high resolution during initram env
 set_vconsole() {
   {  echo "KEYMAP=us"
      echo "FONT=ter-132b"
@@ -74,6 +73,7 @@ install_core_packages() {
     zsh-completions \
     zsh-autosuggestions \
     neofetch \
+    fastfetch \
     htop \
     cmatrix \
     btop \
@@ -105,7 +105,8 @@ install_core_packages() {
     terminus-font \
     python \
     python-pip \
-    python-virtualenv
+    python-virtualenv \
+    openrgb
 
   systemctl enable \
     NetworkManager.service \
