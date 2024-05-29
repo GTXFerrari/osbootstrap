@@ -119,7 +119,7 @@ install_core_packages() {
     reflector.timer \
     sshd.service \
     fstrim.timer \
-    systemd-timesyncd.service \
+    systemd-timesyncd.service
 }
 
 create_user() {
@@ -130,7 +130,7 @@ create_user() {
   read -r password
   echo "$username":"$password" | chpasswd
   echo "$username ALL=(ALL) ALL" >> /etc/sudoers.d/"$username"
-  usermod -aG wireshark,input,video jake
+  usermod -aG wireshark,input,video $username
 }
 
 install_bootloader() {
@@ -299,7 +299,7 @@ install_virtualization() {
     if [[ ! -d /etc/docker ]]; then
       mkdir /etc/docker
     fi
-    if [[ "chosen_filesystem" == "btrfs" ]]; then
+    if [[ "$chosen_filesystem" == "btrfs" ]]; then
       echo '{"storage-driver": "btrfs"}' >> /etc/docker/daemon.json
     fi
   fi
