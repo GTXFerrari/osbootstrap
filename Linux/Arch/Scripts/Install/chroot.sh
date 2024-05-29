@@ -194,66 +194,40 @@ install_audio() {
 
 install_graphics() {
   local chosen_graphics=""
-  while true; do
-  echo -n "Would you like to install a graphics driver (y/n) "
-  read -r graphics_driver
-  if [[ "$graphics_driver" == "y" ]]; then
-    PS3='Please enter your choice: '
-    options=("Nvidia" "AMD" "Intel" "Exit")
-    select opt in "${options[@]}"; do
-      case $opt in 
-        "Nvidia")
-          pacman -S --needed \
-            nvidia-open-dkms \
-            nvidia-utils \
-            lib32-nvidia-utils \
-            nvidia-settings \
-            vulkan-icd-loader \
-            lib32-vulkan-icd-loader \
-            opencl-nvidia \
-            lib32-opencl-nvidia \
-            python-pytorch-cuda \
-            cuda
-          chosen_graphics="Nvidia"
-          break 2
-          ;;
-        "AMD")
-          pacman -S --needed \
-            mesa \
-            lib32-mesa \
-            xf86-video-amdgpu \
-            vulkan-radeon \
-            lib32-vulkan-radeon \
-            libva-mesa-driver \
-            lib32-libva-mesa-driver \
-            mesa-vdpau \
-            lib32-mesa-vdpau \
-            rocm-opencl-runtime 
-          chosen_graphics="AMD"
-          break 2
-          ;;
-        "Intel")
-          pacman -S --needed \
-            mesa \
-            lib32-mesa \
-            vulkan-intel
-          chosen_graphics="Intel"
-          break 2
-          ;;
-        "Exit")
-          break 2 
-          ;;
-        *)
-          echo "Invalid choice. Please enter a valid option."
-          ;;
-   esac
- done
-else
-    break 2
+  if [[ "$VM_STATUS" != "none" ]]; then
+    echo -e "${Green}System is in a VM, no graphics driver required${NC}"
+    sleep 1
+    return 0
   fi
-done
-
-
+    while true; do
+      PS3='Select a graphics driver: '
+      options=("Nvidia" "AMD" "Intel" "Exit")
+      select opt in "${options[@]}"; do
+        case $opt in
+          "Nvidia")
+            pacman -S --needed nvidia-open-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader opencl-nvidia lib32-opencl-nvidia python-pytorch-cuda cuda
+            chosen_graphics="Nvidia"
+            break 2
+            ;;
+          "AMD")
+            pacman -S --needed mesa lib32-mesa xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau rocm-opencl-runtime
+            chosen_graphics="AMD"
+            break 2
+            ;;
+          "Intel")
+            pacman -S --needed mesa lib32-mesa vulkan-intel
+            chosen_graphics="Intel"
+            break 2
+            ;;
+          "Exit")
+            break 2
+            ;;
+          *)
+            echo "Invalid choice. Please enter a valid option."
+            ;;
+        esac
+      done
+    done
 export chosen_graphics
 }
 
