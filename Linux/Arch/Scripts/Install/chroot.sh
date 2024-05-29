@@ -271,45 +271,37 @@ install_wine() {
 }
 
 install_virtualization() {
-  echo -n "Are you using QEMU? (y/n) "
-  read -r qemu
-if [[ "$qemu" == "y" ]]; then
-  pacman -S --needed \
-    qemu-full \
-    virt-manager \
-    dmidecode \
-    edk2-ovmf \
-    iptables-nft \
-    dnsmasq \
-    openbsd-netcat \
-    bridge-utils \
-    vde2 \
-    libvirt \
-    swtpm
-  systemctl enable libvirtd.service
-  usermod -aG libvirt jake
-fi
-  echo -n "Are you using docker? (y/n) "
-  read -r docker
-if [[ "$docker" == "y" ]]; then
-  pacman -S --needed \
-    docker \
-    docker-compose
-  systemctl enable docker.service
-  usermod -aG docker jake
-fi
-  echo -n "Is this machine a vmware guest? (y/n) "
-  read -r vmware
-if [[ "$vmware" == "y" ]]; then
-  pacman -S --needed \
-    open-vm-tools \
-    xf86-input-vmmouse \
-    xf86-video-vmware \
-    mesa \
-    gtkmm \
-    gtk2
-  systemctl enable vmtoolsd.service vmware-vmblock-fuse.service
-fi
+  if [[ "$VM_STATUS" != "none" ]]; then
+    echo -e "${Green}System is in a VM, skipping${NC}"
+    sleep 1
+    return 0
+  else
+    pacman -S --needed \
+      qemu-full \
+      virt-manager \
+      dmidecode \
+      edk2-ovmf \
+      iptables-nft \
+      dnsmasq \
+      openbsd-netcat \
+      bridge-utils \
+      vde2 \
+      libvirt \
+      swtpm \
+      docker \
+      docker-compose
+
+    systemctl enable docker.service libvirtd.service
+    usermod -aG libvirt,docker jake
+
+    if [[ ! -d /etc/docker ]]; then
+      mkdir /etc/docker
+    fi
+    if [[ "chosen_filesystem" == "btrfs" ]]; then
+      echo '{"storage-driver": "btrfs"}' >> /etc/docker/daemon.json
+    fi
+  fi
+}
 }
 
 desktop_environment() {
