@@ -252,19 +252,20 @@ pacstab() {
 }
 
 clean_up() {
-  echo -e "${Green}Cleaning up.${NC}"
-  rm /mnt/chroot.sh
-  umount -R /mnt
-  echo -n "Would you like to reboot? (y/n) "
+  echo -n "Would you like to clean up and reboot? (y/n) "
   read -r reboot
   if [[ $reboot == "y" ]]; then
+    echo -e "${Green}Cleaning up and rebooting.${NC}"
+    rm /mnt/chroot.sh
+    umount -R /mnt
     reboot
   else
-    return 1
+    echo "Returning back to chrooted system"
+    return 0
   fi
 }
 
-
+# Call functions
 vm_check
 termfonts
 check_uefi
