@@ -2,18 +2,24 @@
 
 init() {
   echo -e "${Green}Setting timezone.${NC}"
+  sleep 1
   ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
   echo -e "${Green}Syncing system clock.${NC}"
+  sleep 1
   hwclock --systohc
+  echo -e "${Green}Updating locales${NC}"
+  sleep 1
   sed -i '/^#en_US.UTF-8 UTF-8/s/^#//' /etc/locale.gen
   locale-gen
   echo "LANG=en_US.UTF-8" >> /etc/locale.conf
   echo -e "${Green}Enabling multilib.${NC}"
+  sleep 1
   sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
   echo -e "${Green}Updating mirrorlist.${NC}"
   reflector -c 'United States' -a 12 -p https --sort rate --save /etc/pacman.d/mirrorlist
   pacman -Sy
   echo -e "${Green}Updating keyring.${NC}"
+  sleep 1
   pacman -S --noconfirm archlinux-keyring sudo
 }
 
