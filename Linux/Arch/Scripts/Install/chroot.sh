@@ -620,7 +620,6 @@ mkinitcpio_setup() {
    sed -i "/MODULES=(/ s/)/$nvidia_modules)/" "$mkinitcpio_conf"
    sed -i 's/\(HOOKS=([^)]*\))/HOOKS=()/' "$mkinitcpio_conf"
    sed -i "/HOOKS=(/ s/)/$hooks)/" "$mkinitcpio_conf"
-   mkinitcpio -P # Rebuild mkinit for all installed kernels
  elif [[ $VM_STATUS == "kvm" ]]; then
    sed -i 's/\(MODULES=([^)]*\))/MODULES=()/' "$mkinitcpio_conf"
    sed -i "/MODULES=(/ s/)/$kvm_modules)/" "$mkinitcpio_conf"
@@ -653,7 +652,8 @@ install_graphics
 install_gaming
 install_wine
 install_virtualization
+vm_check
 mkinitcpio_setup
 zramd_setup
 desktop_environment
-window_manager
+#window_manager
