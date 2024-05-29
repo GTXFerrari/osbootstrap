@@ -70,6 +70,7 @@ install_core_packages() {
     cups-pdf \
     hplip \
     alacritty \
+    kitty \
     arch-install-scripts \
     rsync \
     openssh \
@@ -91,6 +92,7 @@ install_core_packages() {
     nerd-fonts \
     ttf-joypixels \
     lf \
+    chafa \
     lynx \
     ueberzug \
     atool \

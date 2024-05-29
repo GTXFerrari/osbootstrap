@@ -60,6 +60,11 @@ paru -S --needed \
   nvim-lazy \
   zsh-fast-syntax-highlighting \
   zsh-theme-powerlevel10k-git \
+  ctpv-git \
+  kwin-effects-forceblur \
+  kwin-polonium
+
+#TODO: Create condition for kwin-polonium & kwin-forceblur if kde was chosen in the install
 
 sudo systemctl enable --now \
   piavpn.service \
