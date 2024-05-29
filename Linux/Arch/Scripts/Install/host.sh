@@ -223,8 +223,15 @@ pacstab() {
   else 
     "$ucode" == "" #TODO: Can create a conditional for intel cpus
   fi
+  if [[ "$chosen_filesystem" == "ext4" ]]; then
+    fs="e2fsprogs"
+  elif [[ "$chosen_filesystem" == "xfs" ]]; then
+    fs="xfsprogs"
+  elif [[ "$chosen_filesystem" == "btrfs" ]]; then
+    fs="btrfs-progs"
 
   pacstrap -K /mnt \
+    $fs \
     $ucode \
     base \
     linux \
@@ -238,7 +245,6 @@ pacstab() {
     reflector \
     man-db \
     dosfstools \
-    btrfs-progs
 
   genfstab -U /mnt >> /mnt/etc/fstab
   cp ./chroot.sh /mnt
