@@ -302,6 +302,16 @@ install_virtualization() {
     fi
   fi
 }
+
+vm_check() {
+  if [[ "$VM_STATUS" == "vmware" ]]; then
+    pacman -S --needed --noconfirm open-vm-tools xf86-input-vmmouse xf86-video-vmware  mesa gtkmm gtk2
+    systemctl enable vmtoolsd.service vmware-vmblock-fuse.service
+  else [[ "$VM_STATUS" == "kvm" ]]; then
+    pacman -S --needed --noconfirm qemu-guest-agent
+    systemctl enable gemu-guest-agent
+  fi
+}
 }
 
 desktop_environment() {
