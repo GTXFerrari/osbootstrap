@@ -130,7 +130,8 @@ create_user() {
   read -r password
   echo "$username":"$password" | chpasswd
   echo "$username ALL=(ALL) ALL" >> /etc/sudoers.d/"$username"
-  usermod -aG wireshark,input,video $username
+  usermod -aG wireshark,input,video "$username"
+  export username
 }
 
 install_bootloader() {

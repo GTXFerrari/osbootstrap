@@ -20,12 +20,20 @@ vm_check() {
   sleep 1
   VM_TYPE=$(systemd-detect-virt)
   if [[ "$VM_TYPE" == "none" ]]; then
+  echo -e "${Green}System is not in a vm${NC}"
+  sleep 1
     VM_STATUS="not_in_vm"
   elif [[ "$VM_TYPE" == "kvm" ]]; then
+  echo -e "${Green}System is using kvm${NC}"
+  sleep 1
     VM_STATUS="kvm"
   elif [[ "$VM_TYPE" == "vmware" ]]; then
+  echo -e "${Green}System is using vmware${NC}"
+  sleep 1
     VM_STATUS="vmware"
   else
+  echo -e "${Red}System is using an unsupported VM type${NC}"
+  sleep 5
     VM_STATUS="other"
   fi
   export VM_STATUS
@@ -44,10 +52,10 @@ termfonts() {
 check_uefi() {
   echo -e "${Green}Checking UEFI settings${NC}"
   if [[ -d /sys/firmware/efi/efivars/ ]]; then
-    echo "System is booted using UEFI, proceeding"
+  echo -e "${Green}System is booted using UEFI, proceeding${NC}"
     sleep 1
   else
-    echo "System is not booted using UEFI, change in the BIOS before proceeding."
+  echo -e "${Red}System is not booted using UEFI, change in the BIOS before proceeding${NC}"
     sleep 5
     exit 1
   fi
@@ -58,10 +66,14 @@ check_uefi() {
   fi
 
   if [[ "$value" -eq 64 ]]; then
-    echo "The system is using a 64 bit UEFI, GRUB & Systemd-Boot are supported" #TODO: Create a conditional for bootloader
+    echo -e "${Green}The system is using a 64 bit UEFI, GRUB & Systemd-Boot are supported${NC}" #TODO: Create a conditional for bootloader
+    uefi="64"
+    export uefi
     sleep 3
   else
-    echo "The system is using a 32 bit UEFI, only Systemd-Boot is supported"
+    echo -e "${Green}The system is using a 32 bit UEFI, only Systemd-Boot is supported${NC}"
+    uefi="32"
+    export uefi
     sleep 3
   fi
 }
@@ -109,13 +121,13 @@ drive_partition() {
 
     if [[ -e "/dev/$partition_choice" ]]; then
       sgdisk -Z /dev/"$partition_choice"
-      sgdisk --clear --new=1:0:+2G --typecode=1:ef00 --change-name=1:EFI --new=2:0:0 --typecode=2:8300 --change-name=2:system /dev/$partition_choice
+      sgdisk --clear --new=1:0:+2G --typecode=1:ef00 --change-name=1:EFI --new=2:0:0 --typecode=2:8300 --change-name=2:system /dev/"$partition_choice"
 
       echo -en "${Green}Would you like to use LUKS encryption? (y/n) ${NC}"
       read -r encryption
       if [[ "$encryption" == "y" ]]; then
-        cryptsetup luksFormat --type luks2 --align-payload=4096 -c aes-xts-plain64 -s 512 -h sha512 -y --use-urandom /dev/${partition_choice}${partition_suffix}2
-        cryptsetup open /dev/${partition_choice}${partition_suffix} cryptarch
+        cryptsetup luksFormat --type luks2 --align-payload=4096 -c aes-xts-plain64 -s 512 -h sha512 -y --use-urandom /dev/"${partition_choice}""${partition_suffix}"2
+        cryptsetup open /dev/"${partition_choice}""${partition_suffix}" cryptarch
         export encryption
       fi
 
