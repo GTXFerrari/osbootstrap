@@ -281,7 +281,7 @@ install_wine() {
 
 install_virtualization() {
   if [[ "$VM_STATUS" != "none" ]]; then
-    echo -e "${Green}System is in a VM, skipping${NC}"
+    echo -e "${Green}System is in a VM, skipping QEMU install${NC}"
     sleep 1
     return 0
   else
