@@ -233,7 +233,7 @@ pacstab() {
   if [[ "$VM_STATUS" == "not_in_vm" && "$cpu_vendor" == "AuthenticAMD" ]]; then
     ucode="amd-ucode"
   else
-    ucode= "" #TODO: Can create a conditional for intel cpus
+    ucode="intel-ucode"
   fi
   if [[ "$chosen_filesystem" == "ext4" ]]; then
     fs="e2fsprogs"
