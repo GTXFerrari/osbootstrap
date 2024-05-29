@@ -28,10 +28,12 @@ vm_check() {
 }
 
 termfonts() {
-  if [[ "$VM_STATUS" != "not_in_vm" ]]; then
-    setfont ter-124b
-  else
+  echo -e "${Green}Adjusting fonts${NC}"
+  sleep 1
+  if [[ "$VM_STATUS" == "not_in_vm" ]]; then
     setfont ter-132b
+  else
+    setfont ter-124b
   fi
 }
 
