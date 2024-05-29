@@ -86,11 +86,15 @@ fi
 
 drive_partition() {
   local chosen_filesystem=""
+  local encryption=""
+  local partition_suffix=""
+
   while true; do
     echo -e "${Green}Available disk partitions:${NC}"
     lsblk -o NAME,FSTYPE,SIZE,MOUNTPOINT | grep -v "loop\|sr0"
     read -rp "Enter the name of the partition you want to use: " partition_choice
     export partition_choice
+
     if [[ "$partition_choice" == nvme* ]]; then
       partition_suffix="p"
       export partition_suffix
@@ -98,16 +102,19 @@ drive_partition() {
       partition_suffix=""
       export partition_suffix
     fi
+
     if [[ -e "/dev/$partition_choice" ]]; then
       sgdisk -Z /dev/"$partition_choice"
       sgdisk --clear --new=1:0:+2G --typecode=1:ef00 --change-name=1:EFI --new=2:0:0 --typecode=2:8300 --change-name=2:system /dev/$partition_choice
+
       echo -en "${Green}Would you like to use LUKS encryption? (y/n) ${NC}"
       read -r encryption
       if [[ "$encryption" == "y" ]]; then
         cryptsetup luksFormat --type luks2 --align-payload=4096 -c aes-xts-plain64 -s 512 -h sha512 -y --use-urandom /dev/${partition_choice}${partition_suffix}2
-        cryptsetup open /dev/${partition_choice}${partition_suffix}
+        cryptsetup open /dev/${partition_choice}${partition_suffix} cryptarch
         export encryption
       fi
+
       while true; do
         PS3='Select a filesystem type: '
         options=("btrfs" "xfs" "ext4")
@@ -138,7 +145,7 @@ drive_partition() {
                 mount -o ${mount_opts},subvol=@tmp /dev/mapper/cryptarch /mnt/var/tmp
                 mkfs.fat -F32 /dev/${partition_choice}${partition_suffix}1
                 mount --mkdir /dev/${partition_choice}${partition_suffix}1 /mnt/boot
-                export chosen_filesystem="btrfs"
+                chosen_filesystem="btrfs"
               else
                 mkfs.btrfs -L archbtrfs /dev/${partition_choice}${partition_suffix}2
                 mount /dev/${partition_choice}${partition_suffix} /mnt 
@@ -163,7 +170,7 @@ drive_partition() {
                 mount -o ${mount_opts},subvol=@tmp /${partition_choice}${partition_suffix}2 /mnt/var/tmp
                 mkfs.fat -F32 /dev/${partition_choice}${partition_suffix}1
                 mount --mkdir /dev/${partition_choice}${partition_suffix}1 /mnt/boot
-                export chosen_filesystem="btrfs"
+                chosen_filesystem="btrfs"
               fi
               break 2
               ;;
@@ -174,14 +181,14 @@ drive_partition() {
                 mkdir /mnt/{home,boot}
                 mkfs.fat -F32 /dev/${partition_choice}${partition_suffix}1
                 mount --mkdir /dev/${partition_choice}${partition_suffix}1 /mnt/boot
-                export chosen_filesystem="xfs"
+                chosen_filesystem="xfs"
               else
                 mkfs.xfs /dev/${partition_choice}${partition_suffix}2
                 mount /dev/${partition_choice}${partition_suffix}2 /mnt
                 mkdir /mnt/{home,boot}
                 mkfs.fat -F32 /dev/${partition_choice}${partition_suffix}1
                 mount --mkdir /dev/${partition_choice}${partition_suffix}1 /mnt/boot
-                export chosen_filesystem="xfs"
+                chosen_filesystem="xfs"
               fi
               break 2
               ;;
@@ -192,14 +199,14 @@ drive_partition() {
                 mkdir /mnt/{home,boot}
                 mkfs.fat -F32 /dev/${partition_choice}${partition_suffix}1
                 mount --mkdir /dev/${partition_choice}${partition_suffix}1 /mnt/boot
-                export chosen_filesystem="ext4"
+                chosen_filesystem="ext4"
               else
                 mkfs.ext4 /dev/${partition_choice}${partition_suffix}2
                 mount /dev/${partition_choice}${partition_suffix}2 /mnt
                 mkdir /mnt/{home,boot}
                 mkfs.fat -F32 /dev/${partition_choice}${partition_suffix}1
                 mount --mkdir /dev/${partition_choice}${partition_suffix}1 /mnt/boot
-                export chosen_filesystem="ext4"
+                chosen_filesystem="ext4"
               fi
               break 2
               ;;
@@ -209,6 +216,7 @@ drive_partition() {
           esac
         done
       done
+      break
     else
       echo -e "${Red}Partition /dev/"$partition_choice" does not exist, enter a valid partition${NC}"
       sleep 3
