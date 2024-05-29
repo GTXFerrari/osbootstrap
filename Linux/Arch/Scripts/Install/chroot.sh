@@ -632,7 +632,7 @@ mkinitcpio_setup() {
    sed -i "/MODULES=(/ s/)/$vmware_modules)/" "$mkinitcpio_conf"
    sed -i 's/\(HOOKS=([^)]*\))/HOOKS=()/' "$mkinitcpio_conf"
    sed -i "/HOOKS=(/ s/)/$hooks)/" "$mkinitcpio_conf"
- elif [[ $VM_STATUS == "other" ]]; then
+ elif [[ $VM_STATUS == "" ]]; then
    sed -i 's/\(HOOKS=([^)]*\))/HOOKS=()/' "$mkinitcpio_conf"
    sed -i "/HOOKS=(/ s/)/$hooks)/" "$mkinitcpio_conf"
   fi
@@ -658,4 +658,4 @@ vm_check
 mkinitcpio_setup
 zramd_setup
 desktop_environment
-#window_manager
+window_manager
