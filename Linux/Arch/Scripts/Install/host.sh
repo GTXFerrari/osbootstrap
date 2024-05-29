@@ -127,7 +127,7 @@ drive_partition() {
       read -r encryption
       if [[ "$encryption" == "y" ]]; then
         cryptsetup luksFormat --type luks2 --align-payload=4096 -c aes-xts-plain64 -s 512 -h sha512 -y --use-urandom /dev/"${partition_choice}""${partition_suffix}"2
-        cryptsetup open /dev/"${partition_choice}""${partition_suffix}" cryptarch
+        cryptsetup open /dev/"${partition_choice}""${partition_suffix}2" cryptarch
         export encryption
       fi
 
