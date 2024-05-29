@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# Logging
+exec > >(tee -i /var/log/archinstall.log)
+exec 2>&1
+
 # Colors
 export NC='\033[0m' # No Color
 export Black='\033[0;30m'
