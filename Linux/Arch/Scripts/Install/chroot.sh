@@ -301,7 +301,7 @@ install_virtualization() {
       docker-compose
 
     systemctl enable docker.service libvirtd.service
-    usermod -aG libvirt,docker jake
+    usermod -aG libvirt,docker "$username"
 
     if [[ ! -d /etc/docker ]]; then
       mkdir /etc/docker
