@@ -220,15 +220,16 @@ pacstab() {
   cpu_vendor=$(grep -m1 'vendor_id' /proc/cpuinfo | awk '{print $3}')
   if [[ "$VM_STATUS" == "not_in_vm" && "$cpu_vendor" == "AuthenticAMD" ]]; then
     ucode="amd-ucode"
-  else 
+  else
     "$ucode" == "" #TODO: Can create a conditional for intel cpus
   fi
   if [[ "$chosen_filesystem" == "ext4" ]]; then
     fs="e2fsprogs"
   elif [[ "$chosen_filesystem" == "xfs" ]]; then
     fs="xfsprogs"
-  elif [[ "$chosen_filesystem" == "btrfs" ]]; then
+  else [[ "$chosen_filesystem" == "btrfs" ]]; then
     fs="btrfs-progs"
+  fi
 
   pacstrap -K /mnt \
     $fs \
