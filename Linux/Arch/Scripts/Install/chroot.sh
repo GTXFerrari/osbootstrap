@@ -626,7 +626,7 @@ mkinitcpio_setup() {
   hooks="base udev keyboard autodetect keymap consolefont modconf block encrypt filesystems fsck"
   mkinitcpio_conf="/etc/mkinitcpio.conf"
 
-  if [[ $VM_STATUS == "not_in_vm" && chosen_graphics == "nvidia" ]]; then
+  if [[ $VM_STATUS == "not_in_vm" && $chosen_graphics == "nvidia" ]]; then
    sed -i 's/\(MODULES=([^)]*\))/MODULES=()/' "$mkinitcpio_conf"
    sed -i "/MODULES=(/ s/)/$nvidia_modules)/" "$mkinitcpio_conf"
    sed -i 's/\(HOOKS=([^)]*\))/HOOKS=()/' "$mkinitcpio_conf"
@@ -645,7 +645,6 @@ mkinitcpio_setup() {
    sed -i 's/\(HOOKS=([^)]*\))/HOOKS=()/' "$mkinitcpio_conf"
    sed -i "/HOOKS=(/ s/)/$hooks)/" "$mkinitcpio_conf"
   fi
-
   mkinitcpio -P # Rebuild mkinit for all installed kernels
 }
 
@@ -667,4 +666,4 @@ vm_check
 mkinitcpio_setup
 zramd_setup
 desktop_environment
-window_manager
+#window_manager
