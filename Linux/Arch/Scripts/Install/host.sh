@@ -227,8 +227,10 @@ pacstab() {
     fs="e2fsprogs"
   elif [[ "$chosen_filesystem" == "xfs" ]]; then
     fs="xfsprogs"
-  else [[ "$chosen_filesystem" == "btrfs" ]]; then
+  elif [[ "$chosen_filesystem" == "btrfs" ]]; then
     fs="btrfs-progs"
+  else 
+    fs=""
   fi
 
   pacstrap -K /mnt \
