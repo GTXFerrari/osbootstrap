@@ -11,9 +11,9 @@ export Purple='\033[0;35m'
 export Cyan='\033[0;36m'
 export White='\033[0;37m'
 
-# Functions
-
 vm_check() {
+  echo -e "${Green}Checking if machine is inside a VM${NC}"
+  sleep 1
   VM_TYPE=$(systemd-detect-virt)
   if [[ "$VM_TYPE" == "none" ]]; then
     VM_STATUS="not_in_vm"
@@ -22,9 +22,8 @@ vm_check() {
   elif [[ "$VM_TYPE" == "vmware" ]]; then
     VM_STATUS="vmware"
   else
-    VM_STATUS="other"
+    VM_STATUS=""
   fi
-
   export VM_STATUS
 }
 
