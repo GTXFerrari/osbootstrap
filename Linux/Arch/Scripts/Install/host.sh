@@ -26,7 +26,7 @@ vm_check() {
   elif [[ "$VM_TYPE" == "vmware" ]]; then
     VM_STATUS="vmware"
   else
-    VM_STATUS=""
+    VM_STATUS="other"
   fi
   export VM_STATUS
 }
