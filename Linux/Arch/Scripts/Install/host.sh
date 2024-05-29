@@ -38,26 +38,27 @@ termfonts() {
 }
 
 check_uefi() {
+  echo -e "${Green}Checking UEFI settings${NC}"
   if [[ -d /sys/firmware/efi/efivars/ ]]; then
     echo "System is booted using UEFI, proceeding"
-    sleep 3
+    sleep 1
   else
     echo "System is not booted using UEFI, change in the BIOS before proceeding."
-    sleep 3
+    sleep 5
     exit 1
   fi
 
   efi_platform_size_file="/sys/firmware/efi/fw_platform_size"
   if [[ -e "$efi_platform_size_file" ]]; then
     value=$(cat "$efi_platform_size_file")
+  fi
 
-    if [[ "$value" -eq 64 ]]; then
-      echo "The system is using a 64 bit UEFI, proceeding..."
-      sleep 3
-    else
-      echo "The system is using a 32 bit UEFI, only systemd-boot is supported"
-      sleep 3
-    fi
+  if [[ "$value" -eq 64 ]]; then
+    echo "The system is using a 64 bit UEFI, GRUB & Systemd-Boot are supported" #TODO: Create a conditional for bootloader
+    sleep 3
+  else
+    echo "The system is using a 32 bit UEFI, only Systemd-Boot is supported"
+    sleep 3
   fi
 }
 
