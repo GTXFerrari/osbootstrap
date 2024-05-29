@@ -139,7 +139,7 @@ drive_partition() {
                 mkfs.fat -F32 /dev/${partition_choice}${partition_suffix}1
                 mount --mkdir /dev/${partition_choice}${partition_suffix}1 /mnt/boot
                 export chosen_filesystem="btrfs"
-              else [[ "$encryption" != "y" ]]; then
+              else
                 mkfs.btrfs -L archbtrfs /dev/${partition_choice}${partition_suffix}2
                 mount /dev/${partition_choice}${partition_suffix} /mnt 
                 echo -e "${Green}Setting up subvolumes${NC}"
@@ -175,7 +175,7 @@ drive_partition() {
                 mkfs.fat -F32 /dev/${partition_choice}${partition_suffix}1
                 mount --mkdir /dev/${partition_choice}${partition_suffix}1 /mnt/boot
                 export chosen_filesystem="xfs"
-              elif [[ "$encryption" != "y" ]]; then
+              else
                 mkfs.xfs /dev/${partition_choice}${partition_suffix}2
                 mount /dev/${partition_choice}${partition_suffix}2 /mnt
                 mkdir /mnt/{home,boot}
@@ -193,7 +193,7 @@ drive_partition() {
                 mkfs.fat -F32 /dev/${partition_choice}${partition_suffix}1
                 mount --mkdir /dev/${partition_choice}${partition_suffix}1 /mnt/boot
                 export chosen_filesystem="ext4"
-              elif [[ "$encryption" != "y" ]]; then
+              else
                 mkfs.ext4 /dev/${partition_choice}${partition_suffix}2
                 mount /dev/${partition_choice}${partition_suffix}2 /mnt
                 mkdir /mnt/{home,boot}
