@@ -594,8 +594,6 @@ mkinitcpio -P # Rebuild mkinit for all installed kernels
 #TODO: Fix sed command so it does not replace all instances of HOOK & MODULE including commented lines
 }
 
-
-# Call functions
 init
 set_hostname
 set_vconsole
@@ -612,4 +610,4 @@ vm_check
 mkinitcpio_setup
 zramd_setup
 desktop_environment
-#window_manager
+window_manager
