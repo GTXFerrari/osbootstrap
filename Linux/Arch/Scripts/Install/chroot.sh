@@ -53,6 +53,13 @@ set_root_password() {
 }
 
 install_core_packages() {
+#TODO: Set up apps var for non_vm only
+  core_apps=""
+  non_vm_apps=""
+  vm_apps=""
+#  pacman -S --needed $core_apps $vm_apps $non_vm_apps
+
+  echo -e "${Green}Installing packages${NC}"
   pacman -S --needed \
     base-devel \
     networkmanager \
