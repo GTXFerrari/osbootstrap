@@ -560,23 +560,28 @@ done
 }
 
 mkinitcpio_setup() {
-  nvidia_modules="nvidia nvidia_modeset nvidia_uvm nvidia_drm btrfs"
-  kvm_modules="virtio virtio_blk virtio_pci virtio_net"
-  vmware_modules="vmw_balloon vmw_pvscsi vsock vwm_sock_vmci_transport vmwgfx vmxnet3"
-  hooks="base udev keyboard autodetect keymap consolefont modconf block encrypt filesystems fsck"
+  if [[ "$chosen_filesystem" == "btrfs" ]]; then
+    btrfs_module="btrfs"
+  fi
+  if [[ "$encryption" == "y" ]]; then
+    encrypt_hook="encrypt"
+  fi
+  nvidia_modules="nvidia nvidia_modeset nvidia_uvm nvidia_drm $btrfs_module"
+  kvm_modules="virtio virtio_blk virtio_pci virtio_net $btrfs_module"
+  vmware_modules="vmw_balloon vmw_pvscsi vsock vwm_sock_vmci_transport vmwgfx vmxnet3 $btrfs_module"
+  hooks="base udev autodetect microcode modconf keyboard keymap consolefont block $encrypt_hook filesystems fsck"
   mkinitcpio_conf="/etc/mkinitcpio.conf"
-
-  if [[ $VM_STATUS == "not_in_vm" && $chosen_graphics == "nvidia" ]]; then
+  if [[ "$VM_STATUS" == "not_in_vm" && "$chosen_graphics" == "Nvidia" ]]; then
    sed -i 's/\(MODULES=([^)]*\))/MODULES=()/' "$mkinitcpio_conf"
    sed -i "/MODULES=(/ s/)/$nvidia_modules)/" "$mkinitcpio_conf"
    sed -i 's/\(HOOKS=([^)]*\))/HOOKS=()/' "$mkinitcpio_conf"
    sed -i "/HOOKS=(/ s/)/$hooks)/" "$mkinitcpio_conf"
- elif [[ $VM_STATUS == "kvm" ]]; then
+ elif [[ "$VM_STATUS" == "kvm" ]]; then
    sed -i 's/\(MODULES=([^)]*\))/MODULES=()/' "$mkinitcpio_conf"
    sed -i "/MODULES=(/ s/)/$kvm_modules)/" "$mkinitcpio_conf"
    sed -i 's/\(HOOKS=([^)]*\))/HOOKS=()/' "$mkinitcpio_conf"
    sed -i "/HOOKS=(/ s/)/$hooks)/" "$mkinitcpio_conf"
- elif [[ $VM_STATUS == "vmware" ]]; then
+ elif [[ "$VM_STATUS" == "vmware" ]]; then
    sed -i 's/\(MODULES=([^)]*\))/MODULES=()/' "$mkinitcpio_conf"
    sed -i "/MODULES=(/ s/)/$vmware_modules)/" "$mkinitcpio_conf"
    sed -i 's/\(HOOKS=([^)]*\))/HOOKS=()/' "$mkinitcpio_conf"
@@ -585,7 +590,8 @@ mkinitcpio_setup() {
    sed -i 's/\(HOOKS=([^)]*\))/HOOKS=()/' "$mkinitcpio_conf"
    sed -i "/HOOKS=(/ s/)/$hooks)/" "$mkinitcpio_conf"
   fi
-  mkinitcpio -P # Rebuild mkinit for all installed kernels
+mkinitcpio -P # Rebuild mkinit for all installed kernels
+#TODO: Fix sed command so it does not replace all instances of HOOK & MODULE including commented lines
 }
 
 
