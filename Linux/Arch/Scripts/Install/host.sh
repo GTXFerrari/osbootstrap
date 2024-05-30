@@ -256,6 +256,7 @@ pacstab() {
   else 
     fs=""
   fi
+  export ucode
 
   pacstrap -K /mnt \
     $fs \
