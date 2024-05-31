@@ -35,6 +35,7 @@ set_hostname() {
 set_vconsole() {
   echo -e "${Green}Setting up console font${NC}"
   sleep 1
+  pacman -S --needed --noconfirm terminus-font
   if [[ "$VM_STATUS" == "none" ]]; then
     {  echo "KEYMAP=us"
       echo "FONT=ter-132b"
