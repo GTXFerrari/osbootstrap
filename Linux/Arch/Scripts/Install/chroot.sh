@@ -144,8 +144,7 @@ create_user() {
 }
 
 install_bootloader() {
-  luksuuid=$(blkid -s UUID -o value /dev/"${partition_choice}""${partition_suffix}"2)
-  export luksuuid
+  luksuuid=$(blkid -s UUID -o value /dev/${partition_choice}${partition_suffix}2)
   if [[ "$chosen_filesystem" == "btrfs" ]]; then
 	  btrfs_options="rootflags=subvol=@"
   fi
@@ -157,13 +156,13 @@ install_bootloader() {
   fi
   if [[ "$ucode" == "amd-ucode" ]]; then
     iommu_options="amd_iommu=on iommu=pt"
-  else
+  elif [[ "$ucode" == "intel-ucode" ]]; then
     iommu_options="intel_iommu=on iommu=pt"
   fi
   if [[ "$ucode" == "amd-ucode" ]]; then
-	  initrd="/amd-ucode.img"
-  else
-	  initrd="/intel-ucode.img"
+    initrd="/amd-ucode.img"
+  elif [[ "$ucode" == "intel-ucode" ]]; then
+    initrd="/intel-ucode.img"
   fi
   systemdboot_options="$luks_options $btrfs_options $iommu_options $nvidia_options"
   if [[ "$uefi" == "32" ]]; then #TODO: Test this in vm by setting this var and exporting at start of host script
