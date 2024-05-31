@@ -113,11 +113,10 @@ drive_partition() {
 
     if [[ "$partition_choice" == nvme* ]]; then
       partition_suffix="p"
-      export partition_suffix
     else
       partition_suffix=""
-      export partition_suffix
     fi
+    export partition_suffix
 
     if [[ -e "/dev/$partition_choice" ]]; then
       sgdisk -Z /dev/"$partition_choice"
