@@ -186,6 +186,7 @@ install_bootloader() {
 	  while true; do
 		  if [[ "$chosen_filesystem" == "btrfs" ]]; then
 			  grub_btree="grub-btrfs"
+			  export grub_btree
 		  fi
 		  PS3='Select a bootloader: '
 		  options=("GRUB" "Systemd-Boot")
