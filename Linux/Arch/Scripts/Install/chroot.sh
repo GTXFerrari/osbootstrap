@@ -115,7 +115,6 @@ install_core_packages() {
     firefox \
     chromium \
     hugo \
-    terminus-font \
     python \
     python-pip \
     python-virtualenv \
