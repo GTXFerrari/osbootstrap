@@ -184,10 +184,6 @@ install_bootloader() {
 	  options $systemdboot_options rw" > /boot/loader/entries/arch.conf
   else
 	  while true; do
-		  if [[ "$chosen_filesystem" == "btrfs" ]]; then
-			  grub_btree="grub-btrfs"
-			  export grub_btree
-		  fi
 		  PS3='Select a bootloader: '
 		  options=("GRUB" "Systemd-Boot")
 		  select opt in "${options[@]}"; do
@@ -196,9 +192,12 @@ install_bootloader() {
 					  grub_cmdline="loglevel 3 quiet $luks_options $btrfs_options $iommu_options $nvidia_options"
 					  escaped_grub_cmdline=$(printf '%s\n' "$grub_cmdline" | sed 's/[&/\]/\\&/g')
 					  grub_file="/etc/default/grub"
+					  if [[ "$chosen_filesystem" == "btrfs" ]]; then
+					    grub_btree="grub-btrfs"
+					  fi
 					  echo -e "${Green}Installing GRUB${NC}"
 					  sleep 2
-					  pacman -S --needed --noconfirm grub efibootmgr os-prober "$grub_btree"
+					  pacman -S grub efibootmgr os-prober $grub_btree
 					  sed -i "s/^GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT=\"$escaped_grub_cmdline\"/" "$grub_file"
 					  grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 					  grub-mkconfig -o /boot/grub/grub.cfg
