@@ -158,13 +158,17 @@ install_bootloader() {
     iommu_options="amd_iommu=on iommu=pt"
   elif [[ "$ucode" == "intel-ucode" ]]; then
     iommu_options="intel_iommu=on iommu=pt"
+  else iommu_options=""
   fi
   if [[ "$ucode" == "amd-ucode" ]]; then
     initrd="/amd-ucode.img"
   elif [[ "$ucode" == "intel-ucode" ]]; then
     initrd="/intel-ucode.img"
+  else initrd=""
   fi
+
   systemdboot_options="$luks_options $btrfs_options $iommu_options $nvidia_options"
+
   if [[ "$uefi" == "32" ]]; then #TODO: Test this in vm by setting this var and exporting at start of host script
 	  echo -e "${Green}Installing systemd-boot${NC}"
 	  sleep 2
