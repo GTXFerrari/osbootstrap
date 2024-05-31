@@ -101,10 +101,6 @@ fi
 }
 
 drive_partition() {
-  local chosen_filesystem=""
-  local encryption=""
-  local partition_suffix=""
-
   while true; do
     echo -e "${Green}Available disk partitions:${NC}"
     lsblk -o NAME,FSTYPE,SIZE,MOUNTPOINT | grep -v "loop\|sr0"
@@ -237,6 +233,7 @@ drive_partition() {
       sleep 3
     fi
   done
+  export chosen_filesystem
 }
 
 pacstab() {
