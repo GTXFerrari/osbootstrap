@@ -240,8 +240,9 @@ pacstab() {
   cpu_vendor=$(grep -m1 'vendor_id' /proc/cpuinfo | awk '{print $3}')
   if [[ "$VM_STATUS" == "not_in_vm" && "$cpu_vendor" == "AuthenticAMD" ]]; then
     ucode="amd-ucode"
-  else
+  elif [[ "$VM_STATUS" == "not_in_vm" && "$cpu_vendor" == "GenuineIntel" ]]; then
     ucode="intel-ucode"
+  else ucode=""
   fi
   if [[ "$chosen_filesystem" == "ext4" ]]; then
     fs="e2fsprogs"
