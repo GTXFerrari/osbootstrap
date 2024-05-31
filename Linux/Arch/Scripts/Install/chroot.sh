@@ -145,6 +145,7 @@ create_user() {
 
 install_bootloader() {
   luksuuid=$(blkid -s UUID -o value /dev/"${partition_choice}""${partition_suffix}"2)
+  export luksuuid
   if [[ "$chosen_filesystem" == "btrfs" ]]; then
 	  btrfs_options="rootflags=subvol=@"
   fi
