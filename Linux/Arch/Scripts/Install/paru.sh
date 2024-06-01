@@ -21,6 +21,26 @@ if [[ "$usr" == "n" ]]; then
     exit
 fi
 
+check_secure_boot() {
+pacman -S --needed --noconfirm mokutil
+secure_boot=$(mokutil --sb-state 2>&1)
+
+if [[ "$secure_boot" == *"SecureBoot enabled"* ]]; then
+	sb_status="enabled"
+else
+	sb_status="disabled"
+fi
+
+if [[ "$sb_status" == "enabled" ]]; then
+  install_sbctl="sbctl"
+else
+  install_sbctl=""
+fi
+export sb_status
+export install_sbctl
+#TODO: Set up sbctl in post install
+}
+
 # Create Git directory and clone paru
 if [ ! -d "$DIR" ]; then
     echo -e "${Red}Git directory does not exist, creating directory.${NC}"
