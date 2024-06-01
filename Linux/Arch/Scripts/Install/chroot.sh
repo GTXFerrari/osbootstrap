@@ -419,7 +419,7 @@ desktop_environment() {
             gnome-tweaks \
             gnome-themes-extra \
             gdm
-          systemctl enable gdm.service
+          systemctl enable gdm
           break 2
           ;;
         "Cinnamon")
@@ -437,7 +437,7 @@ desktop_environment() {
             blueberry \
             gnome-screenshot \
             gdm
-          systemctl enable gdm.service
+          systemctl enable gdm
           break 2
           ;;
         "Xfce")
@@ -448,7 +448,7 @@ desktop_environment() {
             lightdm \
             lightdm-gtk-greeter \
             lightdm-webkit2-greeter
-          systemctl enable lightdm.service
+          systemctl enable lightdm
           break 2 
           ;;
         "Budgie")
@@ -460,7 +460,7 @@ desktop_environment() {
             lightdm \
             lightdm-gtk-greeter \
             lightdm-webkit2-greeter
-          systemctl enable lightdm.service
+          systemctl enable lightdm
           break 2
           ;;
         "Exit")
@@ -470,7 +470,7 @@ desktop_environment() {
           echo "Invalid choice. Please enter a valid option."
           ;;
       esac
-    done 
+    done
   else
     break 2
   fi
@@ -483,8 +483,8 @@ window_manager() {
   read -r window_manager 
   if [[ $window_manager == "y" ]]; then
     PS3='Please enter your choice: '
-    options=("Dwm" "Bspwm" "Awesome" "i3" "Xmonad" "Exit")
-    dir="/home/jake/Git"
+    options=("Dwm" "Hyprland" "Exit")
+    git_dir="$USER"
     dwm="/home/jake/Git/dwm"
     dmenu="/home/jake/Git/dmenu"
     st="/home/jake/Git/st"
