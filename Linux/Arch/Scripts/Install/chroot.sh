@@ -505,59 +505,9 @@ window_manager() {
             dunst \
             polkit \
             polkit-kde-agent \
-            sxhkd \
             network-manager-applet \
             unclutter \
             papirus-icon-theme
-          if [ ! -d "$dir" ]; then
-            echo -e "${Red}Git directory does not exist, creating directory.${NC}"
-            mkdir -p "$dir" && cd "$dir" || return
-          else
-            echo -e "${Green}Git directory already exists.${NC}" 
-            cd "$dir" || return
-          fi
-          sleep 3
-          if [ ! -d "$dwm" ]; then
-            echo -e "${Red}Dwm does not exist, cloning repo & compiling.${NC}"
-            cd "$dir" && $git/dwm && cd "$dir"/dwm && make && sudo make clean install
-            echo -e "${Blue}Finished compiling & installing dwm.${NC}"
-          else
-            echo -e "${Green}dwm already exists, reinstalling.${NC}"
-            cd "$dwm" && make && sudo make clean install
-            echo -e "${Blue}Finished reinstalling dwm.${NC}"
-          fi
-          sleep 3
-          if [ ! -d "$dmenu" ]; then
-            echo -e "${Red}Dmenu does not exist, cloning repo & compiling.${NC}"
-            cd "$dir" && $git/dmenu && cd "$dir"/dmenu && make && sudo make clean install
-            echo -e "${Blue}Finished compiling & installing dmenu.${NC}"
-          else
-            echo -e "${Green}dmenu already exists, reinstalling.${NC}"
-            cd "$dir"/dmenu && make && sudo make clean install
-            echo -e "${Blue}Finished reinstalling dmenu.${NC}"
-          fi
-          sleep 3
-          if [ ! -d "$st" ]; then
-            echo -e "${Red}St does not exist, cloning repo & compiling.${NC}"
-            cd "$dir" && $git/st && cd "$dir"/st && make && sudo make clean install
-            echo -e "${Blue}Finished compiling & installing st.${NC}"
-          else
-            echo -e "${Green}St already exists, reinstalling.${NC}"
-            cd "$dir"/st && make && sudo make clean install
-            echo -e "${Blue}Finished reinstalling st.${NC}"
-          fi
-          sleep 3
-          if [ ! -d "$dwmblocks" ]; then
-            echo -e "${Red}Dwmblocks does not exist, cloning repo & compiling.${NC}"
-            cd "$dir" && $git/dwmblocks && cd "$dir"/dwmblocks && make && sudo make clean install
-            echo -e "${Blue}Finished installing & compiling dwmblocks.${NC}"
-          else 
-            echo -e "${Green}Dwmblocks already exists, reinstalling.${NC}"
-            cd "$dir"/dwmblocks && make && sudo make clean install
-            echo -e "${Blue}Finished reinstalling dwmblocks.${NC}"
-          fi
-          chown -R jake:jake $dir
-          break 2
           ;;
         "Exit")
           break 2
