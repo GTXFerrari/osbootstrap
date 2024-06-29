@@ -213,7 +213,7 @@ setup_audio() {
 
 install_graphics() {
   local chosen_graphics=""
-  if [[ "$VM_STATUS" != "none" ]]; then
+  if [[ "$VM_STATUS" != "not_in_vm" ]]; then
     echo -e "${Green}System is in a VM, no graphics driver required${NC}"
     sleep 1
     return 0
