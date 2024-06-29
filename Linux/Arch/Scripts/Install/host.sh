@@ -64,18 +64,16 @@ check_uefi() {
   if [[ -e "$efi_platform_size_file" ]]; then
     value=$(cat "$efi_platform_size_file")
   fi
-
   if [[ "$value" -eq 64 ]]; then
     echo -e "${Green}The system is using a 64 bit UEFI, GRUB & Systemd-Boot are supported${NC}"
     uefi="64"
-    export uefi
     sleep 3
   else
     echo -e "${Green}The system is using a 32 bit UEFI, only Systemd-Boot is supported${NC}"
     uefi="32"
-    export uefi
     sleep 3
   fi
+  export uefi
 }
 
 check_internet_connection() {
@@ -87,8 +85,6 @@ check_internet_connection() {
       return 0
     fi
   done
-  return 1
-  #TODO: Combine this with internet check function since they should be in one function
 }
 
 internet_check() {
