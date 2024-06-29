@@ -252,7 +252,7 @@ export chosen_graphics
 }
 
 install_gaming() {
-  if [[ "$VM_STATUS" == "none" ]]; then
+  if [[ "$VM_STATUS" == "not_in_vm" ]]; then
     pacman -S --needed \
       steam \
       lutris \
@@ -271,7 +271,7 @@ install_gaming() {
 }
 
 install_wine() {
-  if [[ "$VM_STATUS" == "none" ]]; then
+  if [[ "$VM_STATUS" == "not_in_vm" ]]; then
     pacman -S --needed \
       wine \
       wine-gecko \
@@ -290,8 +290,8 @@ install_wine() {
   fi
 }
 
-install_virtualization() {
-  if [[ "$VM_STATUS" != "none" ]]; then
+setup_virtualization() {
+  if [[ "$VM_STATUS" != "not_in_vm" ]]; then
     echo -e "${Green}System is in a VM, skipping QEMU install${NC}"
     sleep 1
     return 0
