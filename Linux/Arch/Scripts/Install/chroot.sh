@@ -308,8 +308,6 @@ setup_virtualization() {
       vde2 \
       libvirt \
       swtpm \
-      docker \
-      docker-compose
 
     systemctl enable docker.service libvirtd.service
     usermod -aG libvirt,docker "$username"
