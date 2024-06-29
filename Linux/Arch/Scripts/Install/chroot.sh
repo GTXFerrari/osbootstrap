@@ -418,9 +418,15 @@ systemctl start display-manager
 EOF
     fi
 
-    systemctl enable docker.service libvirtd.service
-    usermod -aG libvirt,docker "$username"
+}
 
+docker_setup() {
+  echo -en "${Green}Would you like to use docker? (y/n) "
+  read -r docker
+  if [[ "$docker" == "y" ]]; then
+    pacman -S --needed --noconfirm docker docker-compose
+    systemctl enable docker.service
+    usermod -aG docker "$username"
     if [[ ! -d /etc/docker ]]; then
       mkdir /etc/docker
     fi
