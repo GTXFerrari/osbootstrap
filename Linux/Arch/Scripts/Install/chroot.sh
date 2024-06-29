@@ -188,7 +188,7 @@ install_bootloader() {
   fi
 }
 
-install_audio() {
+setup_audio() {
   echo -e "${Green}Installing audio${NC}"
   sleep 1
   pacman -S --needed \
