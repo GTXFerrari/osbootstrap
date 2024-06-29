@@ -36,7 +36,7 @@ set_vconsole() {
   echo -e "${Green}Setting up console font${NC}"
   sleep 1
   pacman -S --needed --noconfirm terminus-font
-  if [[ "$VM_STATUS" == "none" ]]; then
+  if [[ "$VM_STATUS" == "not_in_vm" ]]; then
     {  echo "KEYMAP=us"
       echo "FONT=ter-132b"
     } > /etc/vconsole.conf
