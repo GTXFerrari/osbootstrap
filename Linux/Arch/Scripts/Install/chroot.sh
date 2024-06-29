@@ -633,7 +633,6 @@ desktop_environment() {
 done
 }
 
-window_manager() {
 setup_window_manager() {
   while true; do
   echo -n "Would you like to install a tiling window manager (y/n) "
