@@ -272,18 +272,18 @@ install_gaming() {
 install_wine() {
   if [[ "$VM_STATUS" == "none" ]]; then
     pacman -S --needed \
-      wine-staging \
+      wine \
       wine-gecko \
       wine-mono \
+      lib32-pipewire \
       pipewire-pulse \
       lib32-libpulse \
-      lib32-alsa-oss \
       lib32-gnutls \
+      lib32-sdl2 \
       lib32-gst-plugins-base \
       lib32-gst-plugins-good \
       samba \
-      winetricks \
-      zenity
+      winetricks
         else
           return 0
   fi
