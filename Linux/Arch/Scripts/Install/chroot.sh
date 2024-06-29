@@ -634,37 +634,93 @@ done
 }
 
 window_manager() {
+setup_window_manager() {
   while true; do
   echo -n "Would you like to install a tiling window manager (y/n) "
   read -r window_manager 
   if [[ $window_manager == "y" ]]; then
     PS3='Please enter your choice: '
     options=("Dwm" "Hyprland" "Exit")
-    git_dir="$USER"
-    dwm="/home/jake/Git/dwm"
-    dmenu="/home/jake/Git/dmenu"
-    st="/home/jake/Git/st"
-    dwmblocks="/home/jake/Git/dwmblocks"
-    git="git clone https://github.com/gtxferrari"
+    dwm_build="git clone https://github.com/GTXFerrari/dwm"
+    dmenu_build="https://github.com/GTXFerrari/dmenu"
+    dwmblocks_build="https://github.com/GTXFerrari/dwmblocks"
+    git_dir="/home/$username/Git"
     select opt in "${options[@]}"
     do
-      case $opt in 
+      case $opt in
         "Dwm")
-          pacman -S --needed xorg-server \
+          pacman -S --needed \
+	    xorg-server \
             xorg-xinit \
             xorg-xsetroot \
+	    scrot \
             nitrogen \
+	    blueman \
             picom \
             qt5ct \
+	    qt6ct \
             lxappearance \
             gnome-themes-extra \
             dunst \
             polkit \
             polkit-kde-agent \
+	    gnome-keyring \
+	    libsecret \
+	    seahorse \
             network-manager-applet \
             unclutter \
+	    cronie \
+	    pasystray \
             papirus-icon-theme
+
+	  # Check dirs & clone builds
+	  if [[ ! -d $git_dir ]]; then
+	    mkdir -p /home/"$username"/Git
+	  else echo -e "$Green Git directory already exists"
+	  fi
+
+	  if [[ ! -d $git_dir/dwm ]]; then
+	    $dwm_build
+	  else echo -e "$Green dwm folder already exists"
+	  fi
+
+	  if [[ ! -d $git_dir/dmenu ]]; then
+	    $dmenu_build
+	  else echo -e "$Green dmenu folder already exists"
+	  fi
+
+	  if [[ ! -d $git_dir/dmenu ]]; then
+	    $dwmblocks_build
+	  else echo -e "$Green dwmblocks folder already exists"
+	  fi
+
+	  # Build
+	  make "$git_dir"/dwm/ && sudo make clean install "$git_dir"/dwm/
+	  make "$git_dir"/dmenu/ && sudo make clean install "$git_dir"/dmenu/
+	  make "$git_dir"/dwmblocks/ && sudo make clean install "$git_dir"/dwmblocks/
+
+	  # Setup nitrogen wallpaper slideshow
+	  nitrogen_slideshow_cron="*/5 * * * * (export DISPLAY=:1.0 && /bin/date && /usr/bin/nitrogen --set-zoom-fill --random /home/$username/Pictures/Wallpapers/ --save) > /tmp/myNitrogen.log 2>&1"
+	  (crontab -l | grep -F "$nitrogen_slideshow_cron") || (crontab -l; echo "$nitrogen_slideshow_cron") | crontab -
           ;;
+	"Hyprland")
+	  pacman -S --needed \
+	    hyprland \
+	    qt5-wayland \
+	    qt6-wayland \
+	    qt5ct \
+	    qt6ct \
+	    libva \
+	    kitty \
+	    xdg-desktop-portal-hyprland \
+	    nwg-look \
+	    polkit-kde-agent \
+	    waybar \
+	    wofi \
+	    pavucontrol \
+	    swaync \
+	    gvfs-smb 
+	  ;;
         "Exit")
           break 2
           ;;
