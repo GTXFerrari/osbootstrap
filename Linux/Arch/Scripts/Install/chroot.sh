@@ -770,6 +770,12 @@ mkinitcpio -P
 #TODO: Fix sed command so it does not replace all instances of HOOK & MODULE including commented lines
 }
 
+pacman_conf () {
+  sed -i 's/^#ParallelDownloads = 5/ParallelDownloads = 5/' /etc/pacman.conf
+  sed -i 's/^#Color/Color/' /etc/pacman.conf
+  sed -i '/# Misc options/a ILoveCandy' /etc/pacman.conf
+}
+
 init
 set_hostname
 set_vconsole
