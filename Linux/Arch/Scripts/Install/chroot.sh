@@ -507,80 +507,123 @@ desktop_environment() {
   read -r desktop_environment 
   if [[ $desktop_environment == "y" ]]; then
     PS3='Please enter your choice: '
-    options=("KDE" "Gnome" "Cinnamon" "Xfce" "Budgie" "Exit")
+    options=("KDE" "Gnome" "Exit")
     select opt in "${options[@]}"
     do
       case $opt in
         "KDE")
           pacman -S --needed \
-            xorg \
-            plasma \
-            kde-applications \
-            plasma-nm \
-            packagekit-qt5 \
-            sddm \
-            qt5-wayland \
-            qt6-wayland
-          systemctl enable sddm
-          break 2
+	    plasma-desktop \
+	    kscreen \
+	    kscreenlocker \
+	    spectacle \
+	    bluedevil \
+	    breeze \
+	    breeze-gtk \
+	    breeze-plymouth \
+	    xdg-desktop-portal-kde \
+	    systemsettings \
+	    print-manager \
+	    powerdevil \
+	    polkit \
+	    polkit-kde-agent \
+	    plymouth-kcm \
+	    plasma5support \
+	    plasma-workspace-wallpapers \
+	    plasma-workspace \
+	    plasma-vault \
+	    plasma-systemmonitor \
+	    plasma-pa \
+	    plasma-nm \
+	    plasma-integration \
+	    plasma-firewall \
+	    plasma-disks \
+	    plasma-browser-integration \
+	    milou \
+	    libplasma \
+	    libksysguard \
+	    libkscreen \
+	    layer-shell-qt \
+	    kwrited \
+	    kwayland-integration \
+	    qt5-wayland \
+	    qt6-wayland \
+	    kde-gtk-config \
+	    kwallet \
+	    kwallet-pam \
+	    ksshaskpass \
+	    ksystemstats \
+	    kpipewire \
+	    plasma-pa \
+	    kmenuedit \
+	    kinfocenter \
+	    kglobalaccel \
+	    kglobalacceld \
+	    kgamma \
+	    kde-cli-tools \
+	    kactivitymanagerd \
+	    flatpak \
+	    flatpak-builder \
+	    discover \
+	    flatpak-kcm \
+	    drkonqi \
+	    sddm \
+	    sddm-kcm \
+	    dolphin \
+	    dolphin-plugins \
+	    kompare \
+	    baloo \
+	    baloo-widgets \
+	    kdegraphics-thumbnailers \
+	    kimageformats \
+	    libheif \
+	    qt6-imageformats \
+	    kdesdk-thumbnailers \
+	    ffmpegthumbs \
+	    taglib \
+	    audiocd-kio \
+	    udisks2 \
+	    kde-inotify-survey \
+	    kdenetwork-filesharing \
+	    kio-gdrive \
+	    kio-admin \
+	    kio-extras \
+	    kio-fuse \
+	    libappindicator-gtk3 \
+	    gwenview \
+	    qt5-imageformats \
+	    icoutils \
+	    iio-sensor-proxy \
+	    noto-fonts \
+	    noto-fonts-emoji \
+	    maliit-keyboard \
+	    power-profiles-daemon \
+	    switcheroo-control \
+	    xsettingsd \
+	    ark \
+	    unarchiver \
+	    unrar \
+	    filelight \
+	    kcalc \
+	    kdialog
+		      systemctl enable sddm
+		      break 2
           ;;
         "Gnome")
           pacman -S --needed \
-            xorg \
             gnome \
             gnome-extra \
             gnome-tweaks \
             gnome-themes-extra \
             gdm
-          systemctl enable gdm
-          break 2
-          ;;
-        "Cinnamon")
-          pacman -S --needed \
-            xorg \
-            cinnamon \
-            xed \
-            xreader \
-            metacity \
-            gnome-shell \
-            gnome-keyring \
-            libsecret \
-            seahorse \
-            system-config-printer \
-            blueberry \
-            gnome-screenshot \
-            gdm
-          systemctl enable gdm
-          break 2
-          ;;
-        "Xfce")
-          pacman -S --needed \
-            xorg \
-            xfce4 \
-            xfce4-goodies \
-            lightdm \
-            lightdm-gtk-greeter \
-            lightdm-webkit2-greeter
-          systemctl enable lightdm
-          break 2 
-          ;;
-        "Budgie")
-          pacman -S --needed \
-            xorg \
-            budgie-desktop \
-            budgie-desktop-view \
-            budgie-extras \
-            lightdm \
-            lightdm-gtk-greeter \
-            lightdm-webkit2-greeter
-          systemctl enable lightdm
-          break 2
+		      systemctl enable gdm
+		      break 2
           ;;
         "Exit")
           break 2
           ;;
         *)
-          echo "Invalid choice. Please enter a valid option."
+	  echo -e "${Red}Invalid option, select a valid option.${NC}"
           ;;
       esac
     done
