@@ -736,9 +736,11 @@ done
 mkinitcpio_setup() {
   if [[ "$chosen_filesystem" == "btrfs" ]]; then
     btrfs_module="btrfs"
+  else btrfs_module=""
   fi
   if [[ "$encryption" == "y" ]]; then
     encrypt_hook="encrypt"
+  else encrypt_hook=""
   fi
   nvidia_modules="nvidia nvidia_modeset nvidia_uvm nvidia_drm $btrfs_module"
   kvm_modules="virtio virtio_blk virtio_pci virtio_net $btrfs_module"
@@ -764,7 +766,7 @@ mkinitcpio_setup() {
    sed -i 's/\(HOOKS=([^)]*\))/HOOKS=()/' "$mkinitcpio_conf"
    sed -i "/HOOKS=(/ s/)/$hooks)/" "$mkinitcpio_conf"
   fi
-mkinitcpio -P # Rebuild mkinit for all installed kernels
+mkinitcpio -P
 #TODO: Fix sed command so it does not replace all instances of HOOK & MODULE including commented lines
 }
 
