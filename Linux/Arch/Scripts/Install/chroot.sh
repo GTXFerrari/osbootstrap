@@ -53,85 +53,6 @@ set_root_password() {
   echo root:"$password" | chpasswd
 }
 
-install_core_packages() {
-#TODO: Set up apps var for non_vm only
-  core_apps=""
-  non_vm_apps=""
-  vm_apps=""
-#  pacman -S --needed $core_apps $vm_apps $non_vm_apps
-
-  echo -e "${Green}Installing packages${NC}"
-  pacman -S --needed \
-    base-devel \
-    networkmanager \
-    nm-connection-editor \
-    iwd \
-    avahi \
-    bind \
-    cifs-utils \
-    pacman-contrib \
-    xdg-user-dirs \
-    xdg-utils \
-    udisks2 \
-    exfatprogs \
-    mtools \
-    dosfstools \
-    cups \
-    cups-pdf \
-    hplip \
-    alacritty \
-    kitty \
-    arch-install-scripts \
-    rsync \
-    openssh \
-    ssh-audit \
-    zsh \
-    zsh-completions \
-    zsh-autosuggestions \
-    neofetch \
-    fastfetch \
-    htop \
-    nvtop \
-    btop \
-    cmatrix \
-    wireshark-qt \
-    mpd \
-    mpc \
-    mpv \
-    ncmpcpp \
-    nerd-fonts \
-    ttf-joypixels \
-    lf \
-    chafa \
-    lynx \
-    ueberzug \
-    atool \
-    highlight \
-    bat \
-    mediainfo \
-    ffmpegthumbnailer \
-    odt2txt \
-    zathura \
-    firefox \
-    chromium \
-    hugo \
-    python \
-    python-pip \
-    python-virtualenv \
-    openrgb
-
-  systemctl enable \
-    NetworkManager.service \
-    avahi-daemon.service \
-    iwd.service \
-    cups.socket \
-    reflector.timer \
-    sshd.service \
-    fstrim.timer \
-    systemd-timesyncd.service
-  usermod -aG wireshark,input,video "$username"
-}
-
 create_user() {
   echo -n "Enter a username: "
   read -r username
@@ -141,6 +62,39 @@ create_user() {
   echo "$username":"$password" | chpasswd
   echo "$username ALL=(ALL) ALL" >> /etc/sudoers.d/"$username"
   export username
+}
+
+install_packages() {
+  core_apps="base-devel networkmanager nm-connection-editor iwd avahi bind cifs-utils pacman-contrib xdg-user-dirs xdg-utils udisks2 mtools dosfstools alacritty kitty rsync openssh ssh-audit zsh zsh-autosuggestions zsh-completions fastfetch htop btop ttf-roboto-mono-nerd ttf-sourcecodepro-nerd ttf-terminus-nerd ttf-meslo-nerd ttfs-mononoki-nerd ttf-nerd-fonts-symbols ttf-noto-nerd ttf-jetbrains-mono-nerd lf chafa lynx ueberzug atool highlight bat mediainfo ffmpegthumbnailer odt2txxt zathura firefox torbrowser-launcher nyx chromium python python-pip python-virtualenv"
+  non_vm_apps="exfatprogs cups cups-pdf hplip nvtop cmatrix cowsay wireshark-qt mpd mpc mpv ncmpcpp ttf-joypixels hugo openrgb syncthing"
+  nvim_deps="tree-sitter go rustup luarocks composer php nodejs npm python python-pip jdk-openjdk wget curl gzip tar bash xclip wl-clipboard ripgrep fd"
+  opsec_apps="nmap hashcat hashcat-utils hping tcpdump"
+
+
+  echo -e "${Green}Installing packages${NC}"
+  if [[ "$VM_STATUS" == "not_in_vm" ]]; then
+    pacman -S --needed "$core_apps" "$non_vm_apps" "$nvim_deps" "$opsec_apps"
+    systemctl enable \
+      NetworkManager.service \
+      avahi-daemon.service \
+      iwd.service \
+      reflector.timer \
+      sshd.service \
+      fstrim.timer \
+      systemd-timesyncd.service \
+      cups.socket \
+      tor.service
+	  usermod -aG wireshark,input,video "$username"
+	else pacman -S --needed "$core_apps"
+	  NetworkManager.service \
+	    avahi-daemon.service \
+	    iwd.service \
+	    reflector.timer \
+	    sshd.service \
+	    fstrim.timer \
+	    systemd-timesyncd.service \
+	    tor.service
+  fi
 }
 
 install_bootloader() {
