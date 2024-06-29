@@ -217,7 +217,7 @@ install_graphics() {
     echo -e "${Green}System is in a VM, no graphics driver required${NC}"
     sleep 1
     return 0
-  fi
+  else
     while true; do
       PS3='Select a graphics driver: '
       options=("Nvidia" "AMD" "Intel" "Exit")
@@ -247,6 +247,7 @@ install_graphics() {
         esac
       done
     done
+  fi
 export chosen_graphics
 }
 
