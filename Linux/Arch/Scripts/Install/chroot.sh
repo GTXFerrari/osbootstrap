@@ -313,7 +313,7 @@ setup_virtualization() {
   fi
 }
 
-singlegpu_passthrough() {
+#singlegpu_passthrough() {
   hooks_dir="/etc/libvirt/hooks"
   hooks_qemu_file="/etc/libvirt/hooks/qemu"
   qemu_start_dir="/etc/libvirt/hooks/qemu.d/win11/prepare/begin"
@@ -788,7 +788,7 @@ install_graphics
 install_gaming
 install_wine
 setup_virtualization
-singlegpu_passthrough
+#singlegpu_passthrough
 docker_setup
 vm_check
 smb_setup
