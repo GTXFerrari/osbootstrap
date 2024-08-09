@@ -65,10 +65,8 @@ paru -S --needed \
   ookla-speedtest-bin \
   piavpn-bin \
   razergenie \
-  visual-studio-code-bin \
   github-desktop-bin \
   vmware-workstation \
-  cpu-x \
   proton-ge-custom-bin \
   duckstation-git \
   pcsx2-git \
