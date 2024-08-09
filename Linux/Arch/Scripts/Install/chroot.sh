@@ -65,7 +65,7 @@ create_user() {
 }
 
 install_packages() {
-  core_apps="base-devel networkmanager nm-connection-editor iwd avahi bind cifs-utils pacman-contrib xdg-user-dirs xdg-utils udisks2 mtools dosfstools alacritty kitty rsync openssh ssh-audit zsh zsh-autosuggestions zsh-completions fastfetch htop btop ttf-roboto-mono-nerd ttf-sourcecodepro-nerd ttf-terminus-nerd ttf-meslo-nerd ttfs-mononoki-nerd ttf-nerd-fonts-symbols ttf-noto-nerd ttf-jetbrains-mono-nerd lf chafa lynx ueberzug atool highlight bat mediainfo ffmpegthumbnailer odt2txt zathura firefox torbrowser-launcher nyx chromium python python-pip python-virtualenv"
+  core_apps="base-devel networkmanager nm-connection-editor iwd avahi bind cifs-utils pacman-contrib xdg-user-dirs xdg-utils udisks2 mtools dosfstools alacritty kitty rsync openssh ssh-audit zsh zsh-autosuggestions zsh-completions fastfetch htop btop ttf-roboto-mono-nerd ttf-sourcecodepro-nerd ttf-terminus-nerd ttf-meslo-nerd ttf-mononoki-nerd ttf-nerd-fonts-symbols ttf-noto-nerd ttf-jetbrains-mono-nerd lf chafa lynx ueberzug atool highlight bat mediainfo ffmpegthumbnailer odt2txt zathura firefox torbrowser-launcher nyx chromium python python-pip python-virtualenv"
   non_vm_apps="exfatprogs cups cups-pdf hplip nvtop cmatrix cowsay wireshark-qt mpd mpc mpv ncmpcpp ttf-joypixels hugo openrgb syncthing"
   nvim_deps="tree-sitter go rustup luarocks composer php nodejs npm python python-pip jdk-openjdk wget curl gzip tar bash xclip wl-clipboard ripgrep fd"
   opsec_apps="nmap hashcat hashcat-utils hping tcpdump"
