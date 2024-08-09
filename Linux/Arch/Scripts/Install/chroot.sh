@@ -85,8 +85,9 @@ install_packages() {
       cups.socket \
       tor.service
 	  usermod -aG wireshark,input,video "$username"
-	else pacman -S --needed "$core_apps"
-	  NetworkManager.service \
+	else pacman -S --needed "$core_apps" "$nvim_deps"
+	  systemctl enable \
+	    NetworkManager.service \
 	    avahi-daemon.service \
 	    iwd.service \
 	    reflector.timer \
