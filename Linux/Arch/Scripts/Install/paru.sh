@@ -66,7 +66,6 @@ paru -S --needed \
   piavpn-bin \
   razergenie \
   github-desktop-bin \
-  vmware-workstation \
   proton-ge-custom-bin \
   duckstation-git \
   pcsx2-git \
@@ -86,9 +85,15 @@ paru -S --needed \
 
 sudo systemctl enable --now \
   piavpn.service \
-  vmware-networks.service \
-  vmware-usbarbitrator.service
-  sudo systemctl start vmware-networks-configuration.service
 
 # Add user to plugdev group for razergenie
 sudo gpasswd -a "$USER" plugdev
+
+
+vmware_sucks(){
+sudo pacman -S vmware-workstation
+systemctl enable --now \
+  vmware-networks.service \
+  vmware-usbarbitrator.service
+  systemctl start vmware-networks-configuration.service
+}
