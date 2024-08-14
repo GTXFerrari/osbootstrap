@@ -65,37 +65,201 @@ create_user() {
 }
 
 install_packages() {
-  core_apps="base-devel networkmanager nm-connection-editor iwd avahi bind cifs-utils pacman-contrib xdg-user-dirs xdg-utils udisks2 mtools dosfstools alacritty kitty rsync openssh ssh-audit zsh zsh-autosuggestions zsh-completions fastfetch htop btop ttf-roboto-mono-nerd ttf-sourcecodepro-nerd ttf-terminus-nerd ttf-meslo-nerd ttf-mononoki-nerd ttf-nerd-fonts-symbols ttf-noto-nerd ttf-jetbrains-mono-nerd lf chafa lynx ueberzug atool highlight bat mediainfo ffmpegthumbnailer odt2txt zathura firefox torbrowser-launcher nyx chromium python python-pip python-virtualenv"
-  non_vm_apps="exfatprogs cups cups-pdf hplip nvtop cmatrix cowsay wireshark-qt mpd mpc mpv ncmpcpp ttf-joypixels hugo openrgb syncthing"
-  nvim_deps="tree-sitter go rustup luarocks composer php nodejs npm python python-pip jdk-openjdk wget curl gzip tar bash xclip wl-clipboard ripgrep fd"
-  opsec_apps="nmap hashcat hashcat-utils hping tcpdump"
+
+ apps_log_file="/var/log/failed_apps.log"
+ systemdservices_log_file="/var/log/failed_services.log"
 
 
-  echo -e "${Green}Installing packages${NC}"
-  if [[ "$VM_STATUS" == "not_in_vm" ]]; then
-    pacman -S --needed "$core_apps" "$non_vm_apps" "$nvim_deps" "$opsec_apps"
-    systemctl enable \
-      NetworkManager.service \
-      avahi-daemon.service \
-      iwd.service \
-      reflector.timer \
-      sshd.service \
-      fstrim.timer \
-      systemd-timesyncd.service \
-      cups.socket \
-      tor.service
-	  usermod -aG wireshark,input,video "$username"
-	else pacman -S --needed "$core_apps" "$nvim_deps"
-	  systemctl enable \
-	    NetworkManager.service \
-	    avahi-daemon.service \
-	    iwd.service \
-	    reflector.timer \
-	    sshd.service \
-	    fstrim.timer \
-	    systemd-timesyncd.service \
-	    tor.service
-  fi
+core_apps=(
+  base-devel
+  networkmanager 
+  nm-connection-editor 
+  iwd 
+  avahi 
+  bind 
+  cifs-utils 
+  pacman-contrib 
+  xdg-user-dirs 
+  xdg-utils 
+  udisks2 
+  mtools 
+  dosfstools 
+  alacritty 
+  kitty 
+  rsync 
+  openssh 
+  ssh-audit 
+  zsh 
+  zsh-autosuggestions 
+  zsh-completions 
+  fastfetch 
+  htop 
+  btop 
+  ttf-roboto-mono-nerd 
+  ttf-sourcecodepro-nerd 
+  ttf-terminus-nerd 
+  ttf-meslo-nerd 
+  ttf-mononoki-nerd 
+  ttf-nerd-fonts-symbols 
+  ttf-noto-nerd 
+  ttf-jetbrains-mono-nerd 
+  lf 
+  chafa 
+  lynx 
+  ueberzug 
+  atool 
+  highlight 
+  bat 
+  mediainfo 
+  ffmpegthumbnailer 
+  odt2txt 
+  zathura 
+  firefox 
+  torbrowser-launcher 
+  nyx 
+  python 
+  python-pip 
+  python-virtualenv
+)
+
+non_vm_apps=(
+  exfatprogs 
+  cups 
+  cups-pdf 
+  hplip 
+  nvtop 
+  cmatrix 
+  cowsay 
+  wireshark-qt 
+  mpd 
+  mpc 
+  mpv 
+  ncmpcpp 
+  ttf-joypixels 
+  hugo 
+  openrgb 
+  syncthing
+)
+
+nvim_deps=(
+    tree-sitter 
+    go 
+    rustup 
+    luarocks 
+    composer 
+    php 
+    nodejs 
+    npm 
+    python 
+    python-pip 
+    jdk-openjdk 
+    wget 
+    curl 
+    gzip 
+    tar 
+    bash 
+    xclip 
+    wl-clipboard 
+    ripgrep 
+    fd
+  )
+  
+  opsec_apps=(
+    nmap 
+    hashcat 
+    hashcat-utils 
+    hping 
+    tcpdump
+  )
+
+  systemd_services=(
+    NetworkManager.service
+    avahi.daemon.service
+    iwd.service
+    reflector.service
+    sshd.service
+    fstrim.timer
+    systemd_timesyncd.service
+    cups.socket
+    tor.service
+  )
+
+  echo -e "${Green}Updating package database${NC}"
+if ! sudo pacman -Syu --noconfirm; then
+  echo "Failed to update package database"
+  exit 1
+fi
+
+echo -e "${Green}Installing packages${NC}"
+if [[ "$VM_STATUS" == "not_in_vm" ]]; then
+
+  for app in "${core_apps[@]}"; do
+    if ! sudo pacman -S --noconfirm --needed "$app" ; then
+      echo "Package not found: $app, skipping"
+      echo "$app" >> "$apps_log_file"
+    fi
+  done
+
+  for app in "${non_vm_apps[@]}"; do
+    if ! sudo pacman -S --noconfirm --needed "$app" ; then
+      echo "Package not found: $app, skipping"
+      echo "$app" >> "$apps_log_file"
+    fi
+  done
+
+  for app in "${nvim_deps[@]}"; do
+    if ! sudo pacman -S --noconfirm --needed "$app" ; then
+      echo "Package not found: $app, skipping"
+      echo "$app" >> "$apps_log_file"
+    fi
+  done
+
+  for app in "${opsec_apps[@]}"; do
+    if ! sudo pacman -S --noconfirm --needed "$app" ; then
+      echo "Package not found: $app, skipping"
+      echo "$app" >> "$apps_log_file"
+    fi
+  done
+
+  for service in "${systemd_services[@]}"; do
+    if systemctl list-unit-files --type=service --all | grep -q "^$service"; then
+      if ! systemctl enable "$service"; then
+	echo -e "${Red}Failed to enable service${NC}" | tee -a "$systemdservices_log_file"
+      else
+	echo -e "${Green}$service successfully enabled${NC}"
+      fi
+    else
+      echo -e "${Red}Service "$service" does not exist${NC}" | tee -a "$systemdservices_log_file"
+    fi
+  done
+  usermod -aG wireshark "$username"
+  usermod -aG input "$username"
+  usermod -aG video "$username"
+
+else
+  for app in "${core_apps[@]}"; do
+    if ! sudo pacman -S --noconfirm --needed "$app" ; then
+      echo "Package not found: $app, skipping"
+      echo "$app" >> "$log_file"
+    fi
+  done
+
+  for service in "${systemd_services[@]}"; do
+    if systemctl list-unit-files --type=service --all | grep -q "^$service"; then
+      if ! systemctl enable "$service"; then
+	echo -e "${Red}Failed to enable service${NC}" | tee -a "$systemdservices_log_file"
+      else
+	echo -e "${Green}$service successfully enabled${NC}"
+      fi
+    else
+      echo -e "${Red}Service "$service" does not exist${NC}" | tee -a "$systemdservices_log_file"
+    fi
+  done
+  usermod -aG wireshark "$username"
+  usermod -aG input "$username"
+  usermod -aG video "$username"
+fi
+echo -e "${Green}App installation compelete${NC}"
 }
 
 install_bootloader() {
