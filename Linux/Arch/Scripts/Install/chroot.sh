@@ -753,10 +753,11 @@ smb_setup() {
 
 desktop_environment() {
   while true; do
-  echo -n "Would you like to install a desktop environment (y/n) "
+  echo -n "Install a desktop environment? (y/n) "
   read -r desktop_environment 
   if [[ $desktop_environment == "y" ]]; then
-    PS3='Please enter your choice: '
+    export desktop_environment
+    PS3='Enter your choice: '
     options=("KDE" "Gnome" "Exit")
     select opt in "${options[@]}"
     do
