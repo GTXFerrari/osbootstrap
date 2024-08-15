@@ -550,7 +550,7 @@ setup_virtualization() {
 }
 
 docker_setup() {
-  echo -en "${Green}Would you like to use docker? (y/n) "
+  echo -n "Install docker? (y/n) "
   read -r docker
   if [[ "$docker" == "y" ]]; then
     pacman -S --needed --noconfirm docker docker-compose
