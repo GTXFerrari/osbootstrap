@@ -1063,10 +1063,8 @@ install_graphics
 install_gaming
 install_wine
 setup_virtualization
-#singlegpu_passthrough
 docker_setup
 vm_check
-smb_setup
 desktop_environment
 setup_window_manager
 mkinitcpio_setup
