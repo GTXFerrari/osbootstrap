@@ -467,18 +467,25 @@ export chosen_graphics
 
 install_gaming() {
   if [[ "$VM_STATUS" == "not_in_vm" ]]; then
-    pacman -S --needed \
-      steam \
-      lutris \
-      discord \
-      retroarch \
-      retroarch-assets-xmb \
-      retroarch-assets-ozone \
-      libretro-core-info \
-      gamescope \
-      obs-studio \
-      mangohud \
+    gaming_packages=(
+      steam
+      lutris
+      discord
+      retroarch
+      retroarch-assets-xmb
+      retroarch-assets-ozone
+      libretro-core-info
+      gamescope
+      obs-studio
+      mangohud
       goverlay
+    )
+    for app in "${gaming_packages[@]}"; do
+      if ! sudo pacman -S --needed "$app" ; then
+	echo "Package not found: $app, skipping"
+	echo "$app" >> "$apps_log_file"
+      fi
+    done
         else
           return 0
   fi
@@ -486,19 +493,26 @@ install_gaming() {
 
 install_wine() {
   if [[ "$VM_STATUS" == "not_in_vm" ]]; then
-    pacman -S --needed \
-      wine \
-      wine-gecko \
-      wine-mono \
-      lib32-pipewire \
-      pipewire-pulse \
-      lib32-libpulse \
-      lib32-gnutls \
-      lib32-sdl2 \
-      lib32-gst-plugins-base \
-      lib32-gst-plugins-good \
-      samba \
+    wine_packages=(
+      wine
+      wine-gecko
+      wine-mono
+      lib32-pipewire
+      pipewire-pulse
+      lib32-libpulse
+      lib32-gnutls
+      lib32-sdl2
+      lib32-gst-plugins-base
+      lib32-gst-plugins-good
+      samba
       winetricks
+    )
+    for app in "${wine_packages[@]}"; do
+      if ! sudo pacman -S --needed "$app" ; then
+	echo "Package not found: $app, skipping"
+	echo "$app" >> "$apps_log_file"
+      fi
+    done
         else
           return 0
   fi
@@ -510,20 +524,28 @@ setup_virtualization() {
     sleep 1
     return 0
   else
-    pacman -S --needed \
-      qemu-full \
-      virt-manager \
-      dmidecode \
-      edk2-ovmf \
-      iptables-nft \
-      dnsmasq \
-      openbsd-netcat \
-      bridge-utils \
-      vde2 \
-      libvirt \
-      swtpm \
+    virt_packages=(
+      qemu-full
+      virt-manager
+      dmidecode
+      edk2-ovmf
+      iptables-nft
+      dnsmasq
+      openbsd-netcat
+      bridge-utils
+      vde2
+      libvirt
+      swtpm
+    )
+    for app in "${virt_packages[@]}"; do
+      if ! sudo pacman -S --needed "$app" ; then
+	echo "Package not found: $app, skipping"
+	echo "$app" >> "$apps_log_file"
+      fi
+    done
       systemctl enable libvirtd.service
-	  usermod -aG libvirt,kvm "$username"
+      usermod -aG libvirt "$username"
+      usermod -aG kvm "$username"
   fi
 }
 
@@ -652,8 +674,22 @@ docker_setup() {
 
 vm_check() {
   if [[ "$VM_STATUS" == "vmware" ]]; then
-    pacman -S --needed --noconfirm open-vm-tools xf86-input-vmmouse xf86-video-vmware  mesa gtkmm gtk2
-    systemctl enable vmtoolsd.service vmware-vmblock-fuse.service
+    vmware_packages=(
+      open-vm-tools
+      xf86-input-vmmouse
+      xf86-video-vmware 
+      mesa 
+      gtkmm 
+      gtk2
+    )
+    for app in "${vmware_packages[@]}"; do
+      if ! sudo pacman -S --needed "$app" ; then
+	echo "Package not found: $app, skipping"
+	echo "$app" >> "$apps_log_file"
+      fi
+    done
+    systemctl enable vmtoolsd.service 
+    systemctl enable vmware-vmblock-fuse.service
   elif [[ "$VM_STATUS" == "kvm" ]]; then
     pacman -S --needed --noconfirm qemu-guest-agent
     systemctl enable gemu-guest-agent
@@ -725,111 +761,119 @@ desktop_environment() {
     select opt in "${options[@]}"
     do
       case $opt in
-        "KDE")
-          pacman -S --needed \
-	    plasma-desktop \
-	    kscreen \
-	    kscreenlocker \
-	    spectacle \
-	    bluedevil \
-	    breeze \
-	    breeze-gtk \
-	    breeze-plymouth \
-	    xdg-desktop-portal-kde \
-	    systemsettings \
-	    print-manager \
-	    powerdevil \
-	    polkit \
-	    polkit-kde-agent \
-	    plymouth-kcm \
-	    plasma5support \
-	    plasma-workspace-wallpapers \
-	    plasma-workspace \
-	    plasma-vault \
-	    plasma-systemmonitor \
-	    plasma-pa \
-	    plasma-nm \
-	    plasma-integration \
-	    plasma-firewall \
-	    plasma-disks \
-	    plasma-browser-integration \
-	    milou \
-	    libplasma \
-	    libksysguard \
-	    libkscreen \
-	    layer-shell-qt \
-	    kwrited \
-	    kwayland-integration \
-	    qt5-wayland \
-	    qt6-wayland \
-	    kde-gtk-config \
-	    kwallet \
-	    kwallet-pam \
-	    ksshaskpass \
-	    ksystemstats \
-	    kpipewire \
-	    plasma-pa \
-	    kmenuedit \
-	    kinfocenter \
-	    kglobalaccel \
-	    kglobalacceld \
-	    kgamma \
-	    kde-cli-tools \
-	    kactivitymanagerd \
-	    flatpak \
-	    flatpak-builder \
-	    discover \
-	    flatpak-kcm \
-	    drkonqi \
-	    sddm \
-	    sddm-kcm \
-	    dolphin \
-	    dolphin-plugins \
-	    kompare \
-	    baloo \
-	    baloo-widgets \
-	    kdegraphics-thumbnailers \
-	    kimageformats \
-	    libheif \
-	    qt6-imageformats \
-	    kdesdk-thumbnailers \
-	    ffmpegthumbs \
-	    taglib \
-	    audiocd-kio \
-	    udisks2 \
-	    kde-inotify-survey \
-	    kdenetwork-filesharing \
-	    kio-gdrive \
-	    kio-admin \
-	    kio-extras \
-	    kio-fuse \
-	    libappindicator-gtk3 \
-	    gwenview \
-	    qt5-imageformats \
-	    icoutils \
-	    iio-sensor-proxy \
-	    noto-fonts \
-	    noto-fonts-emoji \
-	    maliit-keyboard \
-	    power-profiles-daemon \
-	    switcheroo-control \
-	    xsettingsd \
-	    ark \
-	    unarchiver \
-	    unrar \
-	    filelight \
-	    kcalc \
-	    kdialog
-		      systemctl enable sddm
-		      break 2
+	"KDE")
+	kde_packages=(
+	  plasma-desktop
+	  kscreen
+	  kscreenlocker
+	  spectacle
+	  bluedevil
+	  breeze
+	  breeze-gtk
+	  breeze-plymouth
+	  xdg-desktop-portal-kde
+	  systemsettings
+	  print-manager
+	  powerdevil
+	  polkit
+	  polkit-kde-agent
+	  plymouth-kcm
+	  plasma5support
+	  plasma-workspace-wallpapers
+	  plasma-workspace
+	  plasma-vault
+	  plasma-systemmonitor
+	  plasma-pa
+	  plasma-nm
+	  plasma-integration
+	  plasma-firewall
+	  plasma-disks
+	  plasma-browser-integration
+	  milou
+	  libplasma
+	  libksysguard
+	  libkscreen
+	  layer-shell-qt
+	  kwrited
+	  kwayland-integration
+	  qt5-wayland
+	  qt6-wayland
+	  kde-gtk-config
+	  kwallet
+	  kwallet-pam
+	  ksshaskpass
+	  ksystemstats
+	  kpipewire
+	  plasma-pa
+	  kmenuedit
+	  kinfocenter
+	  kglobalaccel
+	  kglobalacceld
+	  kgamma
+	  kde-cli-tools
+	  kactivitymanagerd
+	  flatpak
+	  flatpak-builder
+	  discover
+	  flatpak-kcm
+	  drkonqi
+	  sddm
+	  sddm-kcm
+	  dolphin
+	  dolphin-plugins
+	  kompare
+	  baloo
+	  baloo-widgets
+	  kdegraphics-thumbnailers
+	  kimageformats
+	  libheif
+	  qt6-imageformats
+	  kdesdk-thumbnailers
+	  ffmpegthumbs
+	  taglib
+	  audiocd-kio
+	  udisks2
+	  kde-inotify-survey
+	  kdenetwork-filesharing
+	  kio-gdrive
+	  kio-admin
+	  kio-extras
+	  kio-fuse
+	  libappindicator-gtk3
+	  gwenview
+	  qt5-imageformats
+	  icoutils
+	  iio-sensor-proxy
+	  noto-fonts
+	  noto-fonts-emoji
+	  maliit-keyboard
+	  power-profiles-daemon
+	  switcheroo-control
+	  xsettingsd
+	  ark
+	  unarchiver
+	  unrar
+	  filelight
+	  kcalc
+	  kdialog
+	  konsole
+	  )
+	  for app in "${kde_packages[@]}"; do
+	    if ! sudo pacman -S --needed "$app" ; then
+	      echo "Package not found: $app, skipping"
+	      echo "$app" >> "$apps_log_file"
+	    fi
+	  done
+	  systemctl enable sddm
+	  break 2
           ;;
-        "Gnome")
-          pacman -S --needed \
-            gnome \
-            gnome-extra \
-            gnome-tweaks \
-            gnome-themes-extra \
-            gdm
+	"Gnome")
+	  pacman -S --needed \
+	    gnome \
+	    gnome-extra \
+	    gnome-tweaks \
+	    gnome-themes-extra \
+	    gdm
 		      systemctl enable gdm
 		      break 2
           ;;
@@ -848,44 +892,53 @@ done
 }
 
 setup_window_manager() {
-  while true; do
-  echo -n "Would you like to install a tiling window manager (y/n) "
-  read -r window_manager 
-  if [[ $window_manager == "y" ]]; then
-    PS3='Please enter your choice: '
-    options=("Dwm" "Hyprland" "Exit")
-    dwm_build="git clone https://github.com/GTXFerrari/dwm"
-    dmenu_build="https://github.com/GTXFerrari/dmenu"
-    dwmblocks_build="https://github.com/GTXFerrari/dwmblocks"
-    git_dir="/home/$username/Git"
-    select opt in "${options[@]}"
-    do
-      case $opt in
-        "Dwm")
-          pacman -S --needed \
-	    xorg-server \
-            xorg-xinit \
-            xorg-xsetroot \
-	    scrot \
-            nitrogen \
-	    blueman \
-            picom \
-            qt5ct \
-	    qt6ct \
-            lxappearance \
-            gnome-themes-extra \
-            dunst \
-            polkit \
-            polkit-kde-agent \
-	    gnome-keyring \
-	    libsecret \
-	    seahorse \
-            network-manager-applet \
-            unclutter \
-	    cronie \
-	    pasystray \
-            papirus-icon-theme
-
+  if [[ $desktop_environment = "y" ]]; then
+    exit 0
+  else
+    while true; do
+      echo -n "Install a tiling window manager (y/n) "
+      read -r window_manager 
+      if [[ $window_manager == "y" ]]; then
+	PS3='Enter your choice: '
+	options=("Dwm" "Hyprland" "Exit")
+	dwm_build="git clone https://github.com/GTXFerrari/dwm"
+	dmenu_build="https://github.com/GTXFerrari/dmenu"
+	dwmblocks_build="https://github.com/GTXFerrari/dwmblocks"
+	git_dir="/home/$username/Git"
+	select opt in "${options[@]}"
+	do
+	  case $opt in
+	    "Dwm")
+	      dwm_packages=(
+		xorg-server
+		xorg-xinit
+		xorg-xsetroot
+		scrot
+		nitrogen
+		blueman
+		picom
+		qt5ct
+		qt6ct
+		lxappearance
+		gnome-themes-extra
+		dunst
+		polkit
+		polkit-kde-agent
+		gnome-keyring
+		libsecret
+		seahorse
+		network-manager-applet
+		unclutter
+		cronie
+		pasystray
+		papirus-icon-theme
+	      )
+	      for app in "${dwm_packages[@]}"; do
+		if ! sudo pacman -S --needed "$app" ; then
+		  echo "Package not found: $app, skipping"
+		  echo "$app" >> "$apps_log_file"
+		fi
+	      done
 	  # Check dirs & clone builds
 	  if [[ ! -d $git_dir ]]; then
 	    mkdir -p /home/"$username"/Git
@@ -917,34 +970,42 @@ setup_window_manager() {
 	  (crontab -l | grep -F "$nitrogen_slideshow_cron") || (crontab -l; echo "$nitrogen_slideshow_cron") | crontab -
           ;;
 	"Hyprland")
-	  pacman -S --needed \
-	    hyprland \
-	    qt5-wayland \
-	    qt6-wayland \
-	    qt5ct \
-	    qt6ct \
-	    libva \
-	    kitty \
-	    xdg-desktop-portal-hyprland \
-	    nwg-look \
-	    polkit-kde-agent \
-	    waybar \
-	    wofi \
-	    pavucontrol \
-	    swaync \
+	  hyprland_packages=(
+	    hyprland
+	    qt5-wayland
+	    qt6-wayland
+	    qt5ct
+	    qt6ct
+	    libva
+	    kitty
+	    xdg-desktop-portal-hyprland
+	    nwg-look
+	    polkit-kde-agent
+	    waybar
+	    wofi
+	    pavucontrol
+	    swaync
 	    gvfs-smb 
+	  )
+	  for app in "${hyprland_packages[@]}"; do
+	    if ! sudo pacman -S --needed "$app" ; then
+	      echo "Package not found: $app, skipping"
+	      echo "$app" >> "$apps_log_file"
+	    fi
+	  done
 	  ;;
-        "Exit")
-          break 2
-          ;;
-        *) echo "Invalid choice. Please enter a valid option."
-          ;;
+	"Exit")
+	  break 2
+	  ;;
+	*) echo "Invalid choice. Please enter a valid option."
+	  ;;
       esac
     done
   else
     break 2
+      fi
+    done
   fi
-done
 }
 
 mkinitcpio_setup() {
