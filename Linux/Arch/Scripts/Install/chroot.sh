@@ -65,10 +65,8 @@ create_user() {
 }
 
 install_packages() {
-
  apps_log_file="/var/log/failed_apps.log"
  systemdservices_log_file="/var/log/failed_services.log"
-
 
 core_apps=(
   base-devel
@@ -174,12 +172,11 @@ nvim_deps=(
 
   systemd_services=(
     NetworkManager.service
-    avahi.daemon.service
+    avahi-daemon.service
     iwd.service
     reflector.service
     sshd.service
-    fstrim.timer
-    systemd_timesyncd.service
+    systemd-timesyncd.service
     cups.socket
     tor.service
   )
