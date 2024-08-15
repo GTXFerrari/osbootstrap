@@ -968,7 +968,7 @@ setup_window_manager() {
 	  # Setup nitrogen wallpaper slideshow
 	  nitrogen_slideshow_cron="*/5 * * * * (export DISPLAY=:1.0 && /bin/date && /usr/bin/nitrogen --set-zoom-fill --random /home/$username/Pictures/Wallpapers/ --save) > /tmp/myNitrogen.log 2>&1"
 	  (crontab -l | grep -F "$nitrogen_slideshow_cron") || (crontab -l; echo "$nitrogen_slideshow_cron") | crontab -
-          ;;
+	  ;;
 	"Hyprland")
 	  hyprland_packages=(
 	    hyprland
