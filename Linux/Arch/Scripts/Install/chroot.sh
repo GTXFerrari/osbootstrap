@@ -191,28 +191,28 @@ echo -e "${Green}Installing packages${NC}"
 if [[ "$VM_STATUS" == "not_in_vm" ]]; then
 
   for app in "${core_apps[@]}"; do
-    if ! sudo pacman -S --noconfirm --needed "$app" ; then
+    if ! sudo pacman -S --needed "$app" ; then
       echo "Package not found: $app, skipping"
       echo "$app" >> "$apps_log_file"
     fi
   done
 
   for app in "${non_vm_apps[@]}"; do
-    if ! sudo pacman -S --noconfirm --needed "$app" ; then
+    if ! sudo pacman -S --needed "$app" ; then
       echo "Package not found: $app, skipping"
       echo "$app" >> "$apps_log_file"
     fi
   done
 
   for app in "${nvim_deps[@]}"; do
-    if ! sudo pacman -S --noconfirm --needed "$app" ; then
+    if ! sudo pacman -S --needed "$app" ; then
       echo "Package not found: $app, skipping"
       echo "$app" >> "$apps_log_file"
     fi
   done
 
   for app in "${opsec_apps[@]}"; do
-    if ! sudo pacman -S --noconfirm --needed "$app" ; then
+    if ! sudo pacman -S --needed "$app" ; then
       echo "Package not found: $app, skipping"
       echo "$app" >> "$apps_log_file"
     fi
@@ -235,7 +235,7 @@ if [[ "$VM_STATUS" == "not_in_vm" ]]; then
 
 else
   for app in "${core_apps[@]}"; do
-    if ! sudo pacman -S --noconfirm --needed "$app" ; then
+    if ! sudo pacman -S --needed "$app" ; then
       echo "Package not found: $app, skipping"
       echo "$app" >> "$log_file"
     fi
