@@ -252,6 +252,7 @@ else
       echo -e "${Red}Service "$service" does not exist${NC}" | tee -a "$systemdservices_log_file"
     fi
   done
+  systemctl enable fstrim.timer
   usermod -aG wireshark "$username"
   usermod -aG input "$username"
   usermod -aG video "$username"
