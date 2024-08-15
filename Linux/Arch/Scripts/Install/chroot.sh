@@ -394,17 +394,61 @@ install_graphics() {
       select opt in "${options[@]}"; do
         case $opt in
           "Nvidia")
-            pacman -S --needed nvidia-open-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader opencl-nvidia lib32-opencl-nvidia python-pytorch-cuda cuda
+	    nvidia_packages=(
+	      nvidia-open-dkms
+	      nvidia-utils
+	      lib32-nvidia-utils
+	      nvidia-settings
+	      vulkan-icd-loader
+	      lib32-vulkan-icd-loader
+	      opencl-nvidia
+	      lib32-opencl-nvidia
+	      python-pytorch-cuda
+	      cuda
+	    )
+	    for app in "${nvidia_packages[@]}"; do
+	      if ! sudo pacman -S --needed "$app" ; then
+		echo "Package not found: $app, skipping"
+		echo "$app" >> "$apps_log_file"
+	      fi
+	    done
             chosen_graphics="Nvidia"
             break 2
             ;;
           "AMD")
-            pacman -S --needed mesa lib32-mesa xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau rocm-opencl-runtime
+	    amd_packages=(
+	      mesa
+	      lib32-mesa
+	      xf86-video-amdgpu
+	      vulkan-radeon
+	      lib32-vulkan-radeon
+	      libva-mesa-driver
+	      lib32-libva-mesa-driver
+	      mesa-vdpau
+	      lib32-mesa-vdpau
+	      rocm-opencl-runtime
+	    )
+	    for app in "${amd_packages[@]}"; do
+	      if ! sudo pacman -S --needed "$app" ; then
+		echo "Package not found: $app, skipping"
+		echo "$app" >> "$apps_log_file"
+	      fi
+	    done
             chosen_graphics="AMD"
             break 2
             ;;
           "Intel")
-            pacman -S --needed mesa lib32-mesa vulkan-intel
+	    intel_packages=(
+	      mesa
+	      lib32-mesa
+	      vulkan-intel
+	    )
+	    for app in "${intel_packages[@]}"; do
+	      if ! sudo pacman -S --needed "$app" ; then
+		echo "Package not found: $app, skipping"
+		echo "$app" >> "$apps_log_file"
+	      fi
+	    done
             chosen_graphics="Intel"
             break 2
             ;;
