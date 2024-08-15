@@ -352,25 +352,32 @@ install_bootloader() {
 }
 
 setup_audio() {
-  echo -e "${Green}Installing audio${NC}"
+  echo -e "${Green}Setting up audio${NC}"
   sleep 1
-  pacman -S --needed \
-    pipewire \
-    pipewire-docs \
-    pipewire-alsa \
-    lib32-pipewire \
-    easyeffects \
-    alsa-utils \
-    alsa-plugins \
-    pipewire-pulse \
-    wireplumber \
-    pipewire-jack \
-    lib32-pipewire-jack \
-    pulsemixer \
-    bluez \
-    bluez-utils \
-    lsp-plugins \
-    sof-firmware
+  audio=(
+  pipewire
+  pipewire-docs
+  pipewire-alsa
+  lib32-pipewire
+  easyeffects
+  alsa-utils
+  alsa-plugins
+  pipewire-pulse
+  wireplumber
+  pipewire-jack
+  lib32-pipewire-jack
+  pulsemixer
+  bluez
+  bluez-utils
+  lsp-plugins
+  sof-firmware
+  )
+  for app in "${audio[@]}"; do
+    if ! sudo pacman -S --needed "$app" ; then
+      echo "Package not found: $app, skipping"
+      echo "$app" >> "$apps_log_file"
+    fi
+  done
   systemctl enable bluetooth.service
 }
 
