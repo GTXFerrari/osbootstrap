@@ -191,28 +191,28 @@ echo -e "${Green}Installing packages${NC}"
 if [[ "$VM_STATUS" == "not_in_vm" ]]; then
 
   for app in "${core_apps[@]}"; do
-    if ! sudo pacman -S --needed "$app" ; then
+    if ! sudo pacman -S --needed --noconfirm "$app" ; then
       echo "Package not found: $app, skipping"
       echo "$app" >> "$apps_log_file"
     fi
   done
 
   for app in "${non_vm_apps[@]}"; do
-    if ! sudo pacman -S --needed "$app" ; then
+    if ! sudo pacman -S --needed --noconfirm "$app" ; then
       echo "Package not found: $app, skipping"
       echo "$app" >> "$apps_log_file"
     fi
   done
 
   for app in "${nvim_deps[@]}"; do
-    if ! sudo pacman -S --needed "$app" ; then
+    if ! sudo pacman -S --needed --noconfirm "$app" ; then
       echo "Package not found: $app, skipping"
       echo "$app" >> "$apps_log_file"
     fi
   done
 
   for app in "${opsec_apps[@]}"; do
-    if ! sudo pacman -S --needed "$app" ; then
+    if ! sudo pacman -S --needed --noconfirm "$app" ; then
       echo "Package not found: $app, skipping"
       echo "$app" >> "$apps_log_file"
     fi
@@ -235,7 +235,7 @@ if [[ "$VM_STATUS" == "not_in_vm" ]]; then
 
 else
   for app in "${core_apps[@]}"; do
-    if ! sudo pacman -S --needed "$app" ; then
+    if ! sudo pacman -S --needed --noconfirm "$app" ; then
       echo "Package not found: $app, skipping"
       echo "$app" >> "$log_file"
     fi
@@ -373,12 +373,13 @@ setup_audio() {
   sof-firmware
   )
   for app in "${audio[@]}"; do
-    if ! sudo pacman -S --needed "$app" ; then
+    if ! sudo pacman -S --needed --noconfirm "$app" ; then
       echo "Package not found: $app, skipping"
       echo "$app" >> "$apps_log_file"
     fi
   done
   systemctl enable bluetooth.service
+  pacman -S --needed pipewire-jack
 }
 
 install_graphics() {
@@ -407,7 +408,7 @@ install_graphics() {
 	      cuda
 	    )
 	    for app in "${nvidia_packages[@]}"; do
-	      if ! sudo pacman -S --needed "$app" ; then
+	      if ! sudo pacman -S --needed --noconfirm "$app" ; then
 		echo "Package not found: $app, skipping"
 		echo "$app" >> "$apps_log_file"
 	      fi
@@ -429,7 +430,7 @@ install_graphics() {
 	      rocm-opencl-runtime
 	    )
 	    for app in "${amd_packages[@]}"; do
-	      if ! sudo pacman -S --needed "$app" ; then
+	      if ! sudo pacman -S --needed --noconfirm "$app" ; then
 		echo "Package not found: $app, skipping"
 		echo "$app" >> "$apps_log_file"
 	      fi
@@ -444,7 +445,7 @@ install_graphics() {
 	      vulkan-intel
 	    )
 	    for app in "${intel_packages[@]}"; do
-	      if ! sudo pacman -S --needed "$app" ; then
+	      if ! sudo pacman -S --needed --noconfirm "$app" ; then
 		echo "Package not found: $app, skipping"
 		echo "$app" >> "$apps_log_file"
 	      fi
@@ -481,7 +482,7 @@ install_gaming() {
       goverlay
     )
     for app in "${gaming_packages[@]}"; do
-      if ! sudo pacman -S --needed "$app" ; then
+      if ! sudo pacman -S --needed --noconfirm "$app" ; then
 	echo "Package not found: $app, skipping"
 	echo "$app" >> "$apps_log_file"
       fi
@@ -508,7 +509,7 @@ install_wine() {
       winetricks
     )
     for app in "${wine_packages[@]}"; do
-      if ! sudo pacman -S --needed "$app" ; then
+      if ! sudo pacman -S --needed --noconfirm "$app" ; then
 	echo "Package not found: $app, skipping"
 	echo "$app" >> "$apps_log_file"
       fi
@@ -538,7 +539,7 @@ setup_virtualization() {
       swtpm
     )
     for app in "${virt_packages[@]}"; do
-      if ! sudo pacman -S --needed "$app" ; then
+      if ! sudo pacman -S --needed --noconfirm "$app" ; then
 	echo "Package not found: $app, skipping"
 	echo "$app" >> "$apps_log_file"
       fi
@@ -579,7 +580,7 @@ vm_check() {
       gtk2
     )
     for app in "${vmware_packages[@]}"; do
-      if ! sudo pacman -S --needed "$app" ; then
+      if ! sudo pacman -S --needed --noconfirm "$app" ; then
 	echo "Package not found: $app, skipping"
 	echo "$app" >> "$apps_log_file"
       fi
@@ -711,7 +712,7 @@ desktop_environment() {
 	  konsole
 	  )
 	  for app in "${kde_packages[@]}"; do
-	    if ! sudo pacman -S --needed "$app" ; then
+	    if ! sudo pacman -S --needed --noconfirm "$app" ; then
 	      echo "Package not found: $app, skipping"
 	      echo "$app" >> "$apps_log_file"
 	    fi
@@ -786,7 +787,7 @@ setup_window_manager() {
 		papirus-icon-theme
 	      )
 	      for app in "${dwm_packages[@]}"; do
-		if ! sudo pacman -S --needed "$app" ; then
+		if ! sudo pacman -S --needed --noconfirm "$app" ; then
 		  echo "Package not found: $app, skipping"
 		  echo "$app" >> "$apps_log_file"
 		fi
@@ -840,7 +841,7 @@ setup_window_manager() {
 	    gvfs-smb 
 	  )
 	  for app in "${hyprland_packages[@]}"; do
-	    if ! sudo pacman -S --needed "$app" ; then
+	    if ! sudo pacman -S --needed --noconfirm "$app" ; then
 	      echo "Package not found: $app, skipping"
 	      echo "$app" >> "$apps_log_file"
 	    fi
