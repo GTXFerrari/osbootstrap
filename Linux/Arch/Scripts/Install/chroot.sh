@@ -562,6 +562,9 @@ docker_setup() {
     if [[ "$chosen_filesystem" == "btrfs" ]]; then
       echo '{"storage-driver": "btrfs"}' >> /etc/docker/daemon.json
     fi
+    if [[ "$chosen_graphics" == "Nvidia" ]]; then
+      pacman -S --needed --noconfirm nvidia-container-toolkit
+    fi
   fi
 }
 
