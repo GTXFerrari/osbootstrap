@@ -17,7 +17,7 @@ smb_setup() {
     echo -e "${Green}Share file already exists${NC}"
   else touch $share_file
   fi
-  echo "$username" | sudo tee -a "$share_file" > /dev/null 
+  echo "jake" | sudo tee -a "$share_file" > /dev/null 
   echo -n Password:
   read -r Password
   echo "password=$Password" | sudo tee -a "$share_file" > /dev/null 
@@ -25,7 +25,7 @@ smb_setup() {
   sleep 1
   chown root:root "$cred_dir" && chmod 700 "$cred_dir" && chmod 600 "$share_file"
   if [[ ! -d $truenas_dir ]]; then
-    mkdir -p /mnt/truenas/{media,iso,photos,gold,stash,stash2}
+    mkdir -p /mnt/truenas/{media,iso,photos,gold,stash,stash2,jake}
   fi
   {
     echo " "
