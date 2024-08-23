@@ -15,8 +15,6 @@ init() {
   echo -e "${Green}Enabling multilib.${NC}"
   sleep 1
   sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
-  echo -e "${Green}Updating mirrorlist.${NC}"
-  reflector -c 'United States' -a 12 -p https --sort rate --save /etc/pacman.d/mirrorlist
   pacman -Sy
   echo -e "${Green}Updating keyring.${NC}"
   sleep 1
