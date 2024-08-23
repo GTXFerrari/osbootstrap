@@ -40,7 +40,7 @@ vm_check() {
 }
 
 termfonts() {
-  echo -e "${Green}Adjusting fonts${NC}"
+  echo -e "${Green}Adjusting fonts.${NC}"
   sleep 1
   if [[ "$VM_STATUS" == "not_in_vm" ]]; then
     setfont ter-132b
@@ -52,10 +52,10 @@ termfonts() {
 check_uefi() {
   echo -e "${Green}Checking UEFI settings${NC}"
   if [[ -d /sys/firmware/efi/efivars/ ]]; then
-  echo -e "${Green}System is booted using UEFI, proceeding${NC}"
+  echo -e "${Green}System is booted using UEFI, proceeding.${NC}"
     sleep 1
   else
-  echo -e "${Red}System is not booted using UEFI, change in the BIOS before proceeding${NC}"
+  echo -e "${Red}System is not booted using UEFI, change in the BIOS before proceeding.${NC}"
     sleep 5
     exit 1
   fi
@@ -65,11 +65,11 @@ check_uefi() {
     value=$(cat "$efi_platform_size_file")
   fi
   if [[ "$value" -eq 64 ]]; then
-    echo -e "${Green}The system is using a 64 bit UEFI, GRUB & Systemd-Boot are supported${NC}"
+    echo -e "${Green}The system is using a 64 bit UEFI, GRUB & Systemd-Boot are supported.${NC}"
     uefi="64"
     sleep 3
   else
-    echo -e "${Green}The system is using a 32 bit UEFI, only Systemd-Boot is supported${NC}"
+    echo -e "${Green}The system is using a 32 bit UEFI, only Systemd-Boot is supported.${NC}"
     uefi="32"
     sleep 3
   fi
@@ -89,9 +89,10 @@ check_internet_connection() {
 
 internet_check() {
 if check_internet_connection; then
-  echo -e "${Green}Internet available, starting script${NC}"
+  echo -e "${Green}Internet available, starting script...${NC}"
 else
   echo -e "${Red}No internet, check your connection${NC}"
+  sleep 5
   exit 1
 fi
 }
