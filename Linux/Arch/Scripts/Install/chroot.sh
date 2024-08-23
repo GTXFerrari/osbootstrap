@@ -185,7 +185,7 @@ if ! sudo pacman -Syu --noconfirm; then
   exit 1
 fi
 
-echo -e "${Green}Installing packages${NC}"
+echo -e "${Green}Installing packages...${NC}"
 if [[ "$VM_STATUS" == "not_in_vm" ]]; then
 
   for app in "${core_apps[@]}"; do
@@ -235,7 +235,7 @@ else
   for app in "${core_apps[@]}"; do
     if ! sudo pacman -S --needed --noconfirm "$app" ; then
       echo "Package not found: $app, skipping"
-      echo "$app" >> "$log_file"
+      echo "$app" >> "$apps_log_file"
     fi
   done
 
