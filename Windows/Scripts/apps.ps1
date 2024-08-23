@@ -67,6 +67,7 @@ $apps = @(
     @{name = "LizardByte.Sunshine" },
     @{name = "GeekUninstaller.GeekUninstaller" },
     @{name = "VMware.WorkstationPro" },
+    @{name = "rocksdanister.LivelyWallpaper" },
     @{name = "Google.PlatformTools" }, # ADB Installer for shield
     @{name = "gokcehan.lf" }, # ADB Installer for shield
     @{name = "9NBLGGH30XJ3" }, # Xbox Accessories
