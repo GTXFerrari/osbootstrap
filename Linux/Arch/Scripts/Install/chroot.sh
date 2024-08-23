@@ -379,6 +379,7 @@ setup_audio() {
     fi
   done
   systemctl enable bluetooth.service
+  # Needs to be separate since it requires an explicit overwrite for jack2 >> pipewire-jack
   pacman -S --needed pipewire-jack
 }
 
@@ -412,7 +413,8 @@ install_graphics() {
 		echo "$app" >> "$apps_log_file"
 	      fi
 	    done
-            chosen_graphics="Nvidia"
+	    chosen_graphics="Nvidia"
+	    export chosen_graphics
             break 2
             ;;
           "AMD")
@@ -435,6 +437,7 @@ install_graphics() {
 	      fi
 	    done
             chosen_graphics="AMD"
+	    export chosen_graphics
             break 2
             ;;
           "Intel")
@@ -450,6 +453,7 @@ install_graphics() {
 	      fi
 	    done
             chosen_graphics="Intel"
+	    export chosen_graphics
             break 2
             ;;
           "Exit")
@@ -462,7 +466,6 @@ install_graphics() {
       done
     done
   fi
-export chosen_graphics
 }
 
 install_gaming() {
@@ -909,11 +912,11 @@ set_vconsole
 set_root_password
 create_user
 install_packages
-install_bootloader
-setup_audio
 install_graphics
+setup_audio
 install_gaming
 install_wine
+install_bootloader
 setup_virtualization
 docker_setup
 vm_check
