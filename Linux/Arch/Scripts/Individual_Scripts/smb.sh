@@ -17,8 +17,10 @@ smb_setup() {
     echo -e "${Green}Share file already exists${NC}"
   else touch $share_file
   fi
-  echo "jake" | sudo tee -a "$share_file" > /dev/null 
-  echo -n Password:
+  echo -n Enter Username:
+  read -r Username
+  echo "username=$Username" | sudo tee -a "$share_file" > /dev/null
+  echo -n Enter Password:
   read -r Password
   echo "password=$Password" | sudo tee -a "$share_file" > /dev/null 
   echo -e "${Green}Updating permissions${NC}"
