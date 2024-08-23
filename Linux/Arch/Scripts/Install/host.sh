@@ -16,25 +16,25 @@ export Cyan='\033[0;36m'
 export White='\033[0;37m'
 
 vm_check() {
-  echo -e "${Green}Checking if machine is inside a VM${NC}"
+  echo -e "${Green}Checking if the system is inside a VM.${NC}"
   sleep 1
   VM_TYPE=$(systemd-detect-virt)
   if [[ "$VM_TYPE" == "none" ]]; then
-  echo -e "${Green}System is not in a vm${NC}"
+  echo -e "${Green}The system is not in a virtual machine.${NC}"
+  VM_STATUS="not_in_vm"
   sleep 1
-    VM_STATUS="not_in_vm"
   elif [[ "$VM_TYPE" == "kvm" ]]; then
-  echo -e "${Green}System is using kvm${NC}"
+  echo -e "${Green}The system is using kvm.${NC}"
+  VM_STATUS="kvm"
   sleep 1
-    VM_STATUS="kvm"
   elif [[ "$VM_TYPE" == "vmware" ]]; then
-  echo -e "${Green}System is using vmware${NC}"
+  echo -e "${Green}The system is using vmware.${NC}"
+  VM_STATUS="vmware"
   sleep 1
-    VM_STATUS="vmware"
   else
-  echo -e "${Red}System is using an unsupported VM type${NC}"
+  echo -e "${Blue}The system is using an unsupported VM type.${NC}"
   sleep 5
-    VM_STATUS="other"
+  VM_STATUS="other"
   fi
   export VM_STATUS
 }
