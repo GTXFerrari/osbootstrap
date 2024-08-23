@@ -264,7 +264,7 @@ install_bootloader() {
     btrfs_options="rootflags=subvol=@"
   fi
   if [[ "$chosen_graphics" == "Nvidia" ]]; then
-    nvidia_options="nvidia_drm.modeset=1"
+    nvidia_options="nvidia_drm.modeset=1 nvidia_drm.fbdev=1"
   fi
   if [[ "$encryption" == "y" ]]; then
     luks_options="cryptdevice=UUID=$luksuuid:cryptarch:allow-discards root=/dev/mapper/cryptarch"
