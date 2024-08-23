@@ -261,13 +261,13 @@ echo -e "${Green}App installation compelete${NC}"
 install_bootloader() {
   luksuuid=$(blkid -s UUID -o value /dev/${partition_choice}${partition_suffix}2)
   if [[ "$chosen_filesystem" == "btrfs" ]]; then
-	  btrfs_options="rootflags=subvol=@"
+    btrfs_options="rootflags=subvol=@"
   fi
   if [[ "$chosen_graphics" == "Nvidia" ]]; then
     nvidia_options="nvidia_drm.modeset=1"
   fi
   if [[ "$encryption" == "y" ]]; then
-    luks_options="cryptdevice=UUID=$luksuuid:luks:allow-discards root=/dev/mapper/luks"
+    luks_options="cryptdevice=UUID=$luksuuid:cryptarch:allow-discards root=/dev/mapper/cryptarch"
   fi
   if [[ "$ucode" == "amd-ucode" ]]; then
     iommu_options="amd_iommu=on iommu=pt"
@@ -283,69 +283,71 @@ install_bootloader() {
   fi
 
   systemdboot_options="$luks_options $btrfs_options $iommu_options $nvidia_options"
-
-  if [[ "$uefi" == "32" ]]; then #TODO: Test this in vm by setting this var and exporting at start of host script
-	  echo -e "${Green}Installing systemd-boot${NC}"
-	  sleep 2
-	  bootctl install
-	  touch /boot/loader/entries/arch.conf
-	  touch /boot/loader/entries/arch-zen.conf
-	  echo "title Arch Linux
-	  linux /vmlinuz-linux
-	  initrd $initrd
-	  initrd /initramfs-linux.img
-	  options $systemdboot_options rw" > /boot/loader/entries/arch.conf
-	  echo "title Arch Linux (Zen)
-	  linux /vmlinuz-linux
-	  initrd $initrd
-	  initrd /initramfs-linux.img
-	  options $systemdboot_options rw" > /boot/loader/entries/arch.conf
+  if [[ "$uefi" == "32" ]]; then
+    echo -e "${Green}Installing systemd-boot${NC}"
+    sleep 2
+    bootctl install
+    touch /boot/loader/entries/arch.conf
+    touch /boot/loader/entries/arch-zen.conf
+echo
+"title Arch Linux
+linux /vmlinuz-linux
+initrd $initrd
+initrd /initramfs-linux.img
+options $systemdboot_options rw" > /boot/loader/entries/arch.conf
+echo
+"title Arch Linux (Zen)
+linux /vmlinuz-linux-zen
+initrd $initrd
+initrd /initramfs-linux-zen.img
+options $systemdboot_options rw" > /boot/loader/entries/arch-zen.conf
   else
-	  while true; do
-		  PS3='Select a bootloader: '
-		  options=("GRUB" "Systemd-Boot")
-		  select opt in "${options[@]}"; do
-			  case $opt in
-				  "GRUB")
-					  grub_cmdline="loglevel 3 quiet $luks_options $btrfs_options $iommu_options $nvidia_options"
-					  escaped_grub_cmdline=$(printf '%s\n' "$grub_cmdline" | sed 's/[&/\]/\\&/g')
-					  grub_file="/etc/default/grub"
-					  if [[ "$chosen_filesystem" == "btrfs" ]]; then
-					    grub_btree="grub-btrfs"
-					  fi
-					  echo -e "${Green}Installing GRUB${NC}"
-					  sleep 2
-					  pacman -S grub efibootmgr os-prober $grub_btree
-					  sed -i "s/^GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT=\"$escaped_grub_cmdline\"/" "$grub_file"
-					  grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-					  grub-mkconfig -o /boot/grub/grub.cfg
-					  break 2
-					  ;;
-				  "Systemd-Boot")
-					  echo -e "${Green}Installing systemd-boot${NC}"
-					  sleep 2
-					  bootctl install
-					  touch /boot/loader/entries/arch.conf
-					  touch /boot/loader/entries/arch-zen.conf
-					  echo "title Arch Linux
-					  linux /vmlinuz-linux
-					  initrd $initrd
-					  initrd /initramfs-linux.img
-					  options $systemdboot_options rw" > /boot/loader/entries/arch.conf
-					  echo "title Arch Linux (Zen)
-					  linux /vmlinuz-linux
-					  initrd $initrd
-					  initrd /initramfs-linux.img
-					  options $systemdboot_options rw" > /boot/loader/entries/arch.conf
-					  break 2
-					  ;;
-				  *)
-					  echo -e "${Red}Invalid option, select a valid bootloader.${NC}"
-					  sleep 3
-					  ;;
-			  esac
-		  done
-	  done
+    while true; do
+      PS3='Select a bootloader: '
+      options=("Systemd-Boot" "GRUB")
+      select opt in "${options[@]}"; do
+	case $opt in
+	  "Systemd-Boot")
+	    echo -e "${Green}Installing systemd-boot${NC}"
+	    sleep 2
+	    bootctl install
+	    touch /boot/loader/entries/arch.conf
+	    touch /boot/loader/entries/arch-zen.conf
+echo
+"title Arch Linux
+linux /vmlinuz-linux
+initrd $initrd
+initrd /initramfs-linux.img
+options $systemdboot_options rw" > /boot/loader/entries/arch.conf
+echo "title Arch Linux (Zen)
+linux /vmlinuz-linux-zen
+initrd $initrd
+initrd /initramfs-linux-zen.img
+options $systemdboot_options rw" > /boot/loader/entries/arch-zen.conf
+	    break 2
+	    ;;
+	  "GRUB")
+	    grub_cmdline="loglevel 3 quiet $luks_options $btrfs_options $iommu_options $nvidia_options"
+	    escaped_grub_cmdline=$(printf '%s\n' "$grub_cmdline" | sed 's/[&/\]/\\&/g')
+	    grub_file="/etc/default/grub"
+	    if [[ "$chosen_filesystem" == "btrfs" ]]; then
+	      grub_btree="grub-btrfs"
+	    fi
+	    echo -e "${Green}Installing GRUB${NC}"
+	    sleep 2
+	    pacman -S grub efibootmgr os-prober $grub_btree
+	    sed -i "s/^GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT=\"$escaped_grub_cmdline\"/" "$grub_file"
+	    grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+	    grub-mkconfig -o /boot/grub/grub.cfg
+	    break 2
+	    ;;
+	  *)
+	    echo -e "${Red}Invalid option, select a valid bootloader.${NC}"
+	    sleep 3
+	    ;;
+	esac
+      done
+    done
   fi
 }
 
@@ -381,7 +383,6 @@ setup_audio() {
 }
 
 install_graphics() {
-  local chosen_graphics=""
   if [[ "$VM_STATUS" != "not_in_vm" ]]; then
     echo -e "${Green}System is in a VM, no graphics driver required${NC}"
     sleep 1
