@@ -226,7 +226,7 @@ drive_partition() {
       done
       break
     else
-      echo -e "${Red}Partition /dev/"$partition_choice" does not exist, enter a valid partition${NC}"
+      echo -e "${Red}Partition /dev/"$partition_choice" does not exist, enter a valid partition.${NC}"
       sleep 3
     fi
   done
@@ -252,6 +252,10 @@ pacstab() {
   fi
   export ucode
 
+  # Update mirrors with reflector
+  echo -e "${Green}Updating mirrorlist.${NC}"
+  reflector -c 'United States' -a 12 -p https --sort rate --save /etc/pacman.d/mirrorlist
+
   pacstrap -K /mnt \
     $fs \
     $ucode \
@@ -270,6 +274,7 @@ pacstab() {
 
   genfstab -U /mnt >> /mnt/etc/fstab
   cp ./chroot.sh /mnt
+  cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist
   arch-chroot /mnt ./chroot.sh
 }
 
@@ -283,6 +288,7 @@ clean_up() {
     reboot
   else
     echo "Returning back to chrooted system"
+    arch-chroot /mnt
     return 0
   fi
 }
