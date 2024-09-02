@@ -1,20 +1,21 @@
-Write-Warning "This script will install Chocolatey & Scoop, Install nvidia & amd drivers, Set the power plan to high performance, & rename the PC (Requires Powershell 7+ & Admin) Would you like to proceed?" -WarningAction Inquire
-
 # Check if running as ADMIN
 Write-Host "Checking for elevated permissions..."
 if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`
-[Security.Principal.WindowsBuiltInRole] "Administrator")) {
-Write-Warning "Insufficient permissions to run this script. Open the PowerShell console as an administrator and run this script again."
-Break
-}
-else {
-Write-Host "Code is running as administrator — go on executing the script..." -ForegroundColor Green
+            [Security.Principal.WindowsBuiltInRole] "Administrator"))
+{
+    Write-Warning "Insufficient permissions to run this script. Open the PowerShell console as an administrator and run this script again."
+    Break
+} else
+{
+    Write-Host "Code is running as administrator — go on executing the script..." -ForegroundColor Green
 }
 
 # Install Choco
-if ((Get-Command -Name choco -ErrorAction Ignore) -and ($chocoVersion = (Get-Item "$env:ChocolateyInstall\choco.exe" -ErrorAction Ignore).VersionInfo.ProductVersion)) {
+if ((Get-Command -Name choco -ErrorAction Ignore) -and ($chocoVersion = (Get-Item "$env:ChocolateyInstall\choco.exe" -ErrorAction Ignore).VersionInfo.ProductVersion))
+{
     Write-Output "Chocolatey Version $chocoVersion is already installed"
-}else {
+} else
+{
     Write-Output "Chocolatey is not installed, installing now"
     Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
     powershell choco feature enable -n allowGlobalConfirmation
