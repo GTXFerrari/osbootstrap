@@ -95,10 +95,14 @@ Powercfg /x -standby-timeout-ac 0
 powercfg /x -standby-timeout-dc 0
 
 # SSH
-New-Item -ItemType Directory $env:USERPROFILE\.ssh\
-Get-Service ssh-agent | Set-Service -StartupType Automatic
-Start-Service ssh-agent
-Get-Service ssh-agent
+$ssh_setup = Read-Host "Would you like to setup ssh on the host? (Y/N)"
+if ($ssh_setup -eq "Y" -or $ssh_setup -eq "y")
+{
+    New-Item -ItemType Directory $env:USERPROFILE\.ssh\
+    Get-Service ssh-agent | Set-Service -StartupType Automatic
+    Start-Service ssh-agent
+    Get-Service ssh-agent
+}
 
 # Rename the PC
 Rename-Computer -Confirm -NewName Jakes-PC -Restart
