@@ -70,9 +70,13 @@ choco install nerd-fonts-sourcecodepro -y
 choco install nerd-fonts-meslo -y
 choco install nerd-fonts-cascadiacode -y
 
-# Enable Memory Core Isolation (Security) & Enable Dark Mode (For vm's without key)
-#reg import .\Reg-Files\Enable_Mem_CoreISO.reg
-#reg import .\Reg-Files\Enable_Dark_Mode.reg
+# Enable Memory Core Isolation (Security)
+$core_iso = Read-Host "Would you like to use VBS {Virtualization Based Security} (Y/N)"
+if ($core_iso -eq "Y" -or $core_iso -eq "y")
+{
+    Write-Host "Setting up VBS" -ForegroundColor Green
+    reg import .\Reg-Files\Enable_Mem_CoreISO.reg
+}
 
 # Disable UAC
 Set-ItemProperty -Path REGISTRY::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System -Name ConsentPromptBehaviorAdmin -Value 0
