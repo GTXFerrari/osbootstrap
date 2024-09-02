@@ -62,10 +62,12 @@ if ($hyprv -eq "Y" -or $hyprv -eq "y")
     Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
 }
 
-# Install amd chipset drivers & nvidia display driver using choco
+# Install AMD chipset software, ryzen master & some nerd fonts
 choco install amd-ryzen-chipset -y
-choco install nvidia-display-driver -y
-choco install oh-my-posh -y
+choco install amd-ryzen-master -y
+choco install nerd-fonts-jetbrainsmono -y
+choco install nerd-fonts-sourcecodepro -y
+choco install nerd-fonts-meslo -y
 choco install nerd-fonts-cascadiacode -y
 
 # Enable Memory Core Isolation (Security) & Enable Dark Mode (For vm's without key)
