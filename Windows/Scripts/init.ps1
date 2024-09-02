@@ -21,6 +21,46 @@ if ((Get-Command -Name choco -ErrorAction Ignore) -and ($chocoVersion = (Get-Ite
     powershell choco feature enable -n allowGlobalConfirmation
 }
 
+# Install WSL
+$wsl_install = Read-Host "Would you like to install Windows Subsystem for Linux (WSL)? (Y/N)"
+if ($wsl_install -eq "Y" -or $wsl_install -eq "y")
+{
+    Write-Host "Setting up WSL" -ForegroundColor Green
+    $distro_choice = Read-Host "Choose your linux distro (Ubuntu,Kali,Debian,None)"
+    switch ($distro_choice) 
+    {
+        "Ubuntu"
+        {
+            "wsl --install -d Ubuntu"
+        }
+        "Kali"
+        {
+            "wsl --install -d kali"
+        }
+        "Debian"
+        {
+            "wsl --install -d debian"
+        }
+        "None"
+        {
+            "wsl --install --no-distribution"
+            Write-Host "Import your tar file with wsl --import" -ForegroundColor Green
+        }
+        default
+        {
+            Write-Host "Invalid choice, Select a valid distro" -ForegroundColor Red
+            return
+        }
+    }
+}
+
+# Install Hyper-V
+$hyprv = Read-Host "Would you like to setup HyperV? (Y/N)"
+if ($hyprv -eq "Y" -or $hyprv -eq "y")
+{
+    Write-Host "Setting up Hyper-V" -ForegroundColor Green
+    Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
+}
 
 # Install amd chipset drivers & nvidia display driver using choco
 choco install amd-ryzen-chipset -y
