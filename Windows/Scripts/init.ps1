@@ -21,8 +21,6 @@ if ((Get-Command -Name choco -ErrorAction Ignore) -and ($chocoVersion = (Get-Ite
     powershell choco feature enable -n allowGlobalConfirmation
 }
 
-# Install scoop
-Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
 
 # Install amd chipset drivers & nvidia display driver using choco
 choco install amd-ryzen-chipset -y
