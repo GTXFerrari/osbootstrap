@@ -105,4 +105,15 @@ if ($ssh_setup -eq "Y" -or $ssh_setup -eq "y")
 }
 
 # Rename the PC
-Rename-Computer -Confirm -NewName Jakes-PC -Restart
+$currentName = (Get-ComputerInfo).CsName
+Write-Host "The current computer name is: $currentName"
+$changeName = Read-Host "Would you like to change the name of the computer? (y/n)"
+if ($changeName -eq "Y" -or $changeName -eq "y")
+{
+    $newname = Read Host "Enter the new computer name"
+    Rename-Computer -NewName $newname -Confirm -Restart
+} else
+{
+    Write-Host "The system requires a reboot to continue setting up" -ForegroundColor Green
+    Restart-Computer -Confirm
+}
