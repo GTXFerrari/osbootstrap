@@ -94,17 +94,6 @@ powercfg /x -monitor-timeout-dc 0
 Powercfg /x -standby-timeout-ac 0
 powercfg /x -standby-timeout-dc 0
 
-# Wallpapers
-New-Item -ItemType Directory $env:USERPROFILE\Pictures\Wallpapers
-robocopy /V /ETA /E \\10.0.40.5\Jake\Assets\Wallpapers\3440x1440 $env:USERPROFILE\Pictures\Wallpapers\
-
-# PWSH
-Copy-Item \\10.0.40.5\Jake\Backups\Powershell\Microsoft.PowerShell_profile.ps1 $env:USERPROFILE\Documents\PowerShell\
-Install-Script winfetch
-Install-Module -Name Terminal-Icons -Repository PSGallery
-Install-Module PSWindowsUpdate
-Add-WUServiceManager -MicrosoftUpdate
-
 # SSH
 New-Item -ItemType Directory $env:USERPROFILE\.ssh\
 Get-Service ssh-agent | Set-Service -StartupType Automatic
