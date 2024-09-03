@@ -22,13 +22,15 @@ if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 # Install applications using winget
 Write-Output "Installing Applications"
 $apps = @(
+    @{name = "Git.Git" },
+    @{name = "Neovim.Neovim" },
+    @{name = "JanDeDobbeleer.OhMyPosh" },
     @{name = "SomePythonThings.WingetUIStore" },
     @{name = "Microsoft.VCRedist.2015+.x86" },
     @{name = "Microsoft.VCRedist.2015+.x64" },
     @{name = "M2Team.NanaZip"},
-    @{name = "Git.Git" },
-    @{name = "Neovim.Neovim" },
     @{name = "Neovide.Neovide" },
+    @{name = "GitHub.GitHubDesktop" },
     @{name = "Microsoft.VisualStudioCode" },
     @{name = "Python.Python.3.12" },
     @{name = "Oracle.JDK.22" },
@@ -75,18 +77,21 @@ $apps = @(
     @{name = "GeekUninstaller.GeekUninstaller" },
     @{name = "VMware.WorkstationPro" },
     @{name = "rocksdanister.LivelyWallpaper" },
+    @{name = "JernejSimoncic.Wget" },
+    @{name = "JesseDuffield.lazygit" },
     @{name = "Google.PlatformTools" }, # ADB Installer for shield
     @{name = "gokcehan.lf" }, # ADB Installer for shield
     @{name = "9NBLGGH30XJ3" }, # Xbox Accessories
     @{name = "9PFHDD62MXS1" }, # Apple Music Preview
     @{name = "9N7F2SM5D1LR" } # HDR Calibration Tool
 );
-Foreach ($app in $apps) {
+Foreach ($app in $apps)
+{
     $listApp = winget list --exact -q $app.name
-    if (![String]::Join("", $listApp).Contains($app.name)) {
+    if (![String]::Join("", $listApp).Contains($app.name))
+    {
         Write-host "Installing: " $app.name
         winget install -e --id $app.name 
-    }
     else {
         Write-host "Skipping: " $app.name " (already installed)"
     }
