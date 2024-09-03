@@ -92,7 +92,8 @@ Foreach ($app in $apps)
     {
         Write-host "Installing: " $app.name
         winget install -e --id $app.name 
-    else {
+    } else
+    {
         Write-host "Skipping: " $app.name " (already installed)"
     }
 }
