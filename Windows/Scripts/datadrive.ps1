@@ -35,7 +35,7 @@ Set-Location -LiteralPath D:\VM\Hyper-V
 New-Item -ItemType Directory Storage,"Virtual Machines"
 
 # Move Game files to destination
-robocopy /V /ETA /E '\\10.0.40.5\Media\Games\Emulator\' 'D:\Games\Emulator\'
+#robocopy /V /ETA /E '\\10.0.40.5\Media\Games\Emulator\' 'D:\Games\Emulator\'
 
 # Enable bitlocker for Data drives (D:)
 Enable-BitLocker -MountPoint "D:" -EncryptionMethod XtsAes256 -PasswordProtector -Password $Pass
