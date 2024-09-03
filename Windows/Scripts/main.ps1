@@ -4,6 +4,12 @@ $logdir = "$env:LOCALAPPDATA\win-setup\logs"
 [System.IO.Directory]::CreateDirectory("$logdir") | Out-Null
 Start-Transcript -Path "$logdir\win_setup_$dateTime.log" -Append -NoClobber | Out-Null
 
+# Check powershell version
+if ($PSVersionTable.PSVersion.Major -lt 7)
+{
+    Write-Host "Powershell 7+ is required" -ForegroundColor Red
+}
+
 # Check if running as ADMIN
 Write-Host "Checking for elevated permissions..."
 if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`
@@ -11,9 +17,6 @@ if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 {
     Write-Warning "Insufficient permissions to run this script. Open the PowerShell console as an administrator and run this script again."
     Break
-} else
-{
-    Write-Host "Code is running as administrator — go on executing the script..." -ForegroundColor Green
 }
 
 # Install Choco
