@@ -1,3 +1,9 @@
+# Logging
+$dateTime = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
+$logdir = "$env:LOCALAPPDATA\win-setup\logs"
+[System.IO.Directory]::CreateDirectory("$logdir") | Out-Null
+Start-Transcript -Path "$logdir\win_setup_$dateTime.log" -Append -NoClobber | Out-Null
+
 # Check if running as ADMIN
 Write-Host "Checking for elevated permissions..."
 if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`
