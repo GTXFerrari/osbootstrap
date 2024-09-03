@@ -106,3 +106,32 @@ choco install madvr -y
 choco install bind-toolsonly -y
 choco install mingw # C compiler for windows (required for nvim-treesitter)
 
+# Non-PkgMgr Apps
+wget -O $env:USERPROFILE\Downloads\PeaceSetup.exe https://sourceforge.net/projects/peace-equalizer-apo-extension/files/latest/download
+Start-Process $env:USERPROFILE\Downloads\PeaceSetup.exe -Wait
+wget -O $env:USERPROFILE\Downloads\Battle.net-setup.exe "https://downloader.battle.net//download/getInstallerForGame?os=win&gameProgram=BATTLENET_APP&version=Live"
+Start-Process $env:USERPROFILE\Downloads\Battle.net-setup.exe -Wait
+wget -O $env:USERPROFILE\Downloads\NVApp.exe "https://us.download.nvidia.com/nvapp/client/10.0.2.210/NVIDIA_app_beta_v10.0.2.210.exe"
+Start-Process $env:USERPROFILE\Downloads\NVApp.exe -Wait
+wget -O $env:USERPROFILE\Downloads\btop4winLHM.zip "https://github.com/aristocratos/btop4win/releases/download/v1.0.4/btop4win-LHM-x64.zip"
+Expand-Archive -Path $env:USERPROFILE\Downloads\btop4winLHM.zip -DestinationPath $env:USERPROFILE\Downloads\btop4win
+Move-Item -Path $env:USERPROFILE\Downloads\btop4win\btop4win\btop4win.exe -Destination $env:USERPROFILE\Downloads\btop4win\btop4win\btop.exe
+Move-Item -Path $env:USERPROFILE\Downloads\btop4win\btop4win -Destination $env:PROGRAMFILES
+# Add btop to PATH
+$btop_path = "C:\Program Files\btop4win"
+$currentPath = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::User)
+if ($currentPath -notlike "*$btop_path*")
+{
+    [System.Environment]::SetEnvironmentVariable("Path", "$currentPath;$btop_path", [System.EnvironmentVariableTarget]::User)
+    Write-Host "btop added to user PATH."
+} else
+{
+    Write-Host "Path already exists in the user PATH."
+}
+# Refresh env
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Process) + ";"
+$env:Path += [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::User) + ";"
+$env:Path += [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Machine)
+
+# Clean up
+Remove-Item -Force -Recurse $env:USERPROFILE\Downloads\*.*
