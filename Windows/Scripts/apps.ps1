@@ -106,10 +106,3 @@ choco install madvr -y
 choco install bind-toolsonly -y
 choco install mingw # C compiler for windows (required for nvim-treesitter)
 
-# Download applications using scoop
-scoop bucket add main
-scoop bucket add nonportable 
-scoop bucket add games
-scoop install main/btop-lhm
-scoop install games/battlenet
-scoop install nonportable/peace-np
