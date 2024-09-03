@@ -26,11 +26,13 @@ New-Partition -DiskNumber $cDriveDiskNumber -UseMaximumSize -DriveLetter D | For
 
 # Create directories in new partition
 Set-Location -LiteralPath D:
-New-Item -ItemType Directory Code,Games,Git,Pictures,VM
+New-Item -ItemType Directory Code,Games,Git,Pictures,VM,WSL
 Set-Location -LiteralPath D:\Games
 New-Item -ItemType Directory Blizzard,EA,Emulator,Steam,Ubisoft
 Set-Location -LiteralPath D:\VM
-New-Item -ItemType Directory VMware,ISO
+New-Item -ItemType Directory Hyper-V,VMware,ISO
+Set-Location -LiteralPath D:\VM\Hyper-V
+New-Item -ItemType Directory Storage,"Virtual Machines"
 
 # Move Game files to destination
 robocopy /V /ETA /E '\\10.0.40.5\Media\Games\Emulator\' 'D:\Games\Emulator\'
