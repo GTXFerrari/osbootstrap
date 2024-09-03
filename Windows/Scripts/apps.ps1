@@ -1,5 +1,14 @@
-Start-Transcript -Append $env:USERPROFILE\Documents\apps.log
-Write-Warning "This script will install applications on your machine (Requires Powershell 7+ & Admin) Would you like to proceed?" -WarningAction Inquire
+# Logging
+$dateTime = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
+$logdir = "$env:LOCALAPPDATA\win-setup\logs"
+[System.IO.Directory]::CreateDirectory("$logdir") | Out-Null
+Start-Transcript -Path "$logdir\win_setup_$dateTime.log" -Append -NoClobber | Out-Null
+
+# Check powershell version
+if ($PSVersionTable.PSVersion.Major -lt 7)
+{
+    Write-Host "Powershell 7+ is required" -ForegroundColor Red
+}
 
 # Check if running as ADMIN
 Write-Output "Checking for elevated permissions..."
