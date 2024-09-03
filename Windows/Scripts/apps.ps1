@@ -104,9 +104,6 @@ choco install equalizerapo -y
 choco install samsung-magician -y
 choco install madvr -y
 choco install bind-toolsonly -y
-choco install nerd-fonts-jetbrainsmono -y 
-choco install nerd-fonts-sourcecodepro -y 
-choco install nerd-fonts-meslo -y
 choco install mingw # C compiler for windows (required for nvim-treesitter)
 
 # Download applications using scoop
