@@ -31,7 +31,6 @@ $apps = @(
     @{name = "M2Team.NanaZip"},
     @{name = "Neovide.Neovide" },
     @{name = "GitHub.GitHubDesktop" },
-    @{name = "Microsoft.VisualStudioCode" },
     @{name = "Python.Python.3.12" },
     @{name = "Oracle.JDK.22" },
     @{name = "BurntSushi.ripgrep.MSVC" },
