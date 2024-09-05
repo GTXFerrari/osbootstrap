@@ -21,7 +21,6 @@ if ($PSVersionTable.PSVersion.Major -lt 7)
 }
 
 # Check if running as ADMIN
-Write-Host "Checking for elevated permissions..."
 if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`
             [Security.Principal.WindowsBuiltInRole] "Administrator"))
 {
