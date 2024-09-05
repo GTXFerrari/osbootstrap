@@ -40,34 +40,8 @@ if [ ! -d "$yay_dir" ]; then
 fi
 
 #Install packages with yay
-yay_log=/var/log/yay_apps.log
 echo -e "${Cyan}Installing packages from the AUR.${NC}"
-aur_apps=(
-  brave-bin
-  ookla-speedtest-bin
-  piavpn-bin
-  razergenie
-  proton-ge-custom-bin
-  duckstation-git
-  pcsx2-git
-  rpcs3-bin
-  cemu
-  ryujinx
-  cava
-  python310
-  nvim-lazy
-  zsh-fast-syntax-highlighting
-  zsh-theme-powerlevel10k-git
-  ctpv-git 
-  vmware-workstation
-)
-
-for app in "${aur_apps[@]}"; do
-	if ! sudo yay -S "$aur_apps" ; then
-		echo -n "${Cyan}" Package Not found, skipping...$"{NC}"
-		sudo echo "$aur_apps" >> "$yay_log"
-		fi
-	done
+yay -S brave-bin ookla-speedtest-bin piavpn-bin razergenie proton-ge-custom-bin duckstation-git pcsx2-git rpcs3-bin cemu ryujinx cava python311 nvim-lazy zsh-fast-syntax-highlighting zsh-theme-powerlevel10k-git ctpv-git vmware-workstation
 
 sudo systemctl enable --now piavpn.service vmware-networks.service vmware-usbarbitrator.service
 sudo systemctl start vmware-networks-configuration.service
