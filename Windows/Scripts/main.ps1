@@ -17,6 +17,7 @@ Start-Transcript -Path "$logdir\win_setup_$dateTime.log" -Append -NoClobber | Ou
 if ($PSVersionTable.PSVersion.Major -lt 7)
 {
     Write-Host "Powershell 7+ is required" -ForegroundColor Red
+    Break
 }
 
 # Check if running as ADMIN
