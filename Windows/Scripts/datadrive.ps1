@@ -1,12 +1,13 @@
 # Check if running as ADMIN
 Write-Host "Checking for elevated permissions..."
 if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`
-[Security.Principal.WindowsBuiltInRole] "Administrator")) {
-Write-Warning "Insufficient permissions to run this script. Open the PowerShell console as an administrator and run this script again."
-Break
-}
-else {
-Write-Host "Code is running as administrator — go on executing the script..." -ForegroundColor Green
+            [Security.Principal.WindowsBuiltInRole] "Administrator"))
+{
+    Write-Warning "Insufficient permissions to run this script. Open the PowerShell console as an administrator and run this script again."
+    Break
+} else
+{
+    Write-Host "Code is running as administrator — go on executing the script..." -ForegroundColor Green
 }
 
 # Bitlocker for data drive
@@ -25,14 +26,16 @@ New-Partition -DiskNumber $cDriveDiskNumber -UseMaximumSize -DriveLetter D | For
 
 # Create directories in new partition
 Set-Location -LiteralPath D:
-New-Item -ItemType Directory Code,Games,Git,Pictures,VM
+New-Item -ItemType Directory Code,Games,Git,Pictures,VM,WSL
 Set-Location -LiteralPath D:\Games
 New-Item -ItemType Directory Blizzard,EA,Emulator,Steam,Ubisoft
 Set-Location -LiteralPath D:\VM
-New-Item -ItemType Directory VMware,ISO
+New-Item -ItemType Directory Hyper-V,VMware,ISO
+Set-Location -LiteralPath D:\VM\Hyper-V
+New-Item -ItemType Directory Storage,"Virtual Machines"
 
 # Move Game files to destination
-robocopy /V /ETA /E '\\10.0.40.5\Media\Games\Emulator\' 'D:\Games\Emulator\'
+#robocopy /V /ETA /E '\\10.0.40.5\Media\Games\Emulator\' 'D:\Games\Emulator\'
 
 # Enable bitlocker for Data drives (D:)
 Enable-BitLocker -MountPoint "D:" -EncryptionMethod XtsAes256 -PasswordProtector -Password $Pass
