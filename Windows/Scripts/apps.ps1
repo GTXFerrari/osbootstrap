@@ -108,7 +108,9 @@ choco install equalizerapo -y
 choco install samsung-magician -y
 choco install madvr -y
 choco install bind-toolsonly -y
-choco install mingw # C compiler for windows (required for nvim-treesitter)
+choco install mingw -y # C compiler for windows (required for nvim-treesitter)
+choco install lua
+choco install luarocks
 
 # Non-PkgMgr Apps
 wget -O $env:USERPROFILE\Downloads\PeaceSetup.exe https://sourceforge.net/projects/peace-equalizer-apo-extension/files/latest/download
