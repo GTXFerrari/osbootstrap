@@ -49,6 +49,7 @@ $apps = @(
     @{name = "JAMSoftware.TreeSize.Free" },
     @{name = "Brave.Brave" },
     @{name = "Mozilla.Firefox" },
+    @{name = "Zen-Team.Zen-Browser" },
     @{name = "Google.Chrome" },
     @{name = "TorProject.TorBrowser" },
     @{name = "PrivateInternetAccess.PrivateInternetAccess" },
