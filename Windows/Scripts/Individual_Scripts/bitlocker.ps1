@@ -1,8 +1,6 @@
 $UsrPin = Read-Host -Prompt 'Input your bitlocker pin'
 $Pin = ConvertTo-SecureString $UsrPin -AsPlainText -Force
 
-
-
 Write-Warning "This script will enable bitlocker on the OS Drive & a data drive with the mount point D:. TPM+PIN also requires a custom group policy. Would you like to proceed?" -WarningAction Inquire 
 # Check if running as ADMIN
 Write-Host "Checking for elevated permissions..."
