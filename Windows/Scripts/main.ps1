@@ -242,6 +242,21 @@ function install_apps {
       }
   }
 
+  function graphics_driver {
+    $gpus = Get-CimInstance Win32_VideoController
+      foreach ($gpu in $gpus) {
+        if ($gpu.AdapterCompatibility -match "NVIDIA") {
+          wget -O $env:USERPROFILE\Downloads\NVApp.exe "https://us.download.nvidia.com/nvapp/client/10.0.2.210/NVIDIA_app_beta_v10.0.2.210.exe"
+            Start-Process $env:USERPROFILE\Downloads\NVApp.exe -Wait
+        }
+        elseif ($gpu.AdapterCompatibility -match "AMD" -or $gpu.AdapterCompatibility -match "Advanced Micro Devices") {
+          wget -O $env:USERPROFILE\Downloads\AMDAdrenaline.exe "https://drivers.amd.com/drivers/whql-amd-software-adrenalin-edition-24.8.1-win10-win11-aug-rdna.exe"
+            Start-Process $env:USERPROFILE\Downloads\AMDAdrenaline.exe -Wait
+# NOTE: Need an AMD GPU to confirm is this is the correct string
+        }
+      }
+  }
+
 # Choco Apps
   choco install openrgb equalizerapo samsung-magician madvr bind-toolsonly mingw lua luarocks -y
 # Non-PkgMgr Apps
@@ -249,8 +264,6 @@ function install_apps {
     Start-Process $env:USERPROFILE\Downloads\PeaceSetup.exe -Wait
     wget -O $env:USERPROFILE\Downloads\Battle.net-setup.exe "https://downloader.battle.net//download/getInstallerForGame?os=win&gameProgram=BATTLENET_APP&version=Live"
     Start-Process $env:USERPROFILE\Downloads\Battle.net-setup.exe -Wait
-    wget -O $env:USERPROFILE\Downloads\NVApp.exe "https://us.download.nvidia.com/nvapp/client/10.0.2.210/NVIDIA_app_beta_v10.0.2.210.exe"
-    Start-Process $env:USERPROFILE\Downloads\NVApp.exe -Wait
     wget -O $env:USERPROFILE\Downloads\btop4winLHM.zip "https://github.com/aristocratos/btop4win/releases/download/v1.0.4/btop4win-LHM-x64.zip"
     Expand-Archive -Path $env:USERPROFILE\Downloads\btop4winLHM.zip -DestinationPath $env:USERPROFILE\Downloads\btop4win
     Move-Item -Path $env:USERPROFILE\Downloads\btop4win\btop4win\btop4win.exe -Destination $env:USERPROFILE\Downloads\btop4win\btop4win\btop.exe
