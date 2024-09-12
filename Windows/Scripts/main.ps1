@@ -288,7 +288,19 @@ function install_apps {
 }
 
 function enable_bitlocker {
+# Enable Bitlocker Advanced Settings
+  $fvePath = "REGISTRY::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft"
+    if (-not (Test-Path $fvePath)) {
+      New-ItemProperty -Path $fvePath -Name "FVE"
+    }
 
-  }
+    Set-ItemProperty -Path REGISTRY::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE -Name UseAdvancedStartup -Value 1
+    Set-ItemProperty -Path REGISTRY::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE -Name UseTPM -Value 2
+    Set-ItemProperty -Path REGISTRY::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE -Name UseTPMPIN -Value 2
+    Set-ItemProperty -Path REGISTRY::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE -Name EnableBDEWithNoTPM -Value 0
+    Set-ItemProperty -Path REGISTRY::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE -Name UseTPMKey -Value 0
+    Set-ItemProperty -Path REGISTRY::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE -Name UseTPMKeyPIN -Value 0
+#TODO: DO NOT USE WIP
+}
 
 # Call functions
