@@ -258,7 +258,7 @@ function install_apps {
   }
 
 # Choco Apps
-  choco install openrgb equalizerapo samsung-magician madvr bind-toolsonly mingw lua luarocks -y
+  choco install openrgb equalizerapo samsung-magician madvr bind-toolsonly mingw make lua luarocks -y
 # Non-PkgMgr Apps
     wget -O $env:USERPROFILE\Downloads\PeaceSetup.exe https://sourceforge.net/projects/peace-equalizer-apo-extension/files/latest/download
     Start-Process $env:USERPROFILE\Downloads\PeaceSetup.exe -Wait
