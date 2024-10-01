@@ -27,7 +27,7 @@ smb_setup() {
   sleep 1
   chown root:root "$cred_dir" && chmod 700 "$cred_dir" && chmod 600 "$share_file"
   if [[ ! -d $truenas_dir ]]; then
-    mkdir -p /mnt/truenas/{media,iso,photos,gold,stash,stash2,jake}
+    sudo mkdir -p /mnt/truenas/{media,iso,photos,gold,stash,stash2,jake}
   fi
   {
     echo " "
