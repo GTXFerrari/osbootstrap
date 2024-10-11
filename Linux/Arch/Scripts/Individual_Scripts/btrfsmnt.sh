@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # This script is used to chroot into the system in case you need to fix something
+# TODO: Check with lsblk instead of hard coding /dev/ device
 cryptsetup open /dev/nvme1n1p2 cryptbtrfs
 mount_opts="rw,noatime,compress-force=zstd:1,space_cache=v2"
 mount -o ${mount_opts},subvol=@ /dev/mapper/cryptbtrfs /mnt
