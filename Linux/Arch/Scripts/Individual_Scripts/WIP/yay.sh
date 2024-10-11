@@ -4,39 +4,31 @@
 git_dir="/home/$USER/Git"
 yay_dir="/home/$USER/Git/yay"
 
-# Colors
-NC='\033[0m' # No Color
-Black='\033[0;30m'
-Red='\033[0;31m'
-Green='\033[0;32m'
-Yellow='\033[0;33m'
-Blue='\033[0;34m'
-Purple='\033[0;35m'
-Cyan='\033[0;36m'
-White='\033[0;37m'
+# Create checks for gum
+pacman -S --needed gum
 
 echo -ne "${Cyan}This script should be ran as a standard user after rebooting from the install ISO, would you like to continue? (y/n) ${NC}"
-read -r usr 
+read -r usr
 if [[ "$usr" == "n" ]]; then
-    exit
+  exit
 fi
 
 # Create Git directory and clone paru
 if [ ! -d "$git_dir" ]; then
-    echo -e "${Cyan}Git directory does not exist, creating directory.${NC}"
-    mkdir -p "$git_dir" && cd "$git_dir" || return
-    else
-    echo -e "${Green}Git directory already exists.${NC}"
-    cd "$DIR" || return
+  echo -e "${Cyan}Git directory does not exist, creating directory.${NC}"
+  mkdir -p "$git_dir" && cd "$git_dir" || return
+else
+  echo -e "${Green}Git directory already exists.${NC}"
+  cd "$DIR" || return
 fi
 
 # Check to see if yay already exist, if not then make the PKGBUILD
 if [ ! -d "$yay_dir" ]; then
-    echo -e "${Cyan}Yay does not exist, cloning repo & building.${NC}"
-    cd "$git_dir" && git clone https://aur.archlinux.org/yay.git && cd "$yay_dir" && makepkg -si
-    else
-    echo -e "${Green}Yay directory already exists.${NC}"
-    cd "$yay_dir" && makepkg -si
+  echo -e "${Cyan}Yay does not exist, cloning repo & building.${NC}"
+  cd "$git_dir" && git clone https://aur.archlinux.org/yay.git && cd "$yay_dir" && makepkg -si
+else
+  echo -e "${Green}Yay directory already exists.${NC}"
+  cd "$yay_dir" && makepkg -si
 fi
 
 #Install packages with yay
