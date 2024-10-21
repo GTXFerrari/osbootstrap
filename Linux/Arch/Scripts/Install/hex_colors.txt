@@ -1,0 +1,3 @@
+Green=#00ff28
+Red=#ff0000
+Light_Blue=#227fb0
