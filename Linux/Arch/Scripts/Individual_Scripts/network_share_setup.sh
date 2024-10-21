@@ -4,30 +4,47 @@ cred_dir="/etc/samba/credentials"
 share_file="/etc/samba/credentials/share"
 truenas_dir="/mnt/truenas"
 nas_addr="//10.0.40.5"
-smb_options="file_mode=0777,dir_mode=0777,_netdev,nofail,credentials=/etc/samba/credentials/share 0 0"
-echo -e "${Green}Setting up SMB shares${NC}"
-sleep 1
-sudo pacman -S --needed --noconfirm cifs-utils
+smb_options="_netdev,nofail,credentials=/etc/samba/credentials/share 0 0"
+
+if [[ "$(id -u)" -ne 0 ]]; then
+  echo "Please run the script using sudo or as root!"
+fi
+
+# Check dependencies
+echo "Checking script dependencies"
+sleep 2
+while true; do
+  if pacman -Qi gum >/dev/null 2>&1; then
+    break
+  else
+    pacman -S --noconfirm gum cifs-utils
+  fi
+done
+
+gum style --foreground="#00ff28" --bold "Setting Up SMB Shares"
+
 if [[ ! -d "$cred_dir" ]]; then
   mkdir -p $cred_dir
 fi
+
 if [[ -e $share_file ]]; then
-  echo -e "${Green}Share file already exists${NC}"
+  gum style --foreground="#00ff28" --bold "Share file already exists"
 else
   touch $share_file
 fi
-echo -n Enter Username:
-read -r Username
-echo "username=$Username" | sudo tee -a "$share_file" >/dev/null
-echo -n Enter Password:
-read -r Password
-echo "password=$Password" | sudo tee -a "$share_file" >/dev/null
-echo -e "${Green}Updating permissions${NC}"
-sleep 1
+
+smb_user=$(gum input --placeholder="Enter SMB Username")
+echo "username=$smb_user" | tee -a "$share_file" >/dev/null
+smb_pass=$(gum input --placeholder="Enter SMB Password")
+echo "password=$smb_pass" | tee -a "$share_file" >/dev/null
+gum style --foreground="#00ff28" --bold "Updating permissions..."
+sleep 2
 chown root:root "$cred_dir" && chmod 700 "$cred_dir" && chmod 600 "$share_file"
+
 if [[ ! -d $truenas_dir ]]; then
-  sudo mkdir -p /mnt/truenas/{media,iso,photos,gold,stash,stash2,jake}
+  mkdir -p /mnt/truenas/{media,iso,photos,gold,stash,stash2,jake}
 fi
+
 {
   echo " "
   echo "$nas_addr"/Jake "$truenas_dir"/jake cifs "$smb_options"
@@ -44,4 +61,4 @@ fi
   echo " "
   echo "$nas_addr"/Photos "$truenas_dir"/photos cifs "$smb_options"
 
-} | sudo tee -a /etc/fstab >/dev/null
+} | tee -a /etc/fstab >/dev/null
