@@ -227,7 +227,7 @@ function install_apps {
       }
   }
 
-  function graphics_driver {
+function install_graphics_driver {
     $gpus = Get-CimInstance Win32_VideoController
       foreach ($gpu in $gpus) {
         if ($gpu.AdapterCompatibility -match "NVIDIA") {
@@ -237,7 +237,7 @@ function install_apps {
         elseif ($gpu.AdapterCompatibility -match "AMD" -or $gpu.AdapterCompatibility -match "Advanced Micro Devices") {
           wget -O $env:USERPROFILE\Downloads\AMDAdrenaline.exe "https://drivers.amd.com/drivers/whql-amd-software-adrenalin-edition-24.8.1-win10-win11-aug-rdna.exe"
             Start-Process $env:USERPROFILE\Downloads\AMDAdrenaline.exe -Wait
-# NOTE: Need an AMD GPU to confirm is this is the correct string
+#NOTE: Need an AMD GPU to confirm is this is the correct string
         }
       }
   }
