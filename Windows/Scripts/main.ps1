@@ -248,6 +248,7 @@ function install_choco_apps {
 
 
 
+function install_non_pkgmgr_apps {
     wget -O $env:USERPROFILE\Downloads\PeaceSetup.exe https://sourceforge.net/projects/peace-equalizer-apo-extension/files/latest/download
     Start-Process $env:USERPROFILE\Downloads\PeaceSetup.exe -Wait
     wget -O $env:USERPROFILE\Downloads\Battle.net-setup.exe "https://downloader.battle.net//download/getInstallerForGame?os=win&gameProgram=BATTLENET_APP&version=Live"
@@ -256,7 +257,6 @@ function install_choco_apps {
     Expand-Archive -Path $env:USERPROFILE\Downloads\btop4winLHM.zip -DestinationPath $env:USERPROFILE\Downloads\btop4win
     Move-Item -Path $env:USERPROFILE\Downloads\btop4win\btop4win\btop4win.exe -Destination $env:USERPROFILE\Downloads\btop4win\btop4win\btop.exe
     Move-Item -Path $env:USERPROFILE\Downloads\btop4win\btop4win -Destination $env:PROGRAMFILES
-# Add btop to PATH
     $btop_path = "C:\Program Files\btop4win"
     $currentPath = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::User)
     if ($currentPath -notlike "*$btop_path*")
