@@ -27,12 +27,9 @@ function check_priv {
         [Security.Principal.WindowsBuiltInRole] "Administrator"))
   {
     Write-Warning "Insufficient permissions to run this script. Open the PowerShell console as an administrator and run this script again."
-      Break # TODO: Find a way to elevate the script using Start-Process
+      Break
   }
   }
-
-function smb_setup {
-}
 
 function check_choco {
   if ((Get-Command -Name choco -ErrorAction Ignore) -and ($chocoVersion = (Get-Item "$env:ChocolateyInstall\choco.exe" -ErrorAction Ignore).VersionInfo.ProductVersion))
@@ -153,10 +150,6 @@ function rename_pc {
         Restart-Computer -Confirm
     }
 }
-
-function datadrive_setup {
-
-  }
 
 function install_apps {
   Write-Output "Installing Applications"
@@ -287,20 +280,7 @@ function install_apps {
     Remove-Item -Force -Recurse $env:USERPROFILE\Downloads\*.*
 }
 
-function enable_bitlocker {
-# Enable Bitlocker Advanced Settings
-  $fvePath = "REGISTRY::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft"
-    if (-not (Test-Path $fvePath)) {
-      New-ItemProperty -Path $fvePath -Name "FVE"
-    }
 
-    Set-ItemProperty -Path REGISTRY::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE -Name UseAdvancedStartup -Value 1
-    Set-ItemProperty -Path REGISTRY::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE -Name UseTPM -Value 2
-    Set-ItemProperty -Path REGISTRY::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE -Name UseTPMPIN -Value 2
-    Set-ItemProperty -Path REGISTRY::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE -Name EnableBDEWithNoTPM -Value 0
-    Set-ItemProperty -Path REGISTRY::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE -Name UseTPMKey -Value 0
-    Set-ItemProperty -Path REGISTRY::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE -Name UseTPMKeyPIN -Value 0
-#TODO: DO NOT USE WIP
 }
 
 # Call functions
