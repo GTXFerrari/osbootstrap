@@ -31,7 +31,7 @@ function check_priv {
   }
   }
 
-function check_choco {
+function choco_install {
   if ((Get-Command -Name choco -ErrorAction Ignore) -and ($chocoVersion = (Get-Item "$env:ChocolateyInstall\choco.exe" -ErrorAction Ignore).VersionInfo.ProductVersion))
   {
     Write-Output "Chocolatey Version $chocoVersion is already installed"
@@ -41,7 +41,6 @@ function check_choco {
       Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
       powershell choco feature enable -n allowGlobalConfirmation
       choco install amd-ryzen-chipset -y
-      choco install amd-ryzen-master -y
       choco install nerd-fonts-jetbrainsmono -y
       choco install nerd-fonts-sourcecodepro -y
       choco install nerd-fonts-meslo -y
