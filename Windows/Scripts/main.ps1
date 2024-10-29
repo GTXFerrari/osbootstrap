@@ -242,9 +242,12 @@ function install_graphics_driver {
       }
   }
 
-# Choco Apps
+function install_choco_apps {
   choco install openrgb equalizerapo samsung-magician madvr bind-toolsonly mingw make lua luarocks -y
-# Non-PkgMgr Apps
+}
+
+
+
     wget -O $env:USERPROFILE\Downloads\PeaceSetup.exe https://sourceforge.net/projects/peace-equalizer-apo-extension/files/latest/download
     Start-Process $env:USERPROFILE\Downloads\PeaceSetup.exe -Wait
     wget -O $env:USERPROFILE\Downloads\Battle.net-setup.exe "https://downloader.battle.net//download/getInstallerForGame?os=win&gameProgram=BATTLENET_APP&version=Live"
