@@ -276,6 +276,8 @@ $env:Path += [System.Environment]::GetEnvironmentVariable("Path", [System.Enviro
 $env:Path += [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Machine)
 }
 
+function cleanup {
+Remove-Item -Force -Recurse $env:USERPROFILE\Downloads\*.*
 }
 
 # Call functions
