@@ -226,6 +226,7 @@ function install_apps {
         Write-host "Skipping: " $app.name " (already installed)"
       }
   }
+}
 
 function install_graphics_driver {
     $gpus = Get-CimInstance Win32_VideoController
@@ -267,14 +268,13 @@ function install_non_pkgmgr_apps {
     {
       Write-Host "Path already exists in the user PATH."
     }
-# Refresh env
-    $env:Path = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Process) + ";"
-    $env:Path += [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::User) + ";"
-    $env:Path += [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Machine)
-# Clean up
-    Remove-Item -Force -Recurse $env:USERPROFILE\Downloads\*.*
 }
 
+function refreshenv {
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Process) + ";"
+$env:Path += [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::User) + ";"
+$env:Path += [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Machine)
+}
 
 }
 
