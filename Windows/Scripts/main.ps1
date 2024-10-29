@@ -281,3 +281,20 @@ Remove-Item -Force -Recurse $env:USERPROFILE\Downloads\*.*
 }
 
 # Call functions
+logging
+check_psversion
+check_priv
+choco_install
+wsl_setup
+hyperv_setup
+vbs_setup
+system_tweaks
+power_options
+ssh_setup
+rename_pc
+install_apps
+refreshenv
+install_graphics_driver
+install_choco_apps
+install_non_pkgmgr_apps
+cleanup
