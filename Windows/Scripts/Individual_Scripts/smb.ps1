@@ -2,7 +2,15 @@
 $NAS="\\10.0.40.5"
 $sh=New-Object -com Shell.Application
 
-Write-Warning "Please ensure this script is running as a normal user & not admin" -WarningAction Inquire
+
+if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+  Write-Host "Script is being ran as a normal user, proceeding..."
+}
+else {
+  Write-Warning "Code is running as admin, please run the script with non-admin priv"
+    break
+}
+
 
 # Use 'net use' to map network drives & save credentials
 Net Use Z: $NAS\Media /p:yes /savecred
@@ -27,7 +35,6 @@ New-Item -ItemType Directory $env:USERPROFILE\Pictures\Wallpapers
 robocopy /V /ETA /E \\10.0.40.5\Jake\Assets\Wallpapers\3440x1440 $env:USERPROFILE\Pictures\Wallpapers\
 
 # Powershell
-Install-Module PSWindowsUpdate
+Copy-Item "\\10.0.40.5\Jake\Backups\Windows\PowerShell\Microsoft.PowerShell_profile.ps1" $env:USERPROFILE\Documents\Powershell\
 Install-Module -Name Terminal-Icons -Repository PSGallery
 Install-Script winfetch
-Copy-Item \\10.0.40.5\Jake\Backups\Powershell\Microsoft.PowerShell_profile.ps1 $env:USERPROFILE\Documents\PowerShell\
