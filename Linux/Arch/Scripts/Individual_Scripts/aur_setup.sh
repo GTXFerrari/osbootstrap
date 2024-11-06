@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 aur_log_file="/var/log/aur_failed_apps.log"
-git_dir="/home/$USER/Test/Git"
-yay_dir="/home/$USER/Test/Git/yay"
+git_dir="/home/$USER//Git"
+yay_dir="/home/$USER//Git/yay"
 
 while true; do
   if pacman -Qi gum >/dev/null 2>&1; then
@@ -47,10 +47,7 @@ if [[ $? -eq 0 ]]; then
 fi
 
 aur_programs=(
-  brave-bin
-  zen-browser-bin
-  github-desktop-bin
-  vmware-workstation
+  timeshift-autosnap
   ookla-speedtest-bin
   piavpn-bin
   cava
@@ -58,10 +55,6 @@ aur_programs=(
   zsh-fast-syntax-highlighting
   zsh-theme-powerlevel10k-git
   zsh-autosuggestions
-  python311
-  adwaita-qt5-git
-  adwaita-qt6-git
-  tela-icon-theme
   sddm-theme-tokyo-night-git
   waypaper
 )
@@ -71,19 +64,16 @@ aur_gaming=(
   proton-ge-custom-bin
   dolphin-emu
   cemu
-  ryujinx
-  torzu-git
   duckstation-git
   pcsx2-git
   rpcs3-bin
   razergenie
-  gwe
   openrgb-git
 )
 
 if [[ $VM_STATUS == "not_in_vm" ]]; then
   for app in "${aur_programs[@]}"; do
-    if ! sudo pacman -S --needed --noconfirm "$app"; then
+    if ! yay -S --needed "$app"; then
       gum style --foreground="#ff0000" --bold "Package not found: $app, skipping"
       echo "$app" >>"$apps_log_file"
     fi
@@ -105,8 +95,7 @@ for app in "${aur_programs[@]}"; do
 done
 
 if [[ $VM_STATUS == "not_in_vm" ]]; then
-  sudo usermod -aG plugdev "$USER"
   sudo usermod -aG games "$USER"
 fi
 
-gum spin --spinner points --title "Enabling Services..." -- sudo systemctl enable --now piavpn.services
+gum spin --spinner points --title "Enabling Services..." -- sudo systemctl enable --now piavpn.service
