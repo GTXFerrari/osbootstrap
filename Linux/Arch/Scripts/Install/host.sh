@@ -8,8 +8,6 @@ Logging() {
 
 check_internet_connection() {
   websites=("archlinux.org" "google.com" "example.com")
-  echo "Checking internet"
-  sleep 1
   for site in "${websites[@]}"; do
     if ping -c 1 "$site" >/dev/null 2>&1; then
       return 0
@@ -19,7 +17,6 @@ check_internet_connection() {
 
 internet_check() {
   if check_internet_connection; then
-    echo "Internet available, starting script"
   else
     echo "No internet, check your connection. (To connect to wireless type iwctl)"
     sleep 5
@@ -28,8 +25,6 @@ internet_check() {
 }
 
 check_dependencies() {
-  echo "Checking script dependencies"
-  sleep 2
   while true; do
     if pacman -Qi gum >/dev/null 2>&1; then
       break
