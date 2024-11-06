@@ -259,11 +259,14 @@ clean_up() {
   fi
 }
 
-# Call functions
 Logging
 check_internet_connection
 internet_check
 check_dependencies
+sleep 5 | gum style \
+  --foreground "#d49d82" --border-foreground "#82B8D4" --border double \
+  --align center --width 50 --margin "1 2" --padding "2 4" \
+  'Arch Install Script'
 vm_check
 termfonts
 check_uefi
