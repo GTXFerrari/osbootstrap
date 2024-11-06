@@ -65,6 +65,11 @@ install_packages() {
   apps_log_file="/var/log/failed_apps.log"
   systemdservices_log_file="/var/log/failed_services.log"
 
+  if [[ $chosen_filesystem == "Btrfs" ]]; then
+    btrfs-timeshift="timeshift"
+    btrfs-grub="btrfs-grub"
+  fi
+
   core_apps=(
     base-devel
     pacman-contrib
@@ -160,6 +165,8 @@ install_packages() {
     ttf-noto-nerd
     ttf-jetbrains-mono-nerd
     ttf-joypixels
+    $btrfs-timeshift
+    $btrfs-grub
   )
 
   print=(
