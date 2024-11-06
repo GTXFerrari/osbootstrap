@@ -94,7 +94,7 @@ drive_partition() {
   while true; do
     gum style --foreground="#00ff28" --bold "Available Disk Partitions:"
     lsblk -o NAME,FSTYPE,SIZE,MOUNTPOINT | grep -v "loop\|sr0"
-    partition_choice=$(gum input --placeholder "Enter Your Drive Partition For Installation (Ex. /dev/sda || /dev/nvme0n1")
+    partition_choice=$(gum input --placeholder "Enter Your Drive Partition For Installation (Ex. sda || vda || nvme0n1")
     export partition_choice
     #TODO: Test with vda/sda in a vm
     if [[ "$partition_choice" == nvme* ]]; then
