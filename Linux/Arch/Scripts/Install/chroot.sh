@@ -484,6 +484,7 @@ install_gaming() {
       obs-studio
       mangohud
       goverlay
+      prismlauncher
     )
     for app in "${gaming_packages[@]}"; do
       if ! sudo pacman -S --needed --noconfirm "$app"; then
