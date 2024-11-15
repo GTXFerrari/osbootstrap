@@ -42,7 +42,7 @@ sleep 2
 chown root:root "$cred_dir" && chmod 700 "$cred_dir" && chmod 600 "$share_file"
 
 if [[ ! -d $truenas_dir ]]; then
-  mkdir -p /mnt/truenas/{media,iso,photos,gold,stash,stash2,jake}
+  mkdir -p /mnt/truenas/{media,iso,gold,stash,stash2,jake}
 fi
 
 {
@@ -58,7 +58,5 @@ fi
   echo "$nas_addr"/Gold "$truenas_dir"/gold cifs "$smb_options"
   echo " "
   echo "$nas_addr"/ISO "$truenas_dir"/iso cifs "$smb_options"
-  echo " "
-  echo "$nas_addr"/Photos "$truenas_dir"/photos cifs "$smb_options"
 
 } | tee -a /etc/fstab >/dev/null
