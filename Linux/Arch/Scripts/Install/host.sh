@@ -17,6 +17,7 @@ check_internet_connection() {
 
 internet_check() {
   if check_internet_connection; then
+    exit 0
   else
     echo "No internet, check your connection. (To connect to wireless type iwctl)"
     sleep 5
