@@ -129,7 +129,7 @@ drive_partition() {
   done
   export chosen_filesystem
 
-  if [[ $chosen_filesystem == "Btrfs" && $encryption == Yes ]]; then
+  if [[ $chosen_filesystem == "Btrfs" && $encryption == "Yes" ]]; then
     mkfs.btrfs -L archbtrfs /dev/mapper/cryptarch
     mount /dev/mapper/cryptarch /mnt
     gum style --foreground="#00ff28" --bold "Setting up subvolumes"
@@ -205,7 +205,7 @@ drive_partition() {
 }
 
 pacstab() {
-  cpu_vendor=$(grep -m1 'vendor_id' /proc/cpuinfo | awk '{print $3}')
+  cpu_vendor=$(grep -m1 'vendor_id' /proc/cpuinfo | awk '{print $3}'
   if [[ "$VM_STATUS" == "bare_metal" && "$cpu_vendor" == "AuthenticAMD" ]]; then
     ucode="amd-ucode"
   elif [[ "$VM_STATUS" == "bare_metal" && "$cpu_vendor" == "GenuineIntel" ]]; then
