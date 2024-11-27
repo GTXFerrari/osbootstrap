@@ -205,14 +205,13 @@ drive_partition() {
 }
 
 pacstab() {
-  cpu_vendor=$(grep -m1 'vendor_id' /proc/cpuinfo | awk '{print $3}'
+  cpu_vendor=$(grep -m1 'vendor_id' /proc/cpuinfo | awk '{print $3}')
   if [[ "$VM_STATUS" == "bare_metal" && "$cpu_vendor" == "AuthenticAMD" ]]; then
     ucode="amd-ucode"
   elif [[ "$VM_STATUS" == "bare_metal" && "$cpu_vendor" == "GenuineIntel" ]]; then
     ucode="intel-ucode"
-    # NOTE: This may not be needed
-  # else
-  #   ucode=""
+  else
+    ucode=""
   fi
   if [[ "$chosen_filesystem" == "Ext4" ]]; then
     fs="e2fsprogs"
@@ -260,14 +259,18 @@ clean_up() {
   fi
 }
 
+intro_banner() {
+  sleep 5 | gum style \
+    --foreground "#d49d82" --border-foreground "#82B8D4" --border double \
+    --align center --width 50 --margin "1 2" --padding "2 4" \
+    'Arch Install Script'
+}
+
 Logging
 check_internet_connection
 internet_check
 check_dependencies
-sleep 5 | gum style \
-  --foreground "#d49d82" --border-foreground "#82B8D4" --border double \
-  --align center --width 50 --margin "1 2" --padding "2 4" \
-  'Arch Install Script'
+intro_banner
 vm_check
 termfonts
 check_uefi
