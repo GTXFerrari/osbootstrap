@@ -53,32 +53,7 @@ function wsl_setup {
     if ($wsl_install -eq "Y" -or $wsl_install -eq "y")
     {
       Write-Host "Setting up WSL" -ForegroundColor Green
-        $distro_choice = Read-Host "Choose your linux distro (Ubuntu,Kali,Debian,None)"
-        switch ($distro_choice) 
-        {
-          "Ubuntu"
-          {
-            "wsl --install -d Ubuntu"
-          }
-          "Kali"
-          {
-            "wsl --install -d kali"
-          }
-          "Debian"
-          {
-            "wsl --install -d debian"
-          }
-          "None"
-          {
-            "wsl --install --no-distribution"
-              Write-Host "Import your tar file with wsl --import" -ForegroundColor Green
-          }
-          default
-          {
-            Write-Host "Invalid choice, Select a valid distro" -ForegroundColor Red
-              return
-          }
-        }
+      wsl --install -d debian
     }
 }
 
@@ -96,9 +71,9 @@ function vbs_setup {
     if ($core_iso -eq "Y" -or $core_iso -eq "y")
     {
       Write-Host "Setting up VBS" -ForegroundColor Green
-        reg import .\Reg-Files\Enable_Mem_CoreISO.reg
+      reg import .\Reg-Files\Enable_Mem_CoreISO.reg
     }
-  }
+}
 
 
 function system_tweaks {
@@ -141,7 +116,7 @@ function rename_pc {
     $changeName = Read-Host "Would you like to change the name of the computer? (Y/N)"
     if ($changeName -eq "Y" -or $changeName -eq "y")
     {
-      $newname = Read Host "Enter the new computer name"
+        $newname = Read Host "Enter the new computer name"
         Rename-Computer -NewName $newname -Confirm -Restart
     } else
     {
@@ -175,16 +150,18 @@ function install_apps {
         @{name = "CPUID.CPU-Z" },
         @{name = "TechPowerUp.GPU-Z" },
         @{name = "JAMSoftware.TreeSize.Free" },
+        @{name = "Google.Chrome" },
         @{name = "Brave.Brave" },
         @{name = "Mozilla.Firefox" },
         @{name = "Zen-Team.Zen-Browser" },
         @{name = "TorProject.TorBrowser" },
         @{name = "PrivateInternetAccess.PrivateInternetAccess" },
         @{name = "Valve.Steam" },
+        @{name = "SteamGridDB.RomManager" },
+        @{name = "Playnite.Playnite" },
         @{name = "ElectronicArts.EADesktop" },
         @{name = "Ubisoft.Connect" },
         @{name = "PrismLauncher.PrismLauncher" },
-        @{name = "Playnite.Playnite" },
         @{name = "Discord.Discord" },
         @{name = "PeterPawlowski.foobar2000" },
         @{name = "MPC-BE.MPC-BE" },
@@ -197,19 +174,15 @@ function install_apps {
         @{name = "Insecure.Nmap" },
         @{name = "OBSProject.OBSStudio" },
         @{name = "HandBrake.HandBrake" },
-        @{name = "AndreWiethoff.ExactAudioCopy" },
-        @{name = "lencx.ChatGPT" },
         @{name = "Guru3D.Afterburner" },
         @{name = "Microsoft.DirectX" },
         @{name = "Plex.Plex" },
         @{name = "VirtualDesktop.Streamer" },
         @{name = "LizardByte.Sunshine" },
         @{name = "GeekUninstaller.GeekUninstaller" },
-        @{name = "rocksdanister.LivelyWallpaper" },
         @{name = "JernejSimoncic.Wget" },
         @{name = "JesseDuffield.lazygit" },
         @{name = "gokcehan.lf" },
-        @{name = "Google.PlatformTools" }, # ADB Installer for shield
         @{name = "9NBLGGH30XJ3" }, # Xbox Accessories
         @{name = "9PFHDD62MXS1" }, # Apple Music Preview
         @{name = "9N7F2SM5D1LR" } # HDR Calibration Tool
@@ -244,7 +217,7 @@ function install_graphics_driver {
   }
 
 function install_choco_apps {
-  choco install openrgb equalizerapo samsung-magician madvr bind-toolsonly mingw make lua luarocks -y
+  choco install openrgb equalizerapo samsung-magician madvr bind-toolsonly mingw make lua luarocks mpvio -y
 }
 
 
@@ -291,10 +264,10 @@ vbs_setup
 system_tweaks
 power_options
 ssh_setup
-rename_pc
 install_apps
 refreshenv
 install_graphics_driver
 install_choco_apps
 install_non_pkgmgr_apps
+rename_pc
 cleanup
