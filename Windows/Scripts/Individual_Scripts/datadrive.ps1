@@ -11,34 +11,29 @@ if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 }
 
 # Bitlocker for data drive
-$UsrPass = Read-Host -Prompt 'Input your bitlocker password'
-$Pass = ConvertTo-SecureString $UsrPass -AsPlainText -Force
+# $UsrPass = Read-Host -Prompt 'Input your bitlocker password'
+# $Pass = ConvertTo-SecureString $UsrPass -AsPlainText -Force
 
 # Ensure D drive letter is not taken
+#TODO: Write a conditional to check if drive letter D: is taken
 Set-Partition -DriveLetter D -NewDriveLetter H
 Get-Partition -DriveLetter C | Select-Object DiskNumber
 Start-Sleep 3
-
 # Create new drive partition from extra space on OS disk
-Write-Warning "Drive D is about to be created from disk 0, is the information correct?" -WarningAction Inquire
 $cDriveDiskNumber = (Get-Partition -DriveLetter C).DiskNumber
 New-Partition -DiskNumber $cDriveDiskNumber -UseMaximumSize -DriveLetter D | Format-Volume -FileSystem NTFS -NewFileSystemLabel "Data"
 
 # Create directories in new partition
 Set-Location -LiteralPath D:
-New-Item -ItemType Directory Code,Games,Git,Pictures,VM,WSL
+New-Item -ItemType Directory Code,Docker,Games,Git,Pictures,VM,WSL
 Set-Location -LiteralPath D:\Games
 New-Item -ItemType Directory Blizzard,EA,Emulator,Steam,Ubisoft
 Set-Location -LiteralPath D:\VM
-New-Item -ItemType Directory Hyper-V,VMware,ISO
+New-Item -ItemType Directory Hyper-V,ISO
 Set-Location -LiteralPath D:\VM\Hyper-V
 New-Item -ItemType Directory Storage,"Virtual Machines"
 
-# Move Game files to destination
-#robocopy /V /ETA /E '\\10.0.40.5\Media\Games\Emulator\' 'D:\Games\Emulator\'
-
 # Enable bitlocker for Data drives (D:)
-Enable-BitLocker -MountPoint "D:" -EncryptionMethod XtsAes256 -PasswordProtector -Password $Pass
-Enable-BitLockerAutoUnlock -MountPoint "D:"
-
-Restart-Computer -Confirm
+# Enable-BitLocker -MountPoint "D:" -EncryptionMethod XtsAes256 -PasswordProtector -Password $Pass
+# Enable-BitLockerAutoUnlock -MountPoint "D:"
+# Restart-Computer -Confirm
