@@ -63,6 +63,7 @@ function wsl_setup
     #NOTE: Here-Strings dont work here since code formatting can add white spaces
     Add-Content -Path $Env:USERPROFILE\.wslconfig -Value "[wsl2]"
     Add-Content -Path $Env:USERPROFILE\.wslconfig -Value "networkingMode=mirrored"
+    wsl --setdefault Debian
   }
 }
 
