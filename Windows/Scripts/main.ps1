@@ -270,7 +270,7 @@ hyperv_setup
 vbs_setup
 system_tweaks
 power_options
-ssh_setup
+sshd_setup
 install_apps
 refreshenv
 install_graphics_driver
