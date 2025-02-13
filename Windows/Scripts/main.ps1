@@ -123,6 +123,10 @@ function sshd_setup
     New-Item -ItemType Directory $Env:USERPROFILE\.ssh\
     Start-Service sshd
     Set-Service -Name sshd -StartupType 'Automatic'
+    New-ItemProperty -Path "HKLM:\SOFTWARE\OpenSSH" -Name DefaultShell -Value "C:\Program Files\PowerShell\7\pwsh.exe" -PropertyType String -Force
+    # Put pub key in this file
+    New-Item -ItemType "file" -Name "administrators_authorized_keys" -Path $Env:PROGRAMDATA\ssh
+    icacls.exe "C:\ProgramData\ssh\administrators_authorized_keys" /inheritance:r /grant "Administrators:F" /grant "SYSTEM:F"
   }
 }
 
