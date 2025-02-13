@@ -48,13 +48,18 @@ function choco_install {
   }
 }
 
-function wsl_setup {
+function wsl_setup
+{
   $wsl_install = Read-Host "Would you like to install Windows Subsystem for Linux (WSL)? (Y/N)"
-    if ($wsl_install -eq "Y" -or $wsl_install -eq "y")
-    {
-      Write-Host "Setting up WSL" -ForegroundColor Green
-      wsl --install -d debian
-    }
+  if ($wsl_install -eq "Y" -or $wsl_install -eq "y")
+  {
+    Write-Host "Setting up WSL" -ForegroundColor Green
+    wsl --install -d debian
+    New-Item -Path $Env:USERPROFILE\.wslconfig
+    #NOTE: Here-Strings dont work here since code formatting can add white spaces
+    Add-Content -Path $Env:USERPROFILE\.wslconfig -Value "[wsl2]"
+    Add-Content -Path $Env:USERPROFILE\.wslconfig -Value "networkingMode=mirrored"
+  }
 }
 
 function hyperv_setup {
