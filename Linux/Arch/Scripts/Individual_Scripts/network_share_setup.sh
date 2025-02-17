@@ -4,7 +4,7 @@ cred_dir="/etc/samba/credentials"
 share_file="/etc/samba/credentials/share"
 truenas_dir="/mnt/truenas"
 nas_addr="//10.0.40.5"
-smb_options="_netdev,nofail,credentials=/etc/samba/credentials/share 0 0"
+smb_options="_netdev,nofail,file_mode=0777,dir_mode=0777,credentials=/etc/samba/credentials/share 0 0"
 
 if [[ "$(id -u)" -ne 0 ]]; then
   echo "Please run the script using sudo or as root!"
