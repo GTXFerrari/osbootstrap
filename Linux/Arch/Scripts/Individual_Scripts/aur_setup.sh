@@ -55,8 +55,6 @@ aur_programs=(
   zsh-fast-syntax-highlighting
   zsh-theme-powerlevel10k-git
   zsh-autosuggestions
-  sddm-theme-tokyo-night-git
-  waypaper
 )
 
 #NOTE: openrgb-git is needed to control 4090FE LED light since the main repo release is extremely old
