@@ -73,19 +73,15 @@ install_packages() {
   core_apps=(
     base-devel
     pacman-contrib
-    xdg-user-dirs
-    xdg-utils
-    udisks2
+    networkmanager
+    avahi-daemon
     mtools
     dosfstools
     exfatprogs
-    networkmanager
-    nm-connection-editor
-    iwd
-    avahi
     bind
     cifs-utils
     i2c-tools
+    iwd
     lm_sensors
     wireshark-qt
     syncthing
@@ -96,42 +92,34 @@ install_packages() {
     tcpdump
     firefox
     chromium
-    torbrowser-launcher
-    nyx
     handbrake
+    handbrake-cli
     python
     python-pip
     python-virtualenv
-    code
-    trash-cli
     hugo
     tree-sitter
     go
     rustup
     luarocks
-    composer
-    php
     nodejs
     npm
-    python
-    python-pip
     jdk-openjdk
     wget
     curl
     gzip
     tar
     bash
-    xclip
     wl-clipboard
     ripgrep
     fd
     kitty
+    ghostty
     openssh
     ssh-audit
     zsh
     zsh-autosuggestions
     zsh-completions
-    lynx
     git
     git-lfs
     rsync
@@ -146,7 +134,6 @@ install_packages() {
     mediainfo
     ffmpegthumbnailer
     odt2txt
-    zathura
     cmatrix
     cowsay
     yt-dlp
@@ -154,8 +141,6 @@ install_packages() {
     ncmpcpp
     mpc
     mpv
-    handbrake-cli
-    ollama-cuda
     ttf-roboto-mono-nerd
     ttf-sourcecodepro-nerd
     ttf-terminus-nerd
@@ -165,8 +150,7 @@ install_packages() {
     ttf-noto-nerd
     ttf-jetbrains-mono-nerd
     ttf-joypixels
-    $btrfs-timeshift
-    $btrfs-grub
+    timeshift
   )
 
   print=(
@@ -178,12 +162,10 @@ install_packages() {
   systemd_services=(
     NetworkManager.service
     avahi-daemon.service
-    iwd.service
     reflector.service
     sshd.service
     systemd-timesyncd.service
-    cups.socket
-    tor.service
+    cups.service
   )
 
   gum style --foreground="#00ff28" --bold "Updating package database"
@@ -406,6 +388,7 @@ install_graphics() {
             cuda
             libva-nvidia-driver
             libva-utils
+            ollama-cuda
           )
           for app in "${nvidia_packages[@]}"; do
             if ! sudo pacman -S --needed --noconfirm "$app"; then
