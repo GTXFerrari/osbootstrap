@@ -65,11 +65,6 @@ install_packages() {
   apps_log_file="/var/log/failed_apps.log"
   systemdservices_log_file="/var/log/failed_services.log"
 
-  if [[ $chosen_filesystem == "Btrfs" ]]; then
-    btrfs-timeshift="timeshift"
-    btrfs-grub="btrfs-grub"
-  fi
-
   core_apps=(
     base-devel
     pacman-contrib
@@ -201,7 +196,7 @@ install_packages() {
         gum style --foreground="#ff0000" --bold "Service $service does not exist" | tee -a $systemdservices_log_file
       fi
     done
-    usermood -aG i2c "$username"
+    usermod -aG i2c "$username"
     usermod -aG wireshark "$username"
     usermod -aG input "$username"
     usermod -aG video "$username"
