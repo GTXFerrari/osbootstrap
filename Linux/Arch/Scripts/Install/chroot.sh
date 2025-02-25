@@ -559,13 +559,13 @@ docker_setup() {
   echo -n "Install docker? (y/n) "
   read -r docker
   if [[ "$docker" == "y" ]]; then
-    pacman -S --needed --noconfirm docker docker-compose docker-buildx docker-scan ducker
+    pacman -S --needed --noconfirm docker docker-compose docker-buildx ducker
     systemctl enable docker.service
     usermod -aG docker "$username"
     if [[ ! -d /etc/docker ]]; then
       mkdir /etc/docker
     fi
-    if [[ "$chosen_filesystem" == "btrfs" ]]; then
+    if [[ "$chosen_filesystem" == "Btrfs" ]]; then
       echo '{"storage-driver": "btrfs"}' >>/etc/docker/daemon.json
     fi
     if [[ "$chosen_graphics" == "Nvidia" ]]; then
