@@ -90,7 +90,7 @@ check_uefi() {
   export uefi
 }
 
-#TODO: Create option for mdadm
+#TODO: Create option for mdadm $raid variable
 drive_partition() {
   while true; do
     gum style --foreground="#00ff28" --bold "Available Disk Partitions:"
@@ -222,12 +222,17 @@ pacstab() {
   fi
   export ucode
 
+  if [[ "$raid" == "Yes" ]]; then
+	  raid_pkg=mdadm
+  fi
+
   gum style --foreground="#00ff28" --bold "Updating Mirrorlist"
   reflector -c 'United States' -a 24 -p https --sort rate --save /etc/pacman.d/mirrorlist
 
   pacstrap -K /mnt \
     "$fs" \
     "$ucode" \
+    "$raid_pkg" \
     base \
     linux \
     linux-headers \
@@ -239,7 +244,14 @@ pacstab() {
     neovim \
     reflector \
     man-db \
-    dosfstools
+    dosfstools \
+    gum
+
+  # Updates mdadm config in chroot
+  if [[ $raid == "Yes" ]];
+	  mdadm --detail --scan >> /mnt/etc/mdadm.conf
+  fi
+
 
   genfstab -U /mnt >>/mnt/etc/fstab
   cp ./chroot.sh /mnt
