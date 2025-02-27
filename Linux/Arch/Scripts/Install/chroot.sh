@@ -146,6 +146,9 @@ install_packages() {
     ttf-jetbrains-mono-nerd
     ttf-joypixels
     timeshift
+    lazygit
+    chezmoi
+    tmux
   )
 
   print=(
