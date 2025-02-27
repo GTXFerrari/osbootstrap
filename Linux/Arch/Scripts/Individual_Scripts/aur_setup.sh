@@ -47,7 +47,6 @@ if [[ $? -eq 0 ]]; then
 fi
 
 aur_programs=(
-  timeshift-autosnap
   ookla-speedtest-bin
   piavpn-bin
   cava
@@ -55,6 +54,8 @@ aur_programs=(
   zsh-fast-syntax-highlighting
   zsh-theme-powerlevel10k-git
   zsh-autosuggestions
+  zen-browser-bin
+  jdownloader2
 )
 
 #NOTE: openrgb-git is needed to control 4090FE LED light since the main repo release is extremely old
