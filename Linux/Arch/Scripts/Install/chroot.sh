@@ -534,6 +534,7 @@ setup_virtualization() {
     usermod -aG libvirt "$username"
     usermod -aG kvm "$username"
   fi
+  pacman -S iptables-nft
 }
 
 docker_setup() {
