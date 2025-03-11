@@ -6,7 +6,7 @@ sudo dpkg -i gum_0.15.2_amd64.deb
 
 # Install Apps
 sudo apt update && sudo apt full-upgrade
-sudo apt install htop git cifs-utils
+sudo apt install htop git cifs-utils rsync
 
 # Neovim
 sudo apt-get install ninja-build gettext cmake curl build-essential file
