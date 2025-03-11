@@ -1,22 +1,22 @@
 #!/usr/bin/env bash
 
 init() {
-  gum style --foreground="#00ff28" --bold "Setting up timezone"
+  gum style --foreground="#00ff28" --bold "Setting Up Timezone"
   sleep 1
   ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
-  gum style --foreground="#00ff28" --bold "Syncing system clock"
+  gum style --foreground="#00ff28" --bold "Syncing System Clock"
   sleep 1
   hwclock --systohc
-  gum style --foreground="#00ff28" --bold "Updating locales"
+  gum style --foreground="#00ff28" --bold "Updating Locales"
   sleep 1
   sed -i '/^#en_US.UTF-8 UTF-8/s/^#//' /etc/locale.gen
   locale-gen
   echo "LANG=en_US.UTF-8" >>/etc/locale.conf
-  gum style --foreground="#00ff28" --bold "Enabling multilib"
+  gum style --foreground="#00ff28" --bold "Enabling Multilib"
   sleep 1
   sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
   pacman -Sy
-  gum style --foreground="#00ff28" --bold "Updating keyring"
+  gum style --foreground="#00ff28" --bold "Updating Keyring"
   sleep 1
   pacman -S --noconfirm archlinux-keyring sudo
 }
@@ -48,14 +48,14 @@ set_vconsole() {
 }
 
 set_root_password() {
-  root_pass=$(gum input --placeholder "Enter your root password: ")
+  root_pass=$(gum input --placeholder "Enter Your Root Password: ")
   echo root:"$root_pass" | chpasswd
 }
 
 create_user() {
-  username=$(gum input --placeholder "Enter your username: ")
+  username=$(gum input --placeholder "Enter Your Username: ")
   useradd -m "$username"
-  user_pass=$(gum input --placeholder "Enter your user password: ")
+  user_pass=$(gum input --placeholder "Enter Your User Password: ")
   echo "$username":"$user_pass" | chpasswd
   echo "$username ALL=(ALL) ALL" >>/etc/sudoers.d/"$username"
   export username
@@ -69,7 +69,7 @@ install_packages() {
     base-devel
     pacman-contrib
     networkmanager
-    avahi-daemon
+    avahi
     mtools
     dosfstools
     exfatprogs
@@ -230,7 +230,6 @@ install_packages() {
   sleep 3
 }
 
-#TODO: Create a way to chainload grub with systemd boot in case of using btrfs so you can use btfs-grub
 install_bootloader() {
   luksuuid=$(blkid -s UUID -o value /dev/"${partition_choice}${partition_suffix}"2)
   if [[ "$chosen_filesystem" == "Btrfs" ]]; then
@@ -339,16 +338,12 @@ setup_audio() {
     pipewire-audio
     pipewire-alsa
     pipewire-pulse
-    pipewire-jack
-    lib32-pipewire-jack
     alsa-utils
     alsa-plugins
-    pulsemixer
     bluez
     bluez-utils
     lsp-plugins
     sof-firmware
-    pavucontrol
   )
   for app in "${audio[@]}"; do
     if ! sudo pacman -S --needed --noconfirm "$app"; then
@@ -357,95 +352,77 @@ setup_audio() {
     fi
   done
   systemctl enable bluetooth.service
-  # Needs to be separate since it requires an explicit overwrite for jack2 >> pipewire-jack
-  pacman -S --needed pipewire-jack
+  #NOTE: Requires user input to overwrite
+  pacman -S --needed pipewire-jack lib32-pipewire-jack
 }
 
-install_graphics() {
-  if [[ "$VM_STATUS" != "bare_metal" ]]; then
-    echo -e "${Green}System is in a VM, no graphics driver required${NC}"
-    sleep 1
-    return 0
-  else
-    while true; do
-      PS3='Select a graphics driver: '
-      options=("Nvidia" "AMD" "Intel" "Exit")
-      select opt in "${options[@]}"; do
-        case $opt in
-        "Nvidia")
-          nvidia_packages=(
-            nvidia-open-dkms
-            nvidia-utils
-            lib32-nvidia-utils
-            nvidia-settings
-            vulkan-icd-loader
-            lib32-vulkan-icd-loader
-            opencl-nvidia
-            lib32-opencl-nvidia
-            python-pytorch-cuda
-            cuda
-            libva-nvidia-driver
-            libva-utils
-            ollama-cuda
-          )
-          for app in "${nvidia_packages[@]}"; do
-            if ! sudo pacman -S --needed --noconfirm "$app"; then
-              echo "Package not found: $app, skipping"
-              echo "$app" >>"$apps_log_file"
-            fi
-          done
-          chosen_graphics="Nvidia"
-          export chosen_graphics
-          break 2
-          ;;
-        "AMD")
-          amd_packages=(
-            mesa
-            lib32-mesa
-            xf86-video-amdgpu
-            vulkan-radeon
-            lib32-vulkan-radeon
-            libva-mesa-driver
-            lib32-libva-mesa-driver
-            mesa-vdpau
-            lib32-mesa-vdpau
-            rocm-opencl-runtime
-          )
-          for app in "${amd_packages[@]}"; do
-            if ! sudo pacman -S --needed --noconfirm "$app"; then
-              echo "Package not found: $app, skipping"
-              echo "$app" >>"$apps_log_file"
-            fi
-          done
-          chosen_graphics="AMD"
-          export chosen_graphics
-          break 2
-          ;;
-        "Intel")
-          intel_packages=(
-            mesa
-            lib32-mesa
-            vulkan-intel
-          )
-          for app in "${intel_packages[@]}"; do
-            if ! sudo pacman -S --needed --noconfirm "$app"; then
-              echo "Package not found: $app, skipping"
-              echo "$app" >>"$apps_log_file"
-            fi
-          done
-          chosen_graphics="Intel"
-          export chosen_graphics
-          break 2
-          ;;
-        "Exit")
-          break 2
-          ;;
-        *)
-          echo "Invalid choice. Please enter a valid option."
-          ;;
-        esac
+graphics_driver() {
+  if [[ "$VM_STATUS" == "bare_metal" ]]; then
+    graphics_driver=$(gum choose --limit=1 --header="Choose a graphics driver" "Nvidia" "AMD" "Intel")
+    if [[ "$graphics_driver" == "Nvidia" ]]; then
+      nvidia_packages=(
+        nvidia-open-dkms
+        nvidia-utils
+        lib32-nvidia-utils
+        nvidia-settings
+        vulkan-icd-loader
+        lib32-vulkan-icd-loader
+        opencl-nvidia
+        lib32-opencl-nvidia
+        python-pytorch-cuda
+        cuda
+        libva-nvidia-driver
+        libva-utils
+        ollama-cuda
+        vulkan-tools
+      )
+      for app in "${nvidia_packages[@]}"; do
+        if ! pacman -S --needed --noconfirm "$app"; then
+          gum style --foreground="#fc0303" --bold "App not found. Skipping.."
+          echo "$app" >>"$apps_log_file"
+        fi
       done
-    done
+      chosen_graphics="Nvidia"
+      export chosen_graphics
+      return 0
+    elif [[ "$graphics_driver" == "AMD" ]]; then
+      amd_packages=(
+        mesa
+        lib32-mesa
+        xf86-video-amdgpu
+        vulkan-radeon
+        lib32-vulkan-radeon
+        libva-mesa-driver
+        lib32-libva-mesa-driver
+        mesa-vdpau
+        lib32-mesa-vdpau
+        rocm-opencl-runtime
+      )
+      for app in "${amd_packages[@]}"; do
+        if ! pacman -S --needed --noconfirm "$app"; then
+          gum style --foreground="#fc0303" --bold "App not found. Skipping.."
+          echo "$app" >>"$apps_log_file"
+        fi
+      done
+      chosen_graphics="AMD"
+      export chosen_graphics
+      return 0
+    elif [[ "$graphics_driver" == "Intel" ]]; then
+      intel_packages=(
+        mesa
+        lib32-mesa
+        vulkan-intel
+      )
+      for app in "${intel_packages[@]}"; do
+        if ! pacman -S --needed --noconfirm "$app"; then
+          gum style --foreground="#fc0303" --bold "App not found. Skipping.."
+          echo "$app" >>"$apps_log_file"
+        fi
+      done
+      chosen_graphics="Intel"
+      export chosen_graphics
+      return 0
+    fi
   fi
 }
 
@@ -516,7 +493,6 @@ setup_virtualization() {
       virt-manager
       dmidecode
       edk2-ovmf
-      iptables-nft
       dnsmasq
       openbsd-netcat
       bridge-utils
@@ -534,6 +510,7 @@ setup_virtualization() {
     usermod -aG libvirt "$username"
     usermod -aG kvm "$username"
   fi
+  #NOTE: Requires user input for overwrite
   pacman -S iptables-nft
 }
 
@@ -806,22 +783,24 @@ pacman_conf() {
   sed -i '/# Misc options/a ILoveCandy' /etc/pacman.conf
 }
 
+# TODO: Update DE Section, add systemctl start NetworkManager for plasma.
+
 init
 set_hostname
 set_vconsole
 set_root_password
 create_user
 install_packages
-install_graphics
+graphics_driver
 setup_audio
 install_gaming
 install_wine
-install_bootloader
+# install_bootloader
 setup_virtualization
 docker_setup
 vm_check
-desktop_environment
-setup_window_manager
-mkinitcpio_setup
+# desktop_environment
+# setup_window_manager
+# mkinitcpio_setup
 zramd_setup
 pacman_conf
