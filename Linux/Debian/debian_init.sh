@@ -6,7 +6,7 @@ sudo dpkg -i gum_0.15.2_amd64.deb
 
 # ZSH Setup
 sudo apt install zsh git -y
-sudo git clone https://github.com/zdharma-continuum/fast-syntax-highlighting /usr/share/zsh/plugins /usr/share/zsh/plugins/fast-syntax-highlighting
+sudo git clone https://github.com/zdharma-continuum/fast-syntax-highlighting /usr/share/zsh/plugins/fast-syntax-highlighting
 sudo git clone https://github.com/zsh-users/zsh-autosuggestions /usr/share/zsh/plugins/zsh-autosuggestions
 sudo git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /usr/share/zsh-theme-powerlevel10k
 chsh -s /usr/bin/zsh
