@@ -16,7 +16,7 @@ sudo apt update && sudo apt full-upgrade
 sudo apt install htop git cifs-utils rsync -y
 
 # Neovim
-sudo apt-get install ninja-build gettext cmake curl build-essential file
+sudo apt-get install ninja-build gettext cmake curl build-essential file -y
 git clone https://github.com/neovim/neovim && cd neovim || exit
 git checkout stable
 make CMAKE_BUILD_TYPE=RelWithDebInfo
