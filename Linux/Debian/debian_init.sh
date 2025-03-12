@@ -37,5 +37,11 @@ sudo usermod -aG docker "$USER"
 newgrp docker
 
 # Network Share Setup
-git clone https://github.com/gtxferrari/osbootstrap
-sh osbootstrap/Linux/Arch/Scripts/Individual_Scripts/network_share_setup.sh || exit
+git clone https://github.com/gtxferrari/osbootstrap /home/"$USER"
+bash /home/$USER/osbootstrap/Linux/Arch/Scripts/Individual_Scripts/network_share_setup.sh
+
+# APT Setup (Add non-free & contrib and update to trixie)
+sudo sed -i '/^deb/ s/$/ contrib non-free/' /etc/apt/sources.list
+sudo sed -i 's/bookworm/trixie/g' /etc/apt/sources.list
+sudo apt update && sudo apt full-upgrade
+sudo apt autoremove
