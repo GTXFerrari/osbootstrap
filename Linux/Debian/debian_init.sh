@@ -4,9 +4,16 @@
 wget https://github.com/charmbracelet/gum/releases/download/v0.15.2/gum_0.15.2_amd64.deb
 sudo dpkg -i gum_0.15.2_amd64.deb
 
+# ZSH Setup
+sudo apt install zsh git -y
+sudo git clone https://github.com/zdharma-continuum/fast-syntax-highlighting /usr/share/zsh/plugins /usr/share/zsh/plugins/fast-syntax-highlighting
+sudo git clone https://github.com/zsh-users/zsh-autosuggestions /usr/share/zsh/plugins/zsh-autosuggestions
+sudo git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /usr/share/zsh-theme-powerlevel10k
+chsh -s /usr/bin/zsh
+
 # Install Apps
 sudo apt update && sudo apt full-upgrade
-sudo apt install htop git cifs-utils rsync
+sudo apt install htop git cifs-utils rsync -y
 
 # Neovim
 sudo apt-get install ninja-build gettext cmake curl build-essential file
@@ -16,7 +23,7 @@ make CMAKE_BUILD_TYPE=RelWithDebInfo
 cd build && cpack -G DEB && sudo dpkg -i nvim-linux-x86_64.deb
 
 # Docker
-sudo apt-get install ca-certificates curl
+sudo apt-get install ca-certificates curl -y
 sudo install -m 0755 -d /etc/apt/keyrings
 sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
 sudo chmod a+r /etc/apt/keyrings/docker.asc
