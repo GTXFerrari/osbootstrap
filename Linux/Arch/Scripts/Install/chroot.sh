@@ -149,6 +149,7 @@ install_packages() {
     lazygit
     chezmoi
     tmux
+    gimp
   )
 
   print=(
