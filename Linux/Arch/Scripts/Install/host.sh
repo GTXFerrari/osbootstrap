@@ -106,7 +106,6 @@ drive_partition() {
       sgdisk -Z /dev/"$partition_choice"
       sgdisk --clear --new=1:0:+2G --typecode=1:ef00 --change-name=1:EFI --new=2:0:0 --typecode=2:8300 --change-name=2:system /dev/"$partition_choice"
       break
-      #WARN: Possibly missing sgdisk for partition 2???
     else
       gum style --foreground="#ff0000" --bold "Partition does not exist"
       sleep 3
@@ -207,27 +206,27 @@ drive_partition() {
 pacstab() {
   cpu_vendor=$(grep -m1 'vendor_id' /proc/cpuinfo | awk '{print $3}')
   if [[ "$VM_STATUS" == "bare_metal" && "$cpu_vendor" == "AuthenticAMD" ]]; then
-    ucode="amd-ucode"
+    cpu_ucode="amd-ucode"
   elif [[ "$VM_STATUS" == "bare_metal" && "$cpu_vendor" == "GenuineIntel" ]]; then
-    ucode="intel-ucode"
+    cpu_ucode="intel-ucode"
   else
-    ucode=""
+    cpu_ucode=""
   fi
   if [[ "$chosen_filesystem" == "Ext4" ]]; then
-    fs="e2fsprogs"
+    fs_userspace_utilities="e2fsprogs"
   elif [[ "$chosen_filesystem" == "Xfs" ]]; then
-    fs="xfsprogs"
+    fs_userspace_utilities="xfsprogs"
   elif [[ "$chosen_filesystem" == "Btrfs" ]]; then
-    fs="btrfs-progs"
+    fs_userspace_utilities="btrfs-progs"
   fi
-  export ucode
+  export cpu_ucode
 
   gum style --foreground="#00ff28" --bold "Updating Mirrorlist"
   reflector -c 'United States' -a 24 -p https --sort rate --save /etc/pacman.d/mirrorlist
 
   pacstrap -K /mnt \
-    "$fs" \
-    "$ucode" \
+    "$filesystem_userspace_utilities" \
+    "$cpu_ucode" \
     base \
     linux \
     linux-headers \
