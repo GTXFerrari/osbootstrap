@@ -150,6 +150,8 @@ install_packages() {
     chezmoi
     tmux
     gimp
+    ddcutil
+    plymouth
   )
 
   print=(
@@ -753,7 +755,7 @@ mkinitcpio_setup() {
   nvidia_modules="nvidia nvidia_modeset nvidia_uvm nvidia_drm $btrfs_module"
   kvm_modules="virtio virtio_blk virtio_pci virtio_net $btrfs_module"
   vmware_modules="vmw_balloon vmw_pvscsi vsock vmw_vsock_vmci_transport vmwgfx vmxnet3 $btrfs_module"
-  hooks="base udev autodetect microcode modconf keyboard keymap consolefont block $encrypt_hook filesystems fsck"
+  hooks="base udev autodetect microcode modconf keyboard keymap consolefont plymouth block $encrypt_hook filesystems fsck"
   mkinitcpio_conf="/etc/mkinitcpio.conf"
   if [[ "$VM_STATUS" == "bare_metal" && "$chosen_graphics" == "Nvidia" ]]; then
     sed -i 's/\(MODULES=([^)]*\))/MODULES=()/' "$mkinitcpio_conf"
