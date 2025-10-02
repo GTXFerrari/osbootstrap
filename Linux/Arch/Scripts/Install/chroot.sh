@@ -86,6 +86,7 @@ install_packages() {
     hping
     tcpdump
     firefox
+    firefoxpwa
     chromium
     handbrake
     handbrake-cli
