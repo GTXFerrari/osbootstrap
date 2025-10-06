@@ -153,6 +153,8 @@ install_packages() {
     gimp
     ddcutil
     plymouth
+    packer
+    terraform
   )
 
   print=(
