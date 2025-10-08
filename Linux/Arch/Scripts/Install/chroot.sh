@@ -75,6 +75,7 @@ install_packages() {
     exfatprogs
     bind
     cifs-utils
+    cpupower
     i2c-tools
     iwd
     lm_sensors
