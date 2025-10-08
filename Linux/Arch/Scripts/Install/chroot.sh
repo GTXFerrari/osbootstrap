@@ -171,6 +171,7 @@ install_packages() {
     sshd.service
     systemd-timesyncd.service
     cups.service
+    cpupower.service
   )
 
   gum style --foreground="#00ff28" --bold "Updating package database"
