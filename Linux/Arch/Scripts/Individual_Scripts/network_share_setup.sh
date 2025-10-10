@@ -36,12 +36,12 @@ sleep 2
 sudo chown root:root "$cred_dir" && sudo chmod 700 "$cred_dir" && sudo chmod 600 "$share_file"
 
 if [[ ! -d $truenas_dir ]]; then
-  sudo mkdir -p /mnt/truenas/{media,stash,jake,gold}
+  sudo mkdir -p /mnt/truenas/{media,stash,backups,gold}
 fi
 
 {
   echo " "
-  echo "$nas_addr"/Jake "$truenas_dir"/jake cifs "$smb_options"
+  echo "$nas_addr"/Backups "$truenas_dir"/backups cifs "$smb_options"
   echo " "
   echo "$nas_addr"/Stash "$truenas_dir"/stash cifs "$smb_options"
   echo " "
