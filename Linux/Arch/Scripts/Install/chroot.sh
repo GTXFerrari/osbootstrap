@@ -156,6 +156,7 @@ install_packages() {
     plymouth
     packer
     terraform
+    socat
   )
 
   print=(
