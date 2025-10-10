@@ -29,31 +29,29 @@ else
   VM_STATUS="other"
 fi
 
-gum confirm "Would you like to setup an AUR helper?" || exit 0
-
-if [ ! -d "$git_dir" ]; then
-  mkdir -p "$git_dir" && cd "$git_dir" || exit
-else
-  cd "$git_dir" || exit
-fi
-
-if [[ $? -eq 0 ]]; then
-  if [[ ! -d $yay_dir ]]; then
-    cd "$git_dir" && git clone https://aur.archlinux.org/yay.git && cd "$yay_dir" && makepkg -si
-  else
-    sleep 3 | gum style --foreground="#0099ff" "Yay is already cloned.. Proceeding"
-    cd "$yay_dir" && makepkg -si
-  fi
-fi
+# gum confirm "Would you like to setup an AUR helper?" || exit 0
+#
+# if [ ! -d "$git_dir" ]; then
+#   mkdir -p "$git_dir" && cd "$git_dir" || exit
+# else
+#   cd "$git_dir" || exit
+# fi
+#
+# if [[ $? -eq 0 ]]; then
+#   if [[ ! -d $yay_dir ]]; then
+#     cd "$git_dir" && git clone https://aur.archlinux.org/yay.git && cd "$yay_dir" && makepkg -si
+#   else
+#     sleep 3 | gum style --foreground="#0099ff" "Yay is already cloned.. Proceeding"
+#     cd "$yay_dir" && makepkg -si
+#   fi
+# fi
 
 aur_programs=(
   ookla-speedtest-bin
   piavpn-bin
   cava
-  pistol-git
+  pistol-bin
   zsh-fast-syntax-highlighting
-  zsh-theme-powerlevel10k-git
-  zsh-autosuggestions
   zen-browser-bin
   jdownloader2
 )
@@ -61,10 +59,6 @@ aur_programs=(
 #NOTE: openrgb-git is needed to control 4090FE LED light since the main repo release is extremely old
 aur_gaming=(
   proton-ge-custom-bin
-  dolphin-emu
-  cemu
-  duckstation-git
-  pcsx2-git
   rpcs3-bin
   razergenie
   openrgb-git
