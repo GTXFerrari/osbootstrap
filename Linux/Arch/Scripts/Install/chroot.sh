@@ -157,6 +157,7 @@ install_packages() {
     packer
     terraform
     socat
+    jq
   )
 
   print=(
