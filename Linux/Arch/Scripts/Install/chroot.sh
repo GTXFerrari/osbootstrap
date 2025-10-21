@@ -75,6 +75,7 @@ install_packages() {
     exfatprogs
     bind
     cifs-utils
+    nfs-utils
     cpupower
     i2c-tools
     iwd
