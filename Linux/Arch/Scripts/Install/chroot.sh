@@ -73,6 +73,7 @@ install_packages() {
     mtools
     dosfstools
     exfatprogs
+    gptfdisk
     bind
     cifs-utils
     nfs-utils
