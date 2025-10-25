@@ -74,14 +74,14 @@ install_pkgs() {
     done
 
     for app in "${aur_gaming[@]}"; do
-      if yay -S --needed "$app"; then
+      if yay -S "$app"; then
         gum style --foreground="#ff0000" --bold "Package not found: $app, skipping"
         echo "$app" | sudo tee -a "$aur_log_file"
       fi
     done
 
     for app in "${aur_programs[@]}"; do
-      if yay -S --needed "$app"; then
+      if yay -S "$app"; then
         gum style --foreground="#ff0000" --bold "Package not found: $app, skipping"
         echo "$app" | sudo tee -a "$aur_log_file"
       fi
@@ -93,7 +93,7 @@ install_pkgs() {
 
   else
     for app in "${aur_programs[@]}"; do
-      if yay -S --needed "$app"; then
+      if yay -S "$app"; then
         gum style --foreground="#ff0000" --bold "Package not found: $app, skipping"
         echo "$app" | sudo tee -a "$aur_log_file"
       fi
