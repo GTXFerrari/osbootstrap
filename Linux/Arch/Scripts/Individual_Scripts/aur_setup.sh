@@ -40,7 +40,7 @@ install_yay() {
       break
     else
       gum confirm "Would you like to setup an AUR helper?" || exit 0
-      sudo git clone https://aur.archlinux.org/yay.git /opt/yay && cd /opt/yay && makepkg -si || exit 1
+      git clone https://aur.archlinux.org/yay.git /tmp/yay && cd /tmp/yay && makepkg -si || exit 1
     fi
   done
 }
