@@ -158,6 +158,7 @@ install_packages() {
     plymouth
     packer
     terraform
+    vault
     socat
     jq
   )
