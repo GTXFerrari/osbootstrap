@@ -47,22 +47,34 @@ install_yay() {
 
 install_pkgs() {
   aur_programs=(
+    firefox-beta-bin
     ookla-speedtest-bin
+    elephant-all
+    walker
     piavpn-bin
     cava
-    pistol-bin
+    pistol-git
     zsh-fast-syntax-highlighting
     zen-browser-bin
     jdownloader2
+    gallery-dl
     ttf-joypixels
+    catppuccin-gtk-theme-macchiato
+    catppuccin-qt5ct-git
+    qt6ct-kde
+    sddm-theme-aerial-git
+    phonon-qt5-gstreamer
   )
 
   #NOTE: openrgb-git is needed to control 4090FE LED light since the main repo release is extremely old
   aur_gaming=(
     proton-ge-custom-bin
+    vk-hdr-layer-kwin6-git
     rpcs3-bin
     razergenie
     openrgb-git
+    citron
+    ryujinx
   )
 
   if [[ $VM_STATUS == "bare_metal" ]]; then
