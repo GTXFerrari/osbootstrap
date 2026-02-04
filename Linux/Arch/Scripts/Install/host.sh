@@ -19,7 +19,7 @@ internet_check() {
   if check_internet_connection; then
     return 0
   else
-    echo "No internet, check your connection. (To connect to wireless type iwctl)"
+    echo "No internet, check your connection. (To connect to wireless type iwctl then restart the script)"
     sleep 5
     exit 1
   fi
@@ -66,8 +66,7 @@ termfonts() {
 check_uefi() {
   gum style --foreground="#00ff28" --bold "Checking UEFI Settings"
   if [[ -d /sys/firmware/efi/efivars/ ]]; then
-    gum style --foreground="#00ff28" --bold "System is booted using UEFI, proceeding"
-    sleep 2
+    return 0
   else
     gum style --foreground="#ff0000" --bold "System is not booted using UEFI, change in the BIOS before proceeding"
     sleep 5
@@ -79,13 +78,9 @@ check_uefi() {
     value=$(cat "$efi_platform_size_file")
   fi
   if [[ "$value" -eq 64 ]]; then
-    gum style --foreground="#00ff28" --bold "The system is using a 64-bit UEFI, GRUB & systemd-boot are supported"
     uefi="64"
-    sleep 2
   else
-    gum style --foreground="#00ff28" --bold "The system is using a 32-bit UEFI, Only systemd-boot are supported"
     uefi="32"
-    sleep 2
   fi
   export uefi
 }
