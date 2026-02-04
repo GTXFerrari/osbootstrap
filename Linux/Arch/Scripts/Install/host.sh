@@ -39,17 +39,20 @@ vm_check() {
   gum style --foreground="#00ff28" --bold "Checking if machine is virtualized"
   sleep 2
   VM_TYPE=$(systemd-detect-virt)
-  if [[ "$VM_TYPE" == "none" ]]; then
-    VM_STATUS="bare_metal"
-  elif [[ "$VM_TYPE" == "kvm" ]]; then
-    VM_STATUS="kvm"
-  elif [[ "$VM_TYPE" == "vmware" ]]; then
-    VM_STATUS="vmware"
-  else
-    gum style --foreground="#227fb0" --bold "The system is using an unsupported VM type"
-    sleep 5
-    VM_STATUS="other"
-  fi
+  case $VM_TYPE in
+  none)
+    VM_STATUS="Bare_Metal"
+    ;;
+  kvm)
+    VM_STATUS="KVM"
+    ;;
+  vmware)
+    VM_STATUS="VMWare"
+    ;;
+  *)
+    VM_STATUS="Other"
+    ;;
+  esac
   export VM_STATUS
 }
 
@@ -239,6 +242,7 @@ pacstab() {
   genfstab -U /mnt >>/mnt/etc/fstab
   cp ./chroot.sh /mnt
   cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist
+  cp /var/log/archinstall.log /mnt/var/log/host_archinstall.log
   arch-chroot /mnt ./chroot.sh
 }
 
