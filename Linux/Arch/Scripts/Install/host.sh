@@ -59,7 +59,7 @@ termfonts() {
   if [[ "$VM_STATUS" == "bare_metal" ]]; then
     setfont ter-132b
   else
-    setfont ter-124b
+    setfont ter-120b
   fi
 }
 
