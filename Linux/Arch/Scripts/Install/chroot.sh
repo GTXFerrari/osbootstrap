@@ -531,7 +531,7 @@ docker_setup() {
   echo -n "Install docker? (y/n) "
   read -r docker
   if [[ "$docker" == "y" ]]; then
-    pacman -S --needed --noconfirm docker docker-compose docker-buildx ducker
+    pacman -S --needed --noconfirm docker docker-compose docker-buildx lazydocker
     systemctl enable docker.service
     usermod -aG docker "$username"
     if [[ ! -d /etc/docker ]]; then
