@@ -1,5 +1,22 @@
 #!/usr/bin/env bash
 
+colors() {
+  export TN_BG="#1a1b26"
+  export TN_BG_DARK="#16161e"
+  export TN_BG_HIGHLIGHT="#292e42"
+  export TN_FG="#a9b1d6"
+  export TN_FG_DARK="#787c99"
+  export TN_COMMENT="#565f89"
+  export TN_RED="#f7768e"
+  export TN_ORANGE="#ff9e64"
+  export TN_YELLOW="#e0af68"
+  export TN_GREEN="#9ece6a"
+  export TN_TEAL="#73daca"
+  export TN_BLUE="#7aa2f7"
+  export TN_PURPLE="#bb9af7"
+  export TN_CYAN="#2ac3de"
+}
+
 # Logging
 Logging() {
   exec > >(tee -i /var/log/archinstall.log)
