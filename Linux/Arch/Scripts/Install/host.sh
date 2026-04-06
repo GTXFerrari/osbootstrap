@@ -18,7 +18,7 @@ colors() {
 }
 
 # Logging
-Logging() {
+logging() {
   exec > >(tee -i /var/log/archinstall.log)
   exec 2>&1
 }
@@ -282,7 +282,8 @@ intro_banner() {
     'Arch Install Script'
 }
 
-Logging
+colors
+logging
 check_internet_connection
 internet_check
 check_dependencies
