@@ -161,6 +161,9 @@ install_packages() {
     vault
     socat
     jq
+    bitwarden
+    trash-cli
+    telegram-desktop
   )
 
   print=(
@@ -177,6 +180,11 @@ install_packages() {
     systemd-timesyncd.service
     cups.service
     cpupower.service
+  )
+
+  btrfs_snapshot_packages=(
+    snapper
+    snap-pac
   )
 
   gum style --foreground="#00ff28" --bold "Updating package database"
