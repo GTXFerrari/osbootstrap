@@ -532,7 +532,7 @@ setup_virtualization() {
     usermod -aG kvm "$username"
   fi
   #NOTE: Requires user input for overwrite
-  pacman -S iptables-nft
+  pacman -S iptables
 }
 
 docker_setup() {
