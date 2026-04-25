@@ -161,8 +161,7 @@ install_packages() {
     vault
     socat
     jq
-    bitwarden
-    trash-cli
+    rbw
     telegram-desktop
   )
 
