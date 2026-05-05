@@ -125,6 +125,7 @@ install_packages() {
     htop
     nvtop
     btop
+    lact
     fastfetch
     lf
     atool
@@ -163,6 +164,10 @@ install_packages() {
     jq
     rbw
     telegram-desktop
+    ipmitool
+    remmina
+    libvncserver
+    freerdp
   )
 
   print=(
